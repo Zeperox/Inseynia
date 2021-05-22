@@ -26,9 +26,6 @@ BG["Main Menu"] = load_image_asset(["assets", "BG", "Main Menu BG.png"], Convert
 sprites_Button_Overlays = dict()
 sprites_Button_Overlays['Button Female Overlay'] = load_image_asset(['assets', 'Button Overlays', 'Female Symbol.png'])
 sprites_Button_Overlays['Button Male Overlay'] = load_image_asset(['assets', 'Button Overlays', 'Male Symbol.png'])
-sprites_Button_Overlays['Button Warrior Overlay'] = load_image_asset(['assets', 'Button Overlays', 'Button Warrior Overlay.png'])
-sprites_Button_Overlays['Button Archer Overlay'] = load_image_asset(['assets', 'Button Overlays', 'Button Archer Overlay.png'])
-sprites_Button_Overlays['Button Mage Overlay'] = load_image_asset(['assets', 'Button Overlays', 'Button Mage Overlay.png'])
 
 #story
 sprites_Story_Photoes = dict()
@@ -59,7 +56,6 @@ sprites_Misc["Resume NotOver"] = load_image_asset(['assets', 'Sprites', 'Misc', 
 sprites_Misc["Resume Over"] = load_image_asset(['assets', 'Sprites', 'Misc', 'ResumeOver.png'])
 sprites_Misc["Resol Next"] = load_image_asset(["assets", "Button Overlays", "Next Resol.png"], Convert=True)
 sprites_Misc["Resol Previous"] = load_image_asset(["assets", "Button Overlays", "Previous Resol.png"], Convert=True)
-sprites_Misc['DP Logo'] = load_image_asset(['assets', 'icon', 'Diamond Productions Logo.png'], Convert=True)
 
 #test enemy
 sprites_Enemies = dict()
@@ -68,4 +64,3 @@ sprites_Enemies["Test Enemy"] = load_image_asset(["assets", "Sprites", "Enemies"
 #devroom
 sprites_DevRoom = dict()
 sprites_DevRoom["Room 1"] = load_image_asset(["assets", "Sprites", "Dev Room", "Room1.png"], Convert=True)
-
