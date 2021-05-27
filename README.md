@@ -19,6 +19,10 @@
   <li>Fixed a bug where the FPS counter won't update</li>
   <li>Fixed a bug where people with screen larger than UHD can have weird background problems</li>
 </ul>
+<h3>Dev 1.0.1</h3>
+<ul>
+  <li>Added pause menu</li>
+</ul>
 <h3>Dev 1.0.0</h3>
 <ul>
   <li>Released into GitHub</li>
