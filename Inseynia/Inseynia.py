@@ -1196,6 +1196,8 @@ def main_menu():
                     F11()
                 if event.key == K_F3:
                     debug_menu = not debug_menu
+                if event.key == K_c:
+                    credits()
 
             if event.type == MOUSEBUTTONDOWN:
                 if event.button == 1:
@@ -2231,7 +2233,6 @@ def credits():
         texaract_img_y -= speed*dt
         pygame.display.flip()
 
-credits()
 while True:
     if main_menu():
         stored_data = load_json([os.getenv("localappdata"), ".inseynia", "saves", "save.json"])
