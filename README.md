@@ -8,7 +8,20 @@
 <p><strong>IMPORTANT: </strong>this only works on Windows so far, we will add Mac and Linux support soon</p>
 <br>
 <h2>Change Logs</h2>
-<h3>Dev 1.1.1 (Not Released Yet)</h3>
+<h3>Dev 1.2</h3>
+<ul>
+  <li>Improved text rendering</li>
+  <li>Added credits</li>
+  <li>Fixed a bug where if you have the max amount of an item you can carry and then pick it up, it will idappear from the ground yet you won't get the item</li>
+  <li>Added proper rooms (only in the dev room)</li>
+  <li>Added a black outline to the test player to make it easier to see</li>
+  <li>Added tile collisions (can be viewed in the dev room)</li>
+  <li>Improved player spawning</li>
+  <li>Added scroll effect (cannot be seen for now)</li>
+  <li>Added a "show hitbox" hotkey (B)</li>
+  <li>Fixed a bug where the pick-up range of items was longer in one side but not the other</li>
+</ul>
+<h3>Dev 1.1.1</h3>
 <ul>
   <li>Fixed a bug where day and night were swapped</li>
   <li>Added "Always Day" and "Always Night" areas</li>
