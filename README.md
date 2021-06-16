@@ -17,7 +17,7 @@
   <li>Added a black outline to the test player to make it easier to see</li>
   <li>Added tile collisions (can be viewed in the dev room)</li>
   <li>Improved player spawning</li>
-  <li>Added scroll effect (cannot be seen for now)</li>
+  <li>Added scroll effect (only in the dev room)</li>
   <li>Added a "show hitbox" hotkey (B)</li>
   <li>Fixed a bug where the pick-up range of items was longer in one side but not the other</li>
 </ul>
