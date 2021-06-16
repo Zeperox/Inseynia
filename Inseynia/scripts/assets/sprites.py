@@ -64,8 +64,3 @@ sprites_Misc["Resol Previous"] = load_image_asset(["assets", "Button Overlays", 
 #test enemy
 sprites_Enemies = dict()
 sprites_Enemies["Test Enemy"] = load_image_asset(["assets", "Sprites", "Enemies", "Test Enemy.png"])
-
-#devroom
-sprites_DevRoom = dict()
-sprites_DevRoom["Room 1"] = load_image_asset(["assets", "Sprites", "Dev Room", "Room1.png"], Convert=True)
-
