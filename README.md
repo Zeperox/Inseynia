@@ -12,7 +12,7 @@
 <ul>
   <li>Improved text rendering</li>
   <li>Added credits</li>
-  <li>Fixed a bug where if you have the max amount of an item you can carry and then pick it up, it will idappear from the ground yet you won't get the item</li>
+  <li>Fixed a bug where if you have the max amount of an item you can carry and then pick it up, it will disappear from the ground yet you won't get the item</li>
   <li>Added proper rooms (only in the dev room)</li>
   <li>Added a black outline to the test player to make it easier to see</li>
   <li>Added tile collisions (can be viewed in the dev room)</li>
