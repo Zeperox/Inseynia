@@ -5,7 +5,7 @@ pygame.display.init()
 
 if not os.path.exists(os.path.join(os.getenv("localappdata"), ".inseynia", "saves", "settings.json")):
     with open (os.path.join(os.getenv("localappdata"), ".inseynia", "saves", "settings.json"), "w") as f:
-        settings = {"FPS": 60, "Fullscreen": True, "Resol": None, "Keys": {"North": K_w, "South": K_s, "East": K_d, "West": K_a, "Throw": K_q, "Equip": K_e, "Switch": K_r}, "Brightness": 0}
+        settings = {"FPS": 60, "Fullscreen": True, "Resol": None, "Keys": {"Up": K_w, "Down": K_s, "Right": K_d, "Left": K_a, "Throw": K_q, "Equip": K_e, "Switch": K_r, "Pause": K_ESCAPE}, "Brightness": 0}
         json.dump(settings, f, indent=4)
 else:
     with open (os.path.join(os.getenv("localappdata"), ".inseynia", "saves", "settings.json"), "r") as f:
