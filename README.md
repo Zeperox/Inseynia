@@ -8,6 +8,10 @@
 <p><strong>IMPORTANT: </strong>this only works on Windows so far, we will add Mac and Linux support soon</p>
 <br>
 <h2>Change Logs</h2>
+<h3>Dev 1.2.1</h3>
+<ul>
+  <li>Fixed a major bug where the settings file generator was outdated, cause the game to crash once it starts (after the story)</li>
+</ul>
 <h3>Dev 1.2</h3>
 <ul>
   <li>Improved text rendering</li>
