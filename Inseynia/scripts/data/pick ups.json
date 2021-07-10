@@ -1,0 +1,9 @@
+{
+    "House 1": {
+        "Wooden Sword": true,
+        "Wooden Shield": true
+    },
+    "House 2": {
+        "Crossbow": true
+    }
+}

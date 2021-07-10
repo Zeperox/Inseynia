@@ -1,0 +1,24 @@
+{
+    "House 1": {
+        "drops": [
+            ["Wooden Sword", [800, 500]],
+            ["Wooden Shield", [800, 600]]
+        ],
+        "enemies": [],
+        "exits": {
+            "House 2": [200, 200, 100, 50]
+        },
+        "extras": ["Always Day"]
+    },
+    "House 2": {
+        "drops": [
+            ["Crossbow", [800, 200]],
+            ["ph1", [600, 800]]
+        ],
+        "enemies": [],
+        "exits": {
+            "House 1": [200, 200, 100, 50]
+        },
+        "extras": ["Always Day"]
+    }
+}
