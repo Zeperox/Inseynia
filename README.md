@@ -12,6 +12,28 @@
 <ul>
   <li>Fixed a major bug where the settings file generator was outdated, cause the game to crash once it starts (after the story)</li>
 </ul>
+<h3>Dev 1.3</h3>
+<ul>
+  <li>Fixed a bug where the FPS slider doesn't start where it should be when the FPS is set to the lowest option</li>
+  <li>Added a message saying "the game was not optimized for resolutions over 1080p" when you choose your resolution as "current"</li>
+  <li>Improved brightness and cleaned up code related to it</li>
+  <li>Fixed a bug where text boxes can delete player-written text</li>
+  <li>Massively improved story text rendering and is now faster</li>
+  <li>Fixed a bug where the story images won't appear</li>
+  <li>Changed the crash easter egg from being just totally random to having a 0.1% chance of occuring</li>
+  <li>Fixed flipped daylight cycle (again)</li>
+  <li>Added rooms to the main game</li>
+  <li>Added minor mod support</li>
+  <li>Fixed a bug where the semi-transparent black overlay in the pause menu didn't update if the resolution was changed in-game</li>
+  <li>Added indivdual page skipping in the story</li>
+  <li>Now the story will move to the next page only if you press space bar instead of taking 5 seconds then automatically move to the next page</li>
+  <li>Enemies now no longer get slower/faster depending on the FPS</li>
+  <li>Fixed Daylight cycle timing issues</li>
+  <li>Fixed a bug where the daylight cycle stops working once half of the cycle is finished</li>
+  <li>Fixed a bug where the attack cooldown didn't sync with different FPS (i.e. the enemy's turn)</li>
+  <li>Added world collision for enemies</li>
+  <li>Added undertale-like combat when you choose special attack (each class has a different thing to do)</li>
+</ul>
 <h3>Dev 1.2</h3>
 <ul>
   <li>Improved text rendering</li>
