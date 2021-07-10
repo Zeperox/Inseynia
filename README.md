@@ -8,10 +8,6 @@
 <p><strong>IMPORTANT: </strong>this only works on Windows so far, we will add Mac and Linux support soon</p>
 <br>
 <h2>Change Logs</h2>
-<h3>Dev 1.2.1</h3>
-<ul>
-  <li>Fixed a major bug where the settings file generator was outdated, cause the game to crash once it starts (after the story)</li>
-</ul>
 <h3>Dev 1.3</h3>
 <ul>
   <li>Fixed a bug where the FPS slider doesn't start where it should be when the FPS is set to the lowest option</li>
@@ -33,6 +29,10 @@
   <li>Fixed a bug where the attack cooldown didn't sync with different FPS (i.e. the enemy's turn)</li>
   <li>Added world collision for enemies</li>
   <li>Added undertale-like combat when you choose special attack (each class has a different thing to do)</li>
+</ul>
+<h3>Dev 1.2.1</h3>
+<ul>
+  <li>Fixed a major bug where the settings file generator was outdated, cause the game to crash once it starts (after the story)</li>
 </ul>
 <h3>Dev 1.2</h3>
 <ul>
