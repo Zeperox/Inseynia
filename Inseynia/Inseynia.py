@@ -490,7 +490,7 @@ def fade_out(func, speed=1):
 def fight(enemy:Enemy):
     global debug_menu
     player = Player(100, Height-90, "Right")
-    enemy = Enemy(Width-164, Height-164, enemy.name, sprites_Enemies)
+    enemy = Enemy(Width-(100+enemy.entity.get_width()), Height-90-enemy.entity.get_height()*0.5, enemy.name, sprites_Enemies)
     inventory = Inventory(resol, player, sprites_Misc['Inventory Slot'], sprites_Equipment)
 
     pturn = True
@@ -551,9 +551,8 @@ def fight(enemy:Enemy):
             pass
 
         # draw stuff
-        player.draw(win, [player.x-200*0.5+15, player.y-95], [player.x-200*0.5+15, player.y-60])
-        enemy.draw(win)
-        enemy.draw_bars(win, [enemy.x-200*0.5+30, enemy.y-60])
+        player.draw(win, [0, 0], [player.x-200*0.5+15, player.y-95], [player.x-200*0.5+15, player.y-60])
+        enemy.draw(win, [0, 0], [enemy.x+enemy.entity.get_width()*0.5-100, enemy.y-60])
         inventory.draw_inventory(win, os.path.join("assets", "Fonts", "DefaultFont.TTF"))
 
         # choosing panel
