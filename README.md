@@ -8,6 +8,10 @@
 <p><strong>IMPORTANT: </strong>this only works on Windows so far, we will add Mac and Linux support soon</p>
 <br>
 <h2>Change Logs</h2>
+<h3>Dev 1.3.1</h3>
+<ul>
+  <li>Fixed player and enemy positioning problems when a fight starts</li>
+</ul>
 <h3>Dev 1.3</h3>
 <ul>
   <li>Fixed a bug where the FPS slider doesn't start where it should be when the FPS is set to the lowest option</li>
