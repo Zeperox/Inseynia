@@ -15,7 +15,7 @@ class Tile:
     def __init__(self, x, y, image_loc):
         self.x = x
         self.y = y
-        self.image = pygame.transform.scale(pygame.image.load(image_loc), (50, 50)).convert()
+        self.image = pygame.image.load(image_loc).convert()
         self.image.set_colorkey((0,0,0))
     
     def draw(self, win):
@@ -24,7 +24,7 @@ class Tile:
 
 class TileMap:
     def __init__(self, filename, room, screen_size):
-        self.tile_size = 50
+        self.tile_size = 25
         self.start_x, self.start_y = 0, 0
         self.room = room
         self.screen_size = screen_size
@@ -40,6 +40,7 @@ class TileMap:
     def load_map(self):
         for tile in self.tiles:
             tile.draw(self.map_surface)
+        self.map_surface = pygame.transform.scale2x(self.map_surface)
 
     def read_csv(self, filename):
         map = []
@@ -54,7 +55,7 @@ class TileMap:
         self.tile_rects = []
         map = self.read_csv(filename)
 
-        self.map_w, self.map_h = len(map[0])*self.tile_size, len(map)*self.tile_size
+        self.map_w, self.map_h = len(map[0])*(self.tile_size*2), len(map)*(self.tile_size*2)
 
         if self.screen_size[0] > self.map_w:
             self.x = (self.screen_size[0]*0.5)-(self.map_w*0.5)
@@ -73,9 +74,9 @@ class TileMap:
                     if tiles_csv[self.room][tile] != "Spawn":
                         tiles.append(Tile(x*self.tile_size, y*self.tile_size, tiles_csv[self.room][tile][0]))
                         if tiles_csv[self.room][tile][1]:        
-                            self.tile_rects.append(pygame.Rect(self.x+x*self.tile_size, self.y+y*self.tile_size, self.tile_size, self.tile_size))
+                            self.tile_rects.append(pygame.Rect(self.x+x*(self.tile_size*2), self.y+y*(self.tile_size*2), (self.tile_size*2), (self.tile_size*2)))
                     else:
-                        self.start_x, self.start_y = self.x+x*self.tile_size, self.y+y*self.tile_size
+                        self.start_x, self.start_y = self.x+x*(self.tile_size*2), self.y+y*(self.tile_size*2)
                 x += 1
             y += 1
 
@@ -90,7 +91,34 @@ class TileMap:
             for tile in row:
                 if tile != "-1":
                     if tiles_csv[self.room][tile] == "Spawn":
-                        self.start_x, self.start_y = self.x+x*self.tile_size, self.y+y*self.tile_size
+                        self.start_x, self.start_y = self.x+x*(self.tile_size*2), self.y+y*(self.tile_size*2)
                 x += 1
             y += 1
-                
+    
+    def update_map(self, filename, screen_size):
+        print(screen_size, self.screen_size)
+        if screen_size != self.screen_size:
+            print("g")
+            self.tile_rects = []
+            map = self.read_csv(filename)
+
+            if self.screen_size[0] > self.map_w:
+                self.x = (self.screen_size[0]*0.5)-(self.map_w*0.5)
+            else:
+                self.x = 0
+            if self.screen_size[1] > self.map_h:
+                self.y = (self.screen_size[1]*0.5)-(self.map_h*0.5)
+            else:
+                self.y = 0
+
+            x, y = 0, 0
+            for row in map:
+                x = 0
+                for tile in row:
+                    if tile != "-1":
+                        if tiles_csv[self.room][tile] != "Spawn":
+                            if tiles_csv[self.room][tile][1]:        
+                                self.tile_rects.append(pygame.Rect(self.x+x*(self.tile_size*2), self.y+y*(self.tile_size*2), (self.tile_size*2), (self.tile_size*2)))
+                    x += 1
+                y += 1
+            self.screen_size = screen_size

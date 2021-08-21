@@ -1,8 +1,8 @@
-import pygame
+import pygame, time
 from pygame.locals import *
 
 class TextBox:
-    def __init__(self, color, x, y, width, height, pre_text="", text_color=(255,255,255), clear_text_when_click=False, numeric=False, alpha=False, alnum=False):
+    def __init__(self, color:tuple[int, int, int], x:int, y:int, width:int, height:int, pre_text:str="", text_color:tuple[int, int, int]=(255,255,255), text_pos:str="left", clear_text_when_click:bool=False, numeric:bool=False, alpha:bool=False, alnum:bool=False):
         self.color = color
         self.x = x
         self.y = y
@@ -11,6 +11,8 @@ class TextBox:
 
         self.text = pre_text
         self.text_color = text_color
+        self.text_pos = text_pos
+
         self.clear_text_when_click = clear_text_when_click
         self.clicked = False
 
@@ -18,30 +20,42 @@ class TextBox:
         self.alpha = alpha
         self.alnum = alnum
 
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
         self.selected = False
+        self.blink_timer = time.time()
         
-    def draw(self, window:pygame.Surface, outline:tuple=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
+    def draw(self, window:pygame.Surface, outline:tuple[int, int, int]=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
         if outline:
             pygame.draw.rect(window, outline, (self.x-outline_thickness, self.y-outline_thickness, self.width+outline_thickness*2, self.height+outline_thickness*2), outline_thickness)
         pygame.draw.rect(window, self.color, (self.x, self.y, self.width, self.height))
 
-        if self.text:
-            try:
-                button_font = pygame.font.Font(font_name, font_size) if font_size else pygame.font.Font(font_name, int(self.height*0.5))
-            except FileNotFoundError():
-                button_font = pygame.font.SysFont(font_name, font_size) if font_size else pygame.font.SysFont(font_name, int(self.height*0.5))
-            button_label = button_font.render(self.text, 1, self.text_color)
-            window.blit(button_label, (self.x + (self.width*0.5 - button_label.get_width()*0.5), self.y + (self.height*0.5 - button_label.get_height()*0.5)))
+        try:
+            button_font = pygame.font.Font(font_name, font_size) if font_size else pygame.font.Font(font_name, int(self.height*0.5))
+        except FileNotFoundError:
+            button_font = pygame.font.SysFont(font_name, font_size) if font_size else pygame.font.SysFont(font_name, int(self.height*0.5))
+        button_label = button_font.render(self.text, 1, self.text_color)
+        
+        if self.text_pos == "left":
+            text_x = self.x + 10
+        elif self.text_pos == "center" or self.text_pos == "middle":
+            text_x = self.x + (self.width*0.5 - button_label.get_width()*0.5)
+        elif self.text_pos == "right":
+            text_x = (self.x+self.width)-(button_label.get_width()-15)
+        window.blit(button_label, (text_x, self.y + (self.height*0.5 - button_label.get_height()*0.5)))
+
+        if self.selected:
+            if time.time() - self.blink_timer >= 0.75:
+                pygame.draw.line(window, (255,255,255), (text_x+button_label.get_width()+5, self.y+15), (text_x+button_label.get_width()+5, self.y+(self.height-15)))
+            if time.time() - self.blink_timer >= 1:
+                self.blink_timer = time.time()
 
     def isOver(self, pos):
-        collision_test = pygame.Rect(self.x, self.y, self.width, self.height)
-        if collision_test.collidepoint(pos):
-            self.selected = True
-            if self.clear_text_when_click and not self.clicked:
-                self.text = ""
-                self.clicked = True
-        else:
-            self.selected = False
+        self.selected = self.rect.collidepoint(pos)
+
+        if self.selected and self.clear_text_when_click and not self.clicked:
+            self.text = ""
+            self.clicked = True
 
     def update_text(self, event) -> str:
         if self.selected:
@@ -67,3 +81,5 @@ class TextBox:
 
                 if self.text == "" and self.numeric:
                     self.text = "0"
+        else:
+            return self.text

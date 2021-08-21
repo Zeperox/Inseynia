@@ -1,18 +1,14 @@
-import pygame, os, json
+import pygame, os, json, platform
 from pygame.locals import *
 
 pygame.display.init()
 
-if not os.path.exists(os.path.join(os.getenv("localappdata"), ".inseynia", "saves", "settings.json")):
-    with open (os.path.join(os.getenv("localappdata"), ".inseynia", "saves", "settings.json"), "w") as f:
-        settings = {"FPS": 60, "Fullscreen": True, "Resol": None, "Keys": {"Up": K_w, "Down": K_s, "Right": K_d, "Left": K_a, "Throw": K_q, "Equip": K_e, "Switch": K_r, "Pause": K_ESCAPE}, "Brightness": 0}
-        json.dump(settings, f, indent=4)
-else:
-    with open (os.path.join(os.getenv("localappdata"), ".inseynia", "saves", "settings.json"), "r") as f:
-        settings = json.load(f)
+with open (os.path.join("scripts", "data", "settings.json"), "r") as f:
+    settings = json.load(f)
 
 fullscreen = settings["Fullscreen"]
 resol = tuple(settings["Resol"]) if settings["Resol"] else None
+
 
 # Screen
 info = pygame.display.Info()
@@ -24,7 +20,7 @@ else:
 
 old_Width, old_Height = Width, Height
 
-if fullscreen:
-    win = pygame.display.set_mode((Width, Height), FULLSCREEN | DOUBLEBUF | HWSURFACE)
+if fullscreen and platform.system() == "Windows":
+    win = pygame.display.set_mode((Width, Height), FULLSCREEN | DOUBLEBUF | HWSURFACE | SCALED)
 else:
-    win = pygame.display.set_mode((Width, Height), DOUBLEBUF | HWSURFACE)
+    win = pygame.display.set_mode((Width, Height), DOUBLEBUF | HWSURFACE | SCALED)

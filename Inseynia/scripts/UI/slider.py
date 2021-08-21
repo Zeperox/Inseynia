@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 class SliderX:
-    def __init__(self, x, y, width, height, color1:tuple=(0,0,0),  width2:int=0, color2:tuple=(0,0,0),text="", text_color=(255,255,255)):
+    def __init__(self, x, y, width, height, color1:tuple[int, int, int]=(0,0,0),  width2:int=40, color2:tuple[int, int, int]=(0,0,0),text="", text_color=(255,255,255)):
         self.color1 = color1
         self.x = x
         self.y = y
@@ -20,6 +20,8 @@ class SliderX:
         self.selector_rect_y = self.y
         self.selector_rect_width = 40
         self.selector_rect_height = self.height
+
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def set_value(self, min_value, max_value, set_value, value_type:str="int", new_value_per_pix=1, list_of_values_not_int_type:list=[]):
         if value_type == "int":
@@ -51,7 +53,7 @@ class SliderX:
 
         return new_value
 
-    def draw(self, window:pygame.Surface, outline:tuple=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
+    def draw(self, window:pygame.Surface, outline:tuple[int, int, int]=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
         self.selector_rect_y = self.y
         self.selector_rect_x = self.x+self.width2-40
 
@@ -65,17 +67,13 @@ class SliderX:
         if self.text:
             try:
                 button_font = pygame.font.Font(font_name, font_size) if font_size else pygame.font.Font(font_name, int(self.height*0.5))
-            except FileNotFoundError():
+            except FileNotFoundError:
                 button_font = pygame.font.SysFont(font_name, font_size) if font_size else pygame.font.SysFont(font_name, int(self.height*0.5))
             button_label = button_font.render(self.text, 1, self.text_color)
             window.blit(button_label, (self.x + (self.width*0.5 - button_label.get_width()*0.5), self.y + (self.height*0.5 - button_label.get_height()*0.5)))
 
     def isOver(self, pos) -> bool:
-        self.selected = False
-
-        collision_test = pygame.Rect(self.x, self.y, self.width, self.height)
-        if collision_test.collidepoint(pos):
-            self.selected = True
+        self.selected = self.rect.collidepoint(pos)
         
         return self.selected
             
@@ -112,7 +110,7 @@ class SliderX:
                 self.selector_rect_x = self.width2-40
 
 class SliderY:
-    def __init__(self, x, y, width, height, color1:tuple=(0,0,0),  height2:int=0, color2:tuple=(0,0,0),text="", text_color=(255,255,255)):
+    def __init__(self, x, y, width, height, color1:tuple[int, int, int]=(0,0,0),  height2:int=0, color2:tuple[int, int, int]=(0,0,0),text="", text_color=(255,255,255)):
         self.color1 = color1
         self.x = x
         self.y = y
@@ -130,6 +128,8 @@ class SliderY:
         self.selector_rect_y = self.y+self.height2-40
         self.selector_rect_width = self.width
         self.selector_rect_height = 40
+
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
     def set_value(self, min_value, max_value, set_value, value_type:str="int", new_value_per_pix=1, list_of_values_not_int_type:list=[]):
         if value_type == "int":
@@ -161,7 +161,7 @@ class SliderY:
 
         return new_value
 
-    def draw(self, window:pygame.Surface, outline:tuple=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
+    def draw(self, window:pygame.Surface, outline:tuple[int, int, int]=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
         self.selector_rect_y = self.y+self.height2-40
         self.selector_rect_x = self.x
 
@@ -175,17 +175,13 @@ class SliderY:
         if self.text:
             try:
                 button_font = pygame.font.Font(font_name, font_size) if font_size else pygame.font.Font(font_name, int(self.height*0.5))
-            except FileNotFoundError():
+            except FileNotFoundError:
                 button_font = pygame.font.SysFont(font_name, font_size) if font_size else pygame.font.SysFont(font_name, int(self.height*0.5))
             button_label = button_font.render(self.text, 1, self.text_color)
             window.blit(button_label, (self.x + (self.width*0.5 - button_label.get_width()*0.5), self.y + (self.height*0.5 - button_label.get_height()*0.5)))
 
     def isOver(self, pos) -> bool:
-        self.selected = False
-
-        collision_test = pygame.Rect(self.x, self.y, self.width, self.height)
-        if collision_test.collidepoint(pos):
-            self.selected = True
+        self.selected = self.rect.collidepoint(pos)
         
         return self.selected
             

@@ -1,9 +1,11 @@
 {
     "House 1": {
-        "Wooden Sword": true,
-        "Wooden Shield": true
+        "Wooden Sword": false,
+        "Wooden Shield": false
     },
     "House 2": {
-        "Crossbow": true
+        "Crossbow": false,
+        "ph1": false,
+        "Wooden Shield": false
     }
 }

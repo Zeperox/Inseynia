@@ -27,7 +27,17 @@ sprites_Logo = dict()
 sprites_Logo["Texaract"] = load_image_asset(["assets", "icon", "Texaract.png"])
 
 #button overlays
-sprites_Button_Overlays = dict()
+sprites_Buttons = dict()
+sprites_Buttons["Quit NotOver"] = load_image_asset(['assets', 'Buttons', 'QuitNOver.png'])
+sprites_Buttons["Quit Over"] = load_image_asset(['assets', 'Buttons', 'QuitOver.png'])
+sprites_Buttons["Return NotOver"] = load_image_asset(['assets', 'Buttons', 'ReturnNOver.png'])
+sprites_Buttons["Return Over"] = load_image_asset(['assets', 'Buttons', 'ReturnOver.png'])
+sprites_Buttons["Settings NotOver"] = load_image_asset(['assets', 'Buttons', 'SettingsNOver.png'])
+sprites_Buttons["Settings Over"] = load_image_asset(['assets', 'Buttons', 'SettingsOver.png'])
+sprites_Buttons["Resume NotOver"] = load_image_asset(['assets', 'Buttons', 'ResumeNOver.png'])
+sprites_Buttons["Resume Over"] = load_image_asset(['assets', 'Buttons', 'ResumeOver.png'])
+sprites_Buttons["Resol Next"] = load_image_asset(["assets", "Buttons", "Next Resol.png"], Convert=True)
+sprites_Buttons["Resol Previous"] = load_image_asset(["assets", "Buttons", "Previous Resol.png"], Convert=True)
 
 #story
 sprites_Story_Photoes = dict()
@@ -50,14 +60,6 @@ sprites_Equipment['Fist'] = load_image_asset(['assets', 'Sprites', 'Arsenal & To
 #misc
 sprites_Misc = dict()
 sprites_Misc['Inventory Slot'] = load_image_asset(['assets', 'Sprites', 'Misc', 'Inventory Slot.png'])
-sprites_Misc["Quit NotOver"] = load_image_asset(['assets', 'Sprites', 'Misc', 'QuitNOver.png'])
-sprites_Misc["Quit Over"] = load_image_asset(['assets', 'Sprites', 'Misc', 'QuitOver.png'])
-sprites_Misc["Settings NotOver"] = load_image_asset(['assets', 'Sprites', 'Misc', 'SettingsNOver.png'])
-sprites_Misc["Settings Over"] = load_image_asset(['assets', 'Sprites', 'Misc', 'SettingsOver.png'])
-sprites_Misc["Resume NotOver"] = load_image_asset(['assets', 'Sprites', 'Misc', 'ResumeNOver.png'])
-sprites_Misc["Resume Over"] = load_image_asset(['assets', 'Sprites', 'Misc', 'ResumeOver.png'])
-sprites_Misc["Resol Next"] = load_image_asset(["assets", "Button Overlays", "Next Resol.png"], Convert=True)
-sprites_Misc["Resol Previous"] = load_image_asset(["assets", "Button Overlays", "Previous Resol.png"], Convert=True)
 
 #test enemy
 sprites_Enemies = dict()
