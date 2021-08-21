@@ -5,9 +5,37 @@
 <br>
 <br>
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
-<p><strong>IMPORTANT: </strong>this only works on Windows so far, we will add Mac and Linux support soon</p>
 <br>
 <h2>Change Logs</h2>
+<h3>Dev 1.4</h3>
+<ul>
+  <li>Added acceleration and friction to all moveable entities</li>
+  <li>Fixed a bug where some entities render on-top of HUD</li>
+  <li>Fixed a bug where some texts were using a different font (there might be some remains)</li>
+  <li>Fixed a bug where the "Press space to continue" text is merged with the story text in low resolutions</li>
+  <li>Replaced exit button with return button in the pause menu</li>
+  <li>Improved story text rendering</li>
+  <li>Fixed a bug where the map sometimes doesn't show the area it is supposed to show</li>
+  <li>Improved enemy detection</li>
+  <li>Added main menu music (though it plays throughout the entire game for now)</li>
+  <li>Added this new random caption: ...yPRGDyAR yLB JMAIGLE GR BCCN GL y AyTC...</li>
+  <li>Added pre-game settings (like player class and game difficulty)</li>
+  <li>Added permadeath mode which is only accessible by beating hard mode (though it doesn't do anything till now)</li>
+  <li>The game will no longer screw over small resolution settings, the window size will almost always be the same</li>
+  <li>Added smooth movement to enemies</li>
+  <li>Improved brightness backend</li>
+  <li>Added the ability to hold multiple stacks of one item in your inventory</li>
+  <li>Improved inventory rendering</li>
+  <li>Improved map rendering</li>
+  <li>Removed ticks from the debug menu</li>
+  <li>Improved button rendering</li>
+  <li>Improved player bars (health bar and stamina/projectiles/mana bar) rendering</li>
+  <li>Made the game run MUCH smoother, jumping from 80 FPS all the way up to ~500 FPS (tested on an Intel core i5 6200U)</li>
+  <li>Removed combat temporarily</li>
+  <li>Fixed a bug where the map can get misplaced when you change your resolution</li>
+  <li>Removed daylight cycle</li>
+  <li><strong>Known Issues:</strong> 1) You can teleport when you press a movement key in the pause menu. 2) Touching enemies can slingshot you off the map</li>
+</ul>
 <h3>Dev 1.3.1</h3>
 <ul>
   <li>Fixed player and enemy positioning problems when a fight starts</li>
