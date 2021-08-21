@@ -11,7 +11,7 @@
 <ul>
   <li>Added MacOS and Linux support</li>
   <li>Moved the "save.json" and "settings.json" files from "AppData\Local\.inseynia\saves\" to "InseyniaDir\scripts\data\"</li>
-  <li>Added acceleration and friction to all moveable entities</li>
+  <li>Added acceleration and friction to all moveable entities (enemies don't have it yet though</li>
   <li>Fixed a bug where some entities render on-top of HUD</li>
   <li>Fixed a bug where some texts were using a different font (there might be some remains)</li>
   <li>Fixed a bug where the "Press space to continue" text is merged with the story text in low resolutions</li>
