@@ -9,6 +9,8 @@
 <h2>Change Logs</h2>
 <h3>Dev 1.4</h3>
 <ul>
+  <li>Added MacOS and Linux support</li>
+  <li>Moved the "save.json" and "settings.json" files from "AppData\Local\.inseynia\saves\" to "InseyniaDir\scripts\data\"</li>
   <li>Added acceleration and friction to all moveable entities</li>
   <li>Fixed a bug where some entities render on-top of HUD</li>
   <li>Fixed a bug where some texts were using a different font (there might be some remains)</li>
