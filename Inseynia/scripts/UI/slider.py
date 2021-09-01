@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 class SliderX:
-    def __init__(self, x, y, width, height, color1:tuple[int, int, int]=(0,0,0),  width2:int=40, color2:tuple[int, int, int]=(0,0,0),text="", text_color=(255,255,255)):
+    def __init__(self, x, y, width, height, color1=(0,0,0),  width2=40, color2=(0,0,0), text="", text_color=(255,255,255)):
         self.color1 = color1
         self.x = x
         self.y = y
@@ -23,7 +23,7 @@ class SliderX:
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def set_value(self, min_value, max_value, set_value, value_type:str="int", new_value_per_pix=1, list_of_values_not_int_type:list=[]):
+    def set_value(self, min_value, max_value, set_value, value_type="int", new_value_per_pix=1, list_of_values_not_int_type=[]):
         if value_type == "int":
             if self.width2 <= 40:
                 new_value = int(min_value)
@@ -53,7 +53,7 @@ class SliderX:
 
         return new_value
 
-    def draw(self, window:pygame.Surface, outline:tuple[int, int, int]=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
+    def draw(self, window, outline=None, outline_thickness=2, font_name=None, font_size=None):
         self.selector_rect_y = self.y
         self.selector_rect_x = self.x+self.width2-40
 
@@ -72,7 +72,7 @@ class SliderX:
             button_label = button_font.render(self.text, 1, self.text_color)
             window.blit(button_label, (self.x + (self.width*0.5 - button_label.get_width()*0.5), self.y + (self.height*0.5 - button_label.get_height()*0.5)))
 
-    def isOver(self, pos) -> bool:
+    def isOver(self, pos):
         self.selected = self.rect.collidepoint(pos)
         
         return self.selected
@@ -88,7 +88,7 @@ class SliderX:
                 self.width2 = pos[0]-self.x
                 self.selector_rect_x = self.x+self.width2-40
 
-    def scroll(self, button:int, val_diff:int=4):
+    def scroll(self, button, val_diff=4):
         if button == 4:
             self.width2 += val_diff
             if self.width2 < 40:
@@ -110,7 +110,7 @@ class SliderX:
                 self.selector_rect_x = self.width2-40
 
 class SliderY:
-    def __init__(self, x, y, width, height, color1:tuple[int, int, int]=(0,0,0),  height2:int=0, color2:tuple[int, int, int]=(0,0,0),text="", text_color=(255,255,255)):
+    def __init__(self, x, y, width, height, color1=(0,0,0),  height2=0, color2=(0,0,0), text="", text_color=(255,255,255)):
         self.color1 = color1
         self.x = x
         self.y = y
@@ -131,7 +131,7 @@ class SliderY:
 
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def set_value(self, min_value, max_value, set_value, value_type:str="int", new_value_per_pix=1, list_of_values_not_int_type:list=[]):
+    def set_value(self, min_value, max_value, set_value, value_type="int", new_value_per_pix=1, list_of_values_not_int_type=[]):
         if value_type == "int":
             if self.height2 <= 40:
                 new_value = int(min_value)
@@ -161,7 +161,7 @@ class SliderY:
 
         return new_value
 
-    def draw(self, window:pygame.Surface, outline:tuple[int, int, int]=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
+    def draw(self, window, outline=None, outline_thickness=2, font_name=None, font_size=None):
         self.selector_rect_y = self.y+self.height2-40
         self.selector_rect_x = self.x
 
@@ -180,7 +180,7 @@ class SliderY:
             button_label = button_font.render(self.text, 1, self.text_color)
             window.blit(button_label, (self.x + (self.width*0.5 - button_label.get_width()*0.5), self.y + (self.height*0.5 - button_label.get_height()*0.5)))
 
-    def isOver(self, pos) -> bool:
+    def isOver(self, pos):
         self.selected = self.rect.collidepoint(pos)
         
         return self.selected

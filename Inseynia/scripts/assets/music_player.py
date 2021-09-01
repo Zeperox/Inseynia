@@ -27,11 +27,13 @@ class Music:
         self.playing = False
         self.paused = False
 
-    def set_volume(self, volume=None):
-        if not volume:
+    def set_volume(self, volume=None, _set=False):
+        if volume == None:
             pygame.mixer.music.set_volume(self.volume)
         else:
             pygame.mixer.music.set_volume(volume)
+            if _set:
+                self.volume = volume
 
     def start(self):
         pygame.mixer.music.unload()
@@ -78,4 +80,6 @@ class Music:
     def get_pos(self):
         return pygame.mixer.music.get_pos()
 
-music_main = Music(["assets", "Songs", "Inseynia_Title.wav"], -1, 0, [10000, 0])
+musics = [
+    music_main := Music(["assets", "Songs", "Inseynia_Title.wav"], -1, 0, [10000, 0])
+]

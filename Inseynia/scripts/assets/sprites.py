@@ -50,6 +50,7 @@ sprites_Equipment = dict()
 sprites_Equipment['Wooden Sword'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Wooden Sword.png'], (48, 48))
 sprites_Equipment['No Shield'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'No Shield.png'], (48, 48))
 sprites_Equipment['Crossbow'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Crossbow.png'], (48, 48))
+sprites_Equipment['Wooden Bow'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Crossbow.png'], (48, 48))
 sprites_Equipment['Wooden Shield'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Wooden Shield.png'], (48, 48))
 sprites_Equipment['ph1'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'ph1.png'])
 sprites_Equipment['ph2'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'ph2.png'])
@@ -60,6 +61,10 @@ sprites_Equipment['Fist'] = load_image_asset(['assets', 'Sprites', 'Arsenal & To
 #misc
 sprites_Misc = dict()
 sprites_Misc['Inventory Slot'] = load_image_asset(['assets', 'Sprites', 'Misc', 'Inventory Slot.png'])
+
+#projectiles
+sprites_Proj = dict()
+sprites_Proj["Arrow"] = load_image_asset(["assets", "Sprites", "Arsenal & Tools", "Arrow.png"], (33, 33))
 
 #test enemy
 sprites_Enemies = dict()

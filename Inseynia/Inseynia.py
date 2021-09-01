@@ -1,12 +1,13 @@
 # Import modules
-import pygame, os, sys, random, json, time, getpass, platform
+import pygame, os, sys, random, time, getpass, platform
 
 from pygame.locals import *
 from pygame._sdl2.video import Window
+from pypresence import Presence
 
 # Import game scripts
-from scripts.UI.brightness import Brightness
 from scripts.UI.window import *
+from scripts.UI.brightness import *
 from scripts.UI.button import *
 from scripts.UI.slider import *
 from scripts.UI.textbox import *
@@ -21,6 +22,9 @@ from scripts.tiles.tiles import *
 from scripts.game_logic.drops import *
 from scripts.game_logic.inventory import *
 from scripts.game_logic.enemy import *
+from scripts.game_logic.player import *
+
+from scripts.data.json_functions import *
 
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -96,6 +100,7 @@ caption_list = [
     "jEHyIAuH YI jxu huqB lyBBqyD",
     "...yPRGDyAR yLB JMAIGLE GR BCCN GL y AyTC...",
     '"Game of the year" -Inseynia',
+    "flip",
     "This caption will never appear, isn't that weird?"
 ]
 
@@ -114,10 +119,12 @@ elif randcaption == "なお　イン　じゃぱねせ":
     pygame.display.set_caption(f"いんせいにあ: {randcaption}")
 elif randcaption == "¯\_(ツ)_/¯":
     pygame.display.set_caption(randcaption)
+elif randcaption == "flip":
+    pygame.display.set_caption(f"Inseynia|aiyesnI")
 else:
     pygame.display.set_caption(f"Inseynia: {randcaption}")
 
-icon = pygame.image.load("Inseynia Logo.ico")
+icon = pygame.image.load("Inseynia Icon.ico")
 pygame.display.set_icon(icon)
 
 # Classes
@@ -164,153 +171,6 @@ class Story:
                         pygame.display.flip()
                         last_call = time.time()
 
-class Player(Entity):
-    gender = random.choice(["male", "female"])
-    Pclass = ""
-    difficulty = ""
-    name = ""
-    inventory = [[], [], [], [], [], [], [], [], [], []]
-    equipment = ["Fist", "No Shield"]
-    stats = {
-        "Health": 10,
-        "Max Health": 10,
-        "Attack": 1,
-        "Defense": 2,
-        "Extra Stat": 10,
-        "Max Extra Stat": 10,
-        "Money": 100,
-        "XP": 0,
-        "Level": 1,
-        "Speed": 5
-    }
-    location = None
-    xp = 0
-    max_xp = 3
-    directions = {
-        "Up": None,
-        "Down": None,
-        "Right": None,
-        "Left": None
-    }
-    
-    def __init__(self, x, y, direction):
-        self.x = x
-        self.y = y
-        self.img = self.directions[direction]
-
-        self.saved_health = self.stats["Health"]
-
-        self.vel = [0, 0]
-        self.friction = 0.2
-
-        #self.rect = pygame.Rect(self.x, self.y, self.get_width(), self.get_height())
-        self.rect = pygame.Rect(self.x, self.y, 38, 40)
-
-        self.bars_surf = pygame.Surface((205, 68)).convert()
-        self.bars_surf.set_colorkey((0,0,0))
-        
-        self.generate_bars()
-    
-    def generate_bars(self):
-        bar_font = pygame.font.Font(os.path.join("assets", "Fonts", "DefaultFont.TTF"), int(25*0.5))
-        health_label = bar_font.render(f"{self.stats['Health']}/{self.stats['Max Health']}", 1, (255,255,255))
-        #attack_label = bar_font.render(str(self.stats["Attack"]), 1, (255,255,255))
-        #defense_label = bar_font.render(str(self.stats["Defense"]), 1, (255,255,255))
-        if "Stamina" in self.stats:
-            stamina_label = bar_font.render(f"{self.stats['Stamina']}/{self.stats['Max Stamina']}", 1, (255,255,255))
-        if "Projectiles" in self.stats:
-            projectiles_label = bar_font.render(f"{self.stats['Projectiles']}/{self.stats['Max Projectiles']}", 1, (255,255,255))
-        if "Mana" in self.stats:
-            mana_label = bar_font.render(f"{self.stats['Mana']}/{self.stats['Max Mana']}", 1, (255,255,255))
-        pygame.draw.rect(self.bars_surf, (175,0,0), (3, 3, 200, 25))
-        pygame.draw.rect(self.bars_surf, (0,175,0), (3, 3, 200 * (self.stats["Health"]/self.stats["Max Health"]), 25))
-        pygame.draw.rect(self.bars_surf, (200,200,200), (1, 1, 203, 27), 3)
-        pygame.draw.rect(self.bars_surf, (1,1,1), (0, 0, 205, 29), 1)
-        self.bars_surf.blit(health_label, (((200*0.5)-(health_label.get_width()*0.5))+(0), ((25*0.5)-(health_label.get_height()*0.5))+0))
-        if "Stamina" in self.stats:
-            pygame.draw.rect(self.bars_surf, (175,0,0), (3, 38, 200, 25))
-            pygame.draw.rect(self.bars_surf, (175,175,0), (3, 38, 200 * (self.stats["Stamina"]/self.stats["Max Stamina"]), 25))
-            pygame.draw.rect(self.bars_surf, (200,200,200), (1, 36, 203, 27), 3)
-            pygame.draw.rect(self.bars_surf, (1,1,1), (0, 35, 205, 29), 1)
-            self.bars_surf.blit(stamina_label, (((200*0.5)-(stamina_label.get_width()*0.5))+(0), ((25*0.5)-(stamina_label.get_height()*0.5))+35))
-        if "Projectiles" in self.stats:
-            pygame.draw.rect(self.bars_surf, (175,0,0), (3, 38, 200, 25))
-            pygame.draw.rect(self.bars_surf, (175,88,0), (3, 38, 200 * (self.stats["Projectiles"]/self.stats["Max Projectiles"]), 25))
-            pygame.draw.rect(self.bars_surf, (200,200,200), (1, 36, 203, 27), 3)
-            pygame.draw.rect(self.bars_surf, (1,1,1), (0, 35, 205, 29), 1)
-            self.bars_surf.blit(projectiles_label, (((200*0.5)-(projectiles_label.get_width()*0.5))+(0), ((25*0.5)-(projectiles_label.get_height()*0.5))+35))
-        if "Mana" in self.stats:
-            pygame.draw.rect(self.bars_surf, (175,0,0), (3, 38, 200, 25))
-            pygame.draw.rect(self.bars_surf, (0,0,175), (3, 38, 200 * (self.stats["Mana"]/self.stats["Max Mana"]), 25))
-            pygame.draw.rect(self.bars_surf, (200,200,200), (1, 36, 203, 27), 3)
-            pygame.draw.rect(self.bars_surf, (1,1,1), (0, 35, 205, 29), 1)
-            self.bars_surf.blit(mana_label, (((200*0.5)-(mana_label.get_width()*0.5))+(0), ((25*0.5)-(mana_label.get_height()*0.5))+35))
-
-    def draw(self, window, scroll=[0, 0], bars_loc=(Width-210, 10)):
-        #window.blit(self.img, (self.x, self.y))
-        pygame.draw.rect(window, (255,255,255), (self.x-scroll[0], self.y-scroll[1], 38, 40))
-        pygame.draw.rect(window, (0,0,0), (self.x-2-scroll[0], self.y-2-scroll[1], 42, 44), 2)
-        
-        self.bars(window, bars_loc)
-
-    def bars(self, window, bars_loc):
-        global Width, Height, old_Width
-
-        if self.saved_health != self.stats["Health"]:
-            self.generate_bars()
-            self.saved_health = self.stats["Health"]
-        window.blit(self.bars_surf, (Width-210, 10))
-               
-    def move(self, tiles, dt):
-        self.movement = [0, 0]
-        pressed_keys = pygame.key.get_pressed()
-
-        for index in range(2):
-            if self.vel[index] > 0:
-                if self.vel[index] - self.friction*dt < 0:
-                    self.vel[index] = 0
-                else:
-                    self.vel[index] -= self.friction*dt
-            elif self.vel[index] < 0:
-                if self.vel[index] + self.friction*dt > 0:
-                    self.vel[index] = 0
-                else:
-                    self.vel[index] += self.friction*dt
-
-        if pressed_keys[keys["Up"]]:
-            if self.vel[1] > -self.stats["Speed"]:
-                self.vel[1] -= 0.5*dt
-        if pressed_keys[keys["Down"]]:
-            if self.vel[1] < self.stats["Speed"]:
-                self.vel[1] += 0.5*dt
-        if pressed_keys[keys["Left"]]:
-            if self.vel[0] > -self.stats["Speed"]:
-                self.vel[0] -= 0.5*dt
-        if pressed_keys[keys["Right"]]:
-            if self.vel[0] < self.stats["Speed"]:
-                self.vel[0] += 0.5*dt
-        self.movement[1] += round(self.vel[1]*dt)
-        self.movement[0] += round(self.vel[0]*dt)
-            
-        return self.movement_collision(tiles)
-
-    def scroll(self, scroll, map:TileMap):
-        if map.x == 0: scroll[0] = self.x-((Width*0.5)-(self.rect.width*0.5))
-        if map.y == 0: scroll[1] = self.y-((Height*0.5)-(self.rect.height*0.5))
-
-        if scroll[0] <= map.x and map.x == 0:
-            scroll[0] = map.x
-        elif scroll[0] >= map.map_w-Width and map.x == 0:
-            scroll[0] = map.map_w-Width
-            
-        if scroll[1] <= map.y and map.y == 0:
-            scroll[1] = map.y
-        elif scroll[1] >= map.map_h-Height and map.y == 0:
-            scroll[1] = map.map_h-Height
-
-        return scroll
-
-
 # Vars
 #game data
 clock = pygame.time.Clock()
@@ -319,6 +179,11 @@ fullscreen = settings["Fullscreen"]
 resol = tuple(settings["Resol"]) if settings["Resol"] else None
 keys = settings["Keys"]
 set_brightness = settings["Brightness"]
+volumes = settings["Volumes"]
+
+for music in musics:
+    music.set_volume(volumes["Music"], True)
+
 scroll = [0, 0]
 brightness_overlay = Brightness((0, 0), (Width, Height), set_brightness)
 
@@ -328,23 +193,32 @@ BG["Main Menu"] = pygame.transform.scale(BG["Main Menu"], (Width, Height))
 debug_menu = False
 show_hitboxes = False
 
+#discord rich presence
+'''try:
+    start_time = time.time()
+    rpc = Presence("871701732349079592")
+    rpc.connect()
+
+    def update_rpc():
+        if Player.location:
+            rpc.update(
+                state=f"Region: {Player.location}",
+                large_image="inseynia",
+                large_text="Inseynia",
+                start=start_time
+            )
+        else:
+            rpc.update(
+                large_image="inseynia",
+                large_text="Inseynia",
+                start=start_time
+            )
+
+    update_rpc()
+except:
+    pass
+'''
 # Program Functions
-def load_json(location_list:list):
-    location = location_list[0]
-    for location_entry in location_list[1:]:
-        location = os.path.join(location, location_entry)
-
-    with open(location, "r") as f:
-        return json.load(f)
-
-def dump_json(location_list:list, var):
-    location = location_list[0]
-    for location_entry in location_list[1:]:
-        location = os.path.join(location, location_entry)
-
-    with open(location, "w") as f:
-        json.dump(var, f, indent=4)
-
 def FPS_ind(last_time):
     return (time.time() - last_time) * 60
 
@@ -392,10 +266,11 @@ def save_settings():
     settings["Resol"] = list(resol) if resol else None
     settings["Keys"] = keys
     settings["Brightness"] = set_brightness
+    settings["Volumes"] = volumes
 
     dump_json(["scripts", "data", "settings.json"], settings)
 
-def debug(last_call: float, player: Player=None, enemies: list=[], drops: list=[], tiles: list=[], scroll=[0, 0]):
+def debug(last_call, player=None, enemies=[], rect_list=[], scroll=[0, 0]):
     fps = str(int(1/(time.time()-last_call)))
     ticks = time.time() - last_call
     if player:
@@ -441,15 +316,15 @@ def debug(last_call: float, player: Player=None, enemies: list=[], drops: list=[
     def show_hitbox():
         if player:
             pygame.draw.rect(win, (0, 255, 0), (player.x-scroll[0], player.y-scroll[1], player.rect.width, player.rect.height), 1)
+        for rects in rect_list:
+            for rect in rects:
+                if type(rect) == pygame.Rect:
+                    pygame.draw.rect(win, (0, 255, 0), (rect.x-scroll[0], rect.y-scroll[1], rect.width, rect.height), 1)
+                else:
+                    pygame.draw.rect(win, (0, 255, 0), (rect.rect.x-scroll[0], rect.rect.y-scroll[1], rect.rect.width, rect.rect.height), 1)
         for enemy in enemies:
-            pygame.draw.rect(win, (0, 255, 0), (enemy.x-scroll[0], enemy.y-scroll[1], enemy.rect.width, enemy.rect.height), 1)
-            pygame.draw.rect(win, (0, 255, 0), (enemy.view_rect.x-scroll[0], enemy.view_rect.y-scroll[1], enemy.view_rect.width, enemy.view_rect.height), 1)
-            
-        for drop in drops:
-            pygame.draw.rect(win, (0, 255, 0), (drop[1].rect.x-scroll[0], drop[1].rect.y-scroll[1], drop[1].rect.width, drop[1].rect.height), 1)
-        for tile in tiles:
-            pygame.draw.rect(win, (0, 255, 0), (tile.x-scroll[0], tile.y-scroll[1], tile.width, tile.height), 1)
-        
+            pygame.draw.rect(win, (255,0,0), (enemy.view_rect.x-scroll[0], enemy.view_rect.y-scroll[1], enemy.view_rect.width, enemy.view_rect.height), 2)
+
     show_fps()
     #show_ticks()
     player_pos()
@@ -706,16 +581,18 @@ def main_menu():
                         if button_tutor.isOver([mx, my]):
                             pass
                         
-                        if button_load.isOver([mx, my]):
-                            return True
-
                         if button_set.isOver([mx, my]):
                             settings_menu()
                         
                         if button_exit.isOver([mx, my]):
                             pygame.quit()
                             sys.exit()
-                        
+                
+                if event.type == MOUSEBUTTONUP:
+                    if event.button == 1:
+                        if button_load.isOver([mx, my]):
+                                return True
+
                 if event.type == MOUSEMOTION:
                     if button_new.isOver([mx, my]):
                         button_new.change_color((0, 128, 0))
@@ -732,7 +609,6 @@ def main_menu():
                             button_load.change_color((0, 0, 128))
                         else:
                             button_load.change_color((0,0,0))
-
 
                     if button_set.isOver([mx, my]):
                         set_button_over = True
@@ -1135,8 +1011,9 @@ def settings_menu():
         global debug_menu, last_call
 
         #slider_master = SliderX((0,0,0), (Width*0.5)-(700*0.5), (Height*0.5)-(100*0.5)-25, 700, 100, (128,128,0), 700*0.5, "Master Volume")
-        slider_music = SliderX((Width*0.5)-350, (Height*0.5)-(70*0.5)+75, 325, 70, (0,0,0), 325*0.5, (0,128,0), "Music")
-        slider_sfx = SliderX((Width*0.5)+25, (Height*0.5)-(70*0.5)+75, 325, 70, (0,0,0), 325*0.5, (0,128,128), "SFX")
+        slider_music = SliderX((Width*0.5)-650*0.5, (Height*0.5)-(70*0.5), 650, 70, (0,0,0), 0, (0,128,0), "Music")
+        slider_music.width2 = music_main.volume*(slider_music.width-40)+40
+        slider_sfx = SliderX((Width*0.5)-650*0.5, (Height*0.5)-(70*0.5)+100, 650, 70, (0,0,0), 325*0.5, (0,128,128), "SFX")
 
         slider_music_slide = False
         slider_sfx_slide = False
@@ -1144,22 +1021,16 @@ def settings_menu():
         button_back = Button((Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
 
         text = Text(0, 100, "Volume Settings", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 48, (255,255,255))
+        text.x = Width*0.5-text.get_width()*0.5
         #text = Text(0, 100, "Volume Settings", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
 
         last_call = time.time()
         def redraw():
             global_redraw(last_call)
 
-            display_size = pygame.display.get_surface().get_size()
-            Width, Height = display_size
-
-            text.x = (Width*0.5)-(text.get_width()*0.5)
             text.render(win)
 
-            slider_music.x, slider_music.y = (Width*0.5)-350, (Height*0.5)-(70*0.5)+75
-            slider_sfx.x, slider_sfx.y = (Width*0.5)+50, (Height*0.5)-(70*0.5)+75
-
-            button_back.x, button_back.y = (Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275
+            slider_music.text = f"Music: {int(music_main.volume*100)}%"
 
             slider_music.draw(win, (255,255,255), font_name=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
             slider_sfx.draw(win, (255,255,255), font_name=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
@@ -1176,6 +1047,15 @@ def settings_menu():
 
                 if slider_music_slide:
                     slider_music.move([mx, my])
+                if slider_music.width2 <= 40:
+                    volumes["Music"] = 0
+                elif slider_music.width2 >= slider_music.width:
+                    volumes["Music"] = 1
+                else:
+                    volumes["Music"] = int((slider_music.width2-40)/(slider_music.width-40)*100)/100
+
+                for music in musics:
+                    music.set_volume(volumes["Music"], True)
                 
                 if slider_sfx_slide:
                     slider_sfx.move([mx, my])
@@ -1227,6 +1107,7 @@ def settings_menu():
                 pygame.display.flip()
 
                 last_call = time.time()
+                save_settings()
 
     def controls():
         global debug_menu, last_call
@@ -1459,12 +1340,9 @@ def new_game_creator():
                     if button_cancel.isOver([mx,my]):
                         return False
                     if button_apply.isOver([mx, my]):
-                        Player.Pclass = chosen_class
+                        Player.Pclass[0] = chosen_class
                         Player.difficulty = chosen_difficulty
                         Player.name = chosen_name
-
-                        chosen_stat = "Stamina" if chosen_class == "Swordsman" else "Projectiles" if chosen_class == "Archer" else "Mana"
-                        Player.stats[chosen_stat] = Player.stats.pop("Extra Stat"); Player.stats["Max " + chosen_stat] = Player.stats.pop("Max Extra Stat")
                         load_new_game()
                     name.isOver([mx, my])
                 elif event.button == 4 or event.button == 5:
@@ -1593,12 +1471,15 @@ def main_game(loc):
 
         for enemy in enemies:
             enemy.draw(win, scroll)
-        player.draw(win, scroll)
+        player.draw(win, (Width, Height), scroll)
         inventory.draw_inventory(win)
         
 
         if debug_menu:
-            debug(last_call, player, enemies, drops, map.tile_rects, scroll)
+            drop_rects = []
+            for drop in drops:
+                drop_rects.append(drop[1])
+            debug(last_call, player, enemies, [drop_rects, map.tile_rects, player.projectiles, enemies], scroll)
 
         if "Always Night" in rdata[loc]["extras"]:
             brightness_night.draw(win)
@@ -1680,7 +1561,7 @@ def main_game(loc):
                     player.rect.x -= 100
 
 
-            s = player.move(map.tile_rects, dt)
+            _ = player.move(map.tile_rects, dt, keys)
 
             for exit in exits:
                 if player.rect.colliderect(exit[1]):
@@ -1692,7 +1573,7 @@ def main_game(loc):
 
                     break
 
-            scroll = player.scroll(scroll, map)
+            scroll = player.scroll(scroll, map, (Width, Height))
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -1780,12 +1661,12 @@ def dev_room():
         map = TileMap(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), "Dev Room", (Width, Height))
         last_time = time.time()
 
-        player = Player(map.start_x, map.start_y, "Down")
+        player = Player(map.start_x, map.start_y, "Down") 
 
         inventory = Inventory(resol, player, sprites_Misc['Inventory Slot'], sprites_Equipment)
 
         drops = [
-            ["Crossbow", Drop(500, 500, sprites_Equipment['Crossbow']), 0],
+            ["Wooden Bow", Drop(500, 500, sprites_Equipment['Crossbow']), 0],
             ["Wooden Sword", Drop(300, 300, sprites_Equipment["Wooden Sword"]), 0],
             ["ph1", Drop(300, 100, sprites_Equipment["ph1"]), 0],
             ["ph2", Drop(400, 200, sprites_Equipment["ph2"]), 0],
@@ -1795,6 +1676,7 @@ def dev_room():
         ]
         enemies = []
         last_call = time.time()
+        slots_updated = False
         def redraw():
             global_redraw()
             map.draw_map(win, scroll)
@@ -1804,11 +1686,14 @@ def dev_room():
 
             for enemy in enemies:
                 enemy.draw(win, scroll)
-            player.draw(win, scroll)
+            player.draw(win, (Width, Height), scroll)
             inventory.draw_inventory(win)
 
             if debug_menu:
-                debug(last_call, player, enemies, drops, map.tile_rects, scroll)
+                drop_rects = []
+                for drop in drops:
+                    drop_rects.append(drop[1])
+                debug(last_call, player, enemies, [drop_rects, map.tile_rects, player.projectiles, enemies], scroll)
 
             brightness_overlay.draw(win)
             
@@ -1817,7 +1702,15 @@ def dev_room():
                 #map.update_map(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), (Width, Height))
                 if (Width, Height) != map.screen_size:
                     map = TileMap(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), "Dev Room", (Width, Height))
+                if len(player.equipment) == 3 and not slots_updated:
+                    inventory.update_slots()
+                    slots_updated = True
+                player.update()
                 redraw()
+
+                if player.strong_charging:
+                    if time.time()-player.strong_wind >= 1:
+                        player.strong_charged = True
 
                 dt = FPS_ind(last_time)
                 last_time = time.time()
@@ -1831,19 +1724,15 @@ def dev_room():
                 for enemy_index, enemy in enumerate(enemies):
                     s = enemy.ai(player, dt, map.tile_rects)
 
-                    if enemy.collision(player.rect):
-                        enemy.in_fight = True
+                    if enemy.rect.colliderect(player.rect):
+                        player.lose_hp(enemy.stats["Attack"])
 
-                    if enemy.in_fight:
-                        #enemy.in_fight = fight(enemy)
-                        if enemy.in_fight == None:
-                            del enemies[enemy_index]
-                        elif enemy.in_fight == "dead":
-                            return "dead"
-                        player.x -= 100
-                        player.rect.x -= 100
-
-                collision_types = player.move(map.tile_rects, dt)
+                    for projectile in player.projectiles:
+                        if enemy.rect.colliderect(projectile.rect):
+                            enemies = enemy.lose_hp(projectile.attack, enemies)
+                            player.projectiles.remove(projectile)
+                            
+                _ = player.move(map.tile_rects, dt, keys, enemies)
 
                 for event in pygame.event.get():
                     if event.type == QUIT:
@@ -1852,7 +1741,10 @@ def dev_room():
 
                     if event.type == KEYDOWN:
                         if event.key == keys["Equip"]:
-                            inventory.equip_item([player.x, player.y])
+                            d = inventory.equip_item([player.x, player.y])
+                            if d:
+                                drops.append(d)
+                            del d
                         if event.key == keys["Throw"]:
                             x = inventory.throw_item([player.x, player.y])
                             if x: drops.append(x)
@@ -1871,9 +1763,16 @@ def dev_room():
                         if event.key == K_x:
                             enemies.append(Test_Enemy(player.x+100, player.y, sprites_Enemies))
                     
+                    if event.type == MOUSEBUTTONDOWN:
+                        player.strong_charging = True
+                        player.strong_wind = time.time()
+
+                    if event.type == MOUSEBUTTONUP:
+                        player.attack(enemies, event.button, pygame.mouse.get_pos(), (Width, Height), win, scroll)
+                        player.strong_wind = 0; player.strong_charging = False; player.strong_charged = False
                     inventory.select_item(event)
-                
-                scroll = player.scroll(scroll, map)
+                    
+                scroll = player.scroll(scroll, map, (Width, Height))
                 pygame.display.flip()
 
                 last_call = time.time()

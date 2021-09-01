@@ -1,62 +1,95 @@
 [
     {
+        "Fist": {
+            "Class": null,
+            "AP": 1,
+            "Cooldown": 0.1
+        },
+        
         "Wooden Sword": {
             "Class": "Swordsman",
-            "AP": 3
+            "AP": 3, 
+            "Cooldown": 0.3,
+            "Proj": false
         },
         "Rusty Dagger": {
             "Class": "Swordsman",
-            "AP": 5
+            "AP": 5, 
+            "Cooldown": 0.3,
+            "Proj": false
         },
         "Rusty Sword": {
             "Class": "Swordsman",
-            "AP": 10
+            "AP": 10, 
+            "Cooldown": 0.3,
+            "Proj": false
         },
         "Spear": {
             "Class": "Swordsman",
-            "AP": 12
+            "AP": 12, 
+            "Cooldown": 0.3,
+            "Proj": false
         },
         "Steel Scimitar": {
             "Class": "Swordsman",
-            "AP": 15
+            "AP": 15, 
+            "Cooldown": 0.3,
+            "Proj": false
         },
         
         "Wooden Halfbow": {
             "Class": "Archer",
-            "AP": 3
+            "AP": 2,
+            "Cooldown": 0.3,
+            "Speed": 3,
+            "Proj Type": "normal"
         },
         "Wooden Bow": {
             "Class": "Archer",
-            "AP": 5
+            "AP": 4,
+            "Cooldown": 0.3,
+            "Speed": 6,
+            "Proj Type": "normal"
         },
         "Steel Halfbow": {
             "Class": "Archer",
-            "AP": 10
+            "AP": 7, 
+            "Cooldown": 0.3,
+            "Speed": 3,
+            "Proj Type": "normal"
         },
         "Crossbow": {
             "Class": "Archer",
-            "AP": 12
+            "AP": 6, 
+            "Cooldown": 2,
+            "Speed": 70,
+            "Proj Type": "normal"
         },
         
         "Walking Staff": {
             "Class": "Mage",
-            "AP": 3
+            "AP": 3, 
+            "Cooldown": 0.3
         },
         "Amateur Staff": {
             "Class": "Mage",
-            "AP": 6
+            "AP": 6, 
+            "Cooldown": 0.3
         },
         "Advanced Staff": {
             "Class": "Mage",
-            "AP": 9
+            "AP": 9, 
+            "Cooldown": 0.3
         },
         "Book of Arcs": {
             "Class": "Mage",
-            "AP": 13
+            "AP": 13, 
+            "Cooldown": 0.3
         },
         "Lightning Charges": {
             "Class": "Mage",
-            "AP": 25
+            "AP": 25, 
+            "Cooldown": 0.3
         }
     },
     

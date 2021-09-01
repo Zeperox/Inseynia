@@ -1,7 +1,7 @@
 import pygame
 
 class Brightness:
-    def __init__(self, loc:tuple[int, int], size:tuple[int, int], brightness: int = 0, color:int = None):
+    def __init__(self, loc, size, brightness = 0, color = None):
         self.loc = loc
         self.brightness = brightness
         self.color = color
@@ -10,7 +10,7 @@ class Brightness:
 
         self._setup()
 
-    def reconfigure(self, loc:tuple[int, int] = None, size:tuple[int, int] = None, brightness:int = None, color:int = None):
+    def reconfigure(self, loc = None, size = None, brightness = None, color = None):
         if loc: self.loc = loc
         if brightness: self.brightness = brightness
         if color: self.color = color
@@ -32,5 +32,5 @@ class Brightness:
                 self.surf.fill((255,255,255))
         self.surf.set_alpha(abs(self.brightness))
 
-    def draw(self, window:pygame.Surface):
+    def draw(self, window):
         window.blit(self.surf, self.loc)

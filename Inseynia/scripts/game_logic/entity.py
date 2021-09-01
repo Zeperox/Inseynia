@@ -10,8 +10,13 @@ class Entity:
         self.vel = [0, 0]
         self.friction = 0.2
 
+        self.projectiles = []
+
         self.entity = entity
         self.rect = pygame.Rect(self.x, self.y, self.entity.get_width(), self.entity.get_height())
+
+        self.i_frame_time = 0
+        self.i_frame_length = 0.5
 
     def collision_test(self, tiles):
         hit_list = []
@@ -20,9 +25,10 @@ class Entity:
                 hit_list.append(tile)
         return hit_list
 
-    def movement_collision(self, tiles, update_apos=True):
+    def movement_collision(self, tiles, update_apos=True, update_rect=True):
         collision_types = {"top": False, "bottom": False, "left": False, "right": False}
-        self.rect.x += self.movement[0]
+        if update_rect:
+            self.rect.x += self.movement[0]
         hit_list = self.collision_test(tiles)
         for tile in hit_list:
             if self.movement[0] > 0:
@@ -31,7 +37,8 @@ class Entity:
             if self.movement[0] < 0:
                 self.rect.left = tile.right
                 collision_types["left"] = True
-        self.rect.y += self.movement[1]
+        if update_rect:
+            self.rect.y += self.movement[1]
         hit_list = self.collision_test(tiles)
         for tile in hit_list:
             if self.movement[1] > 0:
@@ -48,6 +55,8 @@ class Entity:
 
     def draw(self, window, scroll=[0, 0]):
         window.blit(self.entity, (self.x-scroll[0], self.y-scroll[1]))
+        for projectile in self.projectiles:
+            projectile.draw()
 
     def collision(self, obj):
         return self.rect.colliderect(obj)

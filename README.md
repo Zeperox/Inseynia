@@ -7,6 +7,10 @@
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
 <lr>
 <h2>Change Logs</h2>
+<h3>Dev 1.4.2</h3>
+<ul>
+  <li>For some reason most of the files and folders didn't update from 1.3 to 1.4, which should now work</li>
+</ul>
 <h3>Dev 1.4.1</h3>
 <ul>
   <li>Fixed a bug where the game crashed trying to look for the settings file, which didn't generate yet</h3>

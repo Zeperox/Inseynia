@@ -2,8 +2,8 @@ import pygame
 from pygame.locals import *
 
 class Button:
-    def __init__(self, x:int, y:int, width:int, height:int, color:tuple[int, int, int]=(0,0,0), text:str="", text_color:tuple[int, int, int]=(255,255,255),
-        outline:tuple[int, int, int]=None, outline_thickness:int=2, font_path:str=None, font_size:int=None
+    def __init__(self, x, y, width, height, color=(0,0,0), text="", text_color=(255,255,255),
+        outline=None, outline_thickness=2, font_path=None, font_size=None
     ):
         self.x = x
         self.y = y
@@ -42,10 +42,10 @@ class Button:
                 self.width = self.width_init
             self.surf.blit(button_label, (self.width*0.5 - button_label.get_width()*0.5, self.height*0.5 - button_label.get_height()*0.5))
 
-    def draw(self, window:pygame.Surface):
+    def draw(self, window):
         window.blit(self.surf, (self.x, self.y))
 
-    def isOver(self, pos:list) -> bool:
+    def isOver(self, pos):
         return self.rect.collidepoint(pos)
 
     def change_color(self, color=None, text_color=None):

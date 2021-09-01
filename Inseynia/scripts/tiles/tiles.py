@@ -1,13 +1,6 @@
 from scripts.assets.sprites import load_image_asset
-import pygame, csv, os, json; from pygame.locals import *
-
-def load_json(location_list:list):
-    location = location_list[0]
-    for location_entry in location_list[1:]:
-        location = os.path.join(location, location_entry)
-
-    with open(location, "r") as f:
-        return json.load(f)
+import pygame, csv, os; from pygame.locals import *
+from scripts.data.json_functions import load_json
 
 tiles_csv = load_json(["scripts", "data", "tiles.json"])
 

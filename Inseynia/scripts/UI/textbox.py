@@ -2,7 +2,7 @@ import pygame, time
 from pygame.locals import *
 
 class TextBox:
-    def __init__(self, color:tuple[int, int, int], x:int, y:int, width:int, height:int, pre_text:str="", text_color:tuple[int, int, int]=(255,255,255), text_pos:str="left", clear_text_when_click:bool=False, numeric:bool=False, alpha:bool=False, alnum:bool=False):
+    def __init__(self, color, x, y, width, height, pre_text="", text_color=(255,255,255), text_pos="left", clear_text_when_click=False, numeric=False, alpha=False, alnum=False):
         self.color = color
         self.x = x
         self.y = y
@@ -25,7 +25,7 @@ class TextBox:
         self.selected = False
         self.blink_timer = time.time()
         
-    def draw(self, window:pygame.Surface, outline:tuple[int, int, int]=None, outline_thickness:int=2, font_name:str=None, font_size:int=None):
+    def draw(self, window, outline=None, outline_thickness=2, font_name=None, font_size=None):
         if outline:
             pygame.draw.rect(window, outline, (self.x-outline_thickness, self.y-outline_thickness, self.width+outline_thickness*2, self.height+outline_thickness*2), outline_thickness)
         pygame.draw.rect(window, self.color, (self.x, self.y, self.width, self.height))
@@ -57,7 +57,7 @@ class TextBox:
             self.text = ""
             self.clicked = True
 
-    def update_text(self, event) -> str:
+    def update_text(self, event):
         if self.selected:
             if event.type == KEYDOWN:
                 if event.key == K_BACKSPACE:

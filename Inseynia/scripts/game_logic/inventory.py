@@ -1,16 +1,9 @@
-import pygame, json, os
+import pygame, os
 from pygame.locals import *
 
 from .drops import Drop
 from scripts.UI.text import Text
-
-def load_json(location_list:list):
-    location = location_list[0]
-    for location_entry in location_list[1:]:
-        location = os.path.join(location, location_entry)
-
-    with open(location, "r") as f:
-        return json.load(f)
+from scripts.data.json_functions import load_json
 
 class Inventory:
     inv_length = 10
@@ -31,48 +24,8 @@ class Inventory:
         self.quant_texts = [Text(0, 0, "0", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 16, (255,255,255)) for _ in range(self.inv_length)]
         #self.quant_texts = [Text(0, 0, "0", os.path.join("assets", "Fonts", "Font.png"), (255,255,255)) for _ in range(self.inv_length)]
         
-        if self.resol:
-            if round((self.resol[0]/self.resol[1])*100) <= 133:
-                self.inv_surf = pygame.Surface((53*5+40, 53*2+10), SRCALPHA)
-            else:
-                self.inv_surf = pygame.Surface((53*10+90, 53), SRCALPHA)
-        else:
-            self.inv_surf = pygame.Surface((53*10+90, 53), SRCALPHA)
-        self.eq_surf = pygame.Surface((53*2+10, 53), SRCALPHA)
-
-        #self.inv_surf.set_colorkey((0,0,0))
-        #self.eq_surf.set_colorkey((0,0,0))
-
-        y = 0
-        x = 0
-        no = 0
-        for _ in self.player.inventory:
-            self.inv_surf.blit(self.inv_img, (x, y))
-            x += 60
-            no += 1
-            if self.resol:
-                if round((self.resol[0]/self.resol[1])*100) <= 133 and no >= 5:
-                    x = 0
-                    y += 60
-                    no = 0
-
-        x = 0
-        for _ in self.player.equipment:
-            self.eq_surf.blit(self.inv_img, (x, 0))
-            x += 60
-
-
-        '''if self.resol:
-            if round((self.resol[0]/self.resol[1])*100) <= 133:
-                self.inv_text.x = 320*0.5-self.inv_text.get_width()*0.5; self.inv_text.y = 10
-                self.eq_text.x = 620*0.5-self.eq_text.get_width()*0.5; self.eq_text.y = 10
-            else:
-                self.inv_text.x = 620*0.5-self.inv_text.get_width()*0.5; self.inv_text.y = 10
-                self.eq_text.x = 620*0.5-self.eq_text.get_width()*0.5; self.eq_text.y = 10
-        else:
-            self.inv_text.x = 620*0.5-self.inv_text.get_width()*0.5; self.inv_text.y = 10
-            self.eq_text.x = 620*0.5-self.eq_text.get_width()*0.5; self.eq_text.y = 10'''
-
+        self.update_slots()
+        
     def draw_inventory(self, win):
         no = 0
         y = 10
@@ -112,26 +65,66 @@ class Inventory:
                         no = 0
 
             if self.inv_index <= 4:
-                pygame.draw.rect(win, (200,200,200), (self.inv_index*60+10, 10, 54, 54),3)
+                pygame.draw.rect(win, (0,0,0), (self.inv_index*60+10, 10, 54, 54),3)
             else:
                 if self.resol:
                     if round((self.resol[0]/self.resol[1])*100) <= 133:
-                        pygame.draw.rect(win, (200,200,200), ((self.inv_index-5)*60+10, 610, 54, 54), 3)
+                        pygame.draw.rect(win, (0,0,0), ((self.inv_index-5)*60+10, 70, 54, 54), 3)
                     else:
-                        pygame.draw.rect(win, (200,200,200), (self.inv_index*60+10, 10, 54, 54), 3)
+                        pygame.draw.rect(win, (0,0,0), (self.inv_index*60+10, 10, 54, 54), 3)
                 else:
-                    pygame.draw.rect(win, (200,200,200), (self.inv_index*60+10, 10, 54, 54), 3)
-
+                    pygame.draw.rect(win, (0,0,0), (self.inv_index*60+10, 10, 54, 54), 3)
         else:
+            win.blit(self.eq_surf, (((53*5+40)*0.5-(53*len(self.player.equipment)+10*(len(self.player.equipment)-1))*0.5)+x, y))
             for item in self.player.equipment:
-                win.blit(self.eq_surf, (x+95, y))
-                win.blit(self.equipment_imgs[item], (item_x+95, item_y))
+                win.blit(self.equipment_imgs[item], (((53*5+40)*0.5-(53*len(self.player.equipment)+10*(len(self.player.equipment)-1))*0.5)+item_x, item_y))
                 
                 item_x += 60
-                x += 60
 
-            if self.eq_index <= 1:
-                pygame.draw.rect(win, (200,200,200), (self.eq_index*60+105, 10, 54, 54),3)
+            pygame.draw.rect(win, (0,0,0), ((((53*5+40)*0.5-(53*len(self.player.equipment)+10*(len(self.player.equipment)-1))*0.5)+10)+(54*self.eq_index+6*(self.eq_index)), 10, 54, 54),3)
+
+    def update_slots(self):
+        if self.resol:
+            if round((self.resol[0]/self.resol[1])*100) <= 133:
+                self.inv_surf = pygame.Surface((53*(int(len(self.player.inventory)*0.5))+10*(int(len(self.player.inventory)*0.5)-1), 53*(int(len(self.player.inventory)*0.2))+10*(int(len(self.player.inventory)*0.2)-1)), SRCALPHA)
+            else:
+                self.inv_surf = pygame.Surface((53*len(self.player.inventory)+10*(len(self.player.inventory)-1), 53), SRCALPHA)
+        else:
+            self.inv_surf = pygame.Surface((53*len(self.player.inventory)+10*(len(self.player.inventory)-1), 53), SRCALPHA)
+        self.eq_surf = pygame.Surface((53*len(self.player.equipment)+10*(len(self.player.equipment)-1), 53), SRCALPHA)
+
+        #self.inv_surf.set_colorkey((0,0,0))
+        #self.eq_surf.set_colorkey((0,0,0))
+
+        y = 0
+        x = 0
+        no = 0
+        for _ in self.player.inventory:
+            self.inv_surf.blit(self.inv_img, (x, y))
+            x += 60
+            no += 1
+            if self.resol:
+                if round((self.resol[0]/self.resol[1])*100) <= 133 and no >= 5:
+                    x = 0
+                    y += 60
+                    no = 0
+
+        x = 0
+        for _ in self.player.equipment:
+            self.eq_surf.blit(self.inv_img, (x, 0))
+            x += 60
+
+
+        '''if self.resol:
+            if round((self.resol[0]/self.resol[1])*100) <= 133:
+                self.inv_text.x = 320*0.5-self.inv_text.get_width()*0.5; self.inv_text.y = 10
+                self.eq_text.x = 620*0.5-self.eq_text.get_width()*0.5; self.eq_text.y = 10
+            else:
+                self.inv_text.x = 620*0.5-self.inv_text.get_width()*0.5; self.inv_text.y = 10
+                self.eq_text.x = 620*0.5-self.eq_text.get_width()*0.5; self.eq_text.y = 10
+        else:
+            self.inv_text.x = 620*0.5-self.inv_text.get_width()*0.5; self.inv_text.y = 10
+            self.eq_text.x = 620*0.5-self.eq_text.get_width()*0.5; self.eq_text.y = 10'''
 
     def select_item(self, event):
         if self.inv:
@@ -156,26 +149,47 @@ class Inventory:
                     else:
                         self.inv_index = 0
         else:
-            if event.type == KEYDOWN:
-                if event.key >= K_1 and event.key <= K_2:
-                    self.eq_index = event.key - K_1
-                
-                if event.key >= K_KP_1 and event.key <= K_KP_2:
-                    self.eq_index = event.key - K_KP_1
+            if len(self.player.equipment) < 3:
+                if event.type == KEYDOWN:
+                    if event.key >= K_1 and event.key <= K_2:
+                        self.eq_index = event.key - K_1
+                    
+                    if event.key >= K_KP_1 and event.key <= K_KP_2:
+                        self.eq_index = event.key - K_KP_1
 
-            if event.type == MOUSEBUTTONDOWN:
-                if event.button == 4:
-                    if not self.eq_index <= 0:
-                        self.eq_index -= 1
-                    else:
-                        self.eq_index = 1
-                if event.button == 5:
-                    if not self.eq_index >= 1:
-                        self.eq_index += 1
-                    else:
-                        self.eq_index = 0
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 4:
+                        if not self.eq_index <= 0:
+                            self.eq_index -= 1
+                        else:
+                            self.eq_index = 1
+                    if event.button == 5:
+                        if not self.eq_index >= 1:
+                            self.eq_index += 1
+                        else:
+                            self.eq_index = 0
+            else:
+                if event.type == KEYDOWN:
+                    if event.key >= K_1 and event.key <= K_3:
+                        self.eq_index = event.key - K_1
+                    
+                    if event.key >= K_KP_1 and event.key <= K_KP_3:
+                        self.eq_index = event.key - K_KP_1
+
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 4:
+                        if not self.eq_index <= 0:
+                            self.eq_index -= 1
+                        else:
+                            self.eq_index = 2
+                    if event.button == 5:
+                        if not self.eq_index >= 2:
+                            self.eq_index += 1
+                        else:
+                            self.eq_index = 0
 
     def equip_item(self, player_loc):
+        d = None
         if self.inv:
             self.inv = False
 
@@ -191,29 +205,48 @@ class Inventory:
                 self.inv = True
                 return
 
+
             l = list(equipment[ind].keys())
 
             if not item in self.player.equipment:
                 if ind == 0:
-                    if equipment[0][item]["Class"] != self.player.Pclass:
+                    if equipment[0][item]["Class"] not in self.player.Pclass:
                         self.inv = True
                         return
-                        
+                    else:
+                        if self.player.Pclass[0] == equipment[0][item]["Class"]:
+                            s = 0
+                        elif self.player.Pclass[1] == equipment[0][item]["Class"]:
+                            s = 1
+                elif ind == 1:
+                    if len(self.player.equipment) < 3:
+                        s = 1
+                    else:
+                        s = 2
+
                 if self.player.inventory[self.inv_index][1] > 1:
                     self.player.inventory[self.inv_index][1] -= 1
                 else:
                     self.player.inventory[self.inv_index] = []
 
-                if self.player.equipment[ind] != "Fist" and self.player.equipment[ind] != "No Shield":
-                    if self.player.inventory[self.inv_index][0] == item:
-                        self.player.inventory[self.inv_index][1] += 1
-                    else:
-                        self.player.inventory[self.inv_index] = [self.player.equipment[ind], 1]
-                del self.player.equipment[ind]
-                self.player.equipment.insert(ind, item)
+                if self.player.equipment[s] != "Fist" and self.player.equipment[s] != "No Shield":
+                    x = False
+                    for i, stuff in enumerate(self.player.inventory):
+                        if len(self.player.inventory[i]) and self.player.inventory[i][0] == self.player.equipment[ind]:
+                            self.player.inventory[i][1] += 1
+                            x = True
+                            break
+                        elif self.player.inventory[i] == []:
+                            self.player.inventory[i] = [self.player.equipment[ind], 1]
+                            x = True
+                            break
+                    if not x:
+                        d = [item, Drop(player_loc[0], player_loc[1], self.equipment_imgs[item]), 3*60]
+                del self.player.equipment[s]
+                self.player.equipment.insert(s, item)
 
                 if ind == 0:
-                    self.player.stats["Attack"] = equipment[0][item]["AP"]
+                    self.player.stats["Attack"][s] = equipment[0][item]["AP"]
                 else:
                     self.player.stats["Defense"] = equipment[1][item]["DP"]
                     self.player.stats["Speed"] = self.player.stats["Speed"]-((self.player.stats["Speed"]*equipment[1][item]["Speed"])/100)
@@ -221,7 +254,6 @@ class Inventory:
                 self.inv = True
                 return
         else:
-            d = None
             if self.player.equipment[self.eq_index] != "Fist" and self.player.equipment[self.eq_index] != "No Shield":
                 x = False
                 for i, item in enumerate(self.player.inventory):
@@ -241,25 +273,35 @@ class Inventory:
                 del self.player.equipment[self.eq_index]
                 if self.eq_index == 0:
                     self.player.equipment.insert(0, "Fist")
-                    self.player.stats["Attack"] = 1
+                    self.player.stats["Attack"][self.eq_index] = 1
                 else:
-                    self.player.equipment.insert(1, "No Shield")
-                    self.player.stats["Defense"] = 0
-                    self.player.stats["Speed"] = 5
+                    if len(self.player.equipment) < 2:
+                        self.player.equipment.insert(1, "No Shield")
+                        self.player.stats["Defense"] = 0
+                        self.player.stats["Speed"] = 5
+                    else:
+                        if self.eq_index == 1:
+                            self.player.equipment.insert(1, "Fist")
+                            self.player.stats["Attack"][self.eq_index] = 1
+                        else:
+                            self.player.equipment.insert(1, "No Shield")
+                            self.player.stats["Defense"] = 0
+                            self.player.stats["Speed"] = 5
                 
                 self.inv = True
-            return d
+        return d
     
-    def throw_item(self, player_loc:list):
+    def throw_item(self, player_loc):
         item = None
         if self.inv:
             item = self.player.inventory[self.inv_index]
             
-            if item[1] > 1:
-                self.player.inventory[self.inv_index][1] -= 1
-            else:
-                self.player.inventory[self.inv_index] = []
-
+            if len(item) > 0:
+                if item[1] > 1:
+                    self.player.inventory[self.inv_index][1] -= 1
+                else:
+                    self.player.inventory[self.inv_index] = []
+                return [item[0], Drop(player_loc[0], player_loc[1], self.equipment_imgs[item[0]]), 3*60]
         else:
             if self.player.equipment[self.eq_index] != "Fist" and self.player.equipment[self.eq_index] != "No Shield":
                 item = self.player.equipment[self.eq_index]
@@ -272,9 +314,9 @@ class Inventory:
                     self.player.stats["Defense"] = 0
                     self.player.stats["Speed"] = 5
 
-        if item: return [item[0], Drop(player_loc[0], player_loc[1], self.equipment_imgs[item[0]]), 3*60]
+                if item: return [item, Drop(player_loc[0], player_loc[1], self.equipment_imgs[item]), 3*60]
 
-    def grab_item(self, item, quantity:int=1):
+    def grab_item(self, item, quantity=1):
         for i, slot in enumerate(self.player.inventory):
             if len(slot) == 0:
                 self.player.inventory[i] = [item, quantity]

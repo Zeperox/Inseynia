@@ -3,13 +3,17 @@
         "sell": 100,
         "stack": 1
     },
+    "Wooden Bow": {
+        "sell": 65,
+        "stack": 1
+    },
     "Wooden Sword": {
         "sell": 50,
-        "stack": 100
+        "stack": 1
     },
     "Wooden Shield": {
         "sell": 50,
-        "stack": 100
+        "stack": 1
     },
     "ph1": {
         "sell": 50,

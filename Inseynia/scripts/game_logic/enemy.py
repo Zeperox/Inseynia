@@ -1,16 +1,9 @@
-import pygame, json, os, math
+import pygame, math, time
 from pygame.locals import *
 
 from .entity import Entity
 from scripts.UI.text import Text
-
-def load_json(location_list:list):
-    location = location_list[0]
-    for location_entry in location_list[1:]:
-        location = os.path.join(location, location_entry)
-
-    with open(location, "r") as f:
-        return json.load(f)
+from scripts.data.json_functions import load_json
 
 class Enemy(Entity):
     def __init__(self, x, y, name, sprites_Enemies):
@@ -58,14 +51,19 @@ class Enemy(Entity):
             
         return self.movement_collision(tiles)'''
 
+    
+    def lose_hp(self, hp, enemies):
+        if time.time() - self.i_frame_time >= self.i_frame_length:
+            self.stats["Health"] -= hp
+            self.i_frame_time = time.time()
+            if self.stats["Health"] <= 0:
+                enemies.remove(self)
+        return enemies
+
 class Test_Enemy(Enemy):
     def __init__(self, x, y, sprites_Enemies):
         super().__init__(x, y, "Test Enemy", sprites_Enemies)
         self.ai_type = "Follower"
-
-    def draw(self, window, scroll):
-        super().draw(window, scroll)
-        pygame.draw.rect(window, (255,0,0), (self.view_rect.x-scroll[0], self.view_rect.y-scroll[1], self.view_rect.width, self.view_rect.height), 2)
 
     def ai(self, player, dt, tiles):
         self.view_rect.center = self.rect.center
@@ -94,4 +92,4 @@ class Test_Enemy(Enemy):
         self.x += self.movement[0]; self.y += self.movement[1]
         self.rect.x, self.rect.y = self.x, self.y
             
-        #return self.movement_collision(tiles, update_apos=False)
+        return self.movement_collision(tiles, update_apos=False, update_rect=False)

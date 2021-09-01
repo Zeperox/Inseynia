@@ -2,7 +2,7 @@ import pygame, os
 from pygame.locals import *
 
 class Text:
-    def __init__(self, x, y, text:str, font:str, size:int, color:tuple, background:tuple=None):
+    def __init__(self, x, y, text, font, size, color, background=None):
         self.x = x
         self.y = y
         self.text = text
