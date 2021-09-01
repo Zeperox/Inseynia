@@ -5,8 +5,12 @@
 <br>
 <br>
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
-<br>
+<lr>
 <h2>Change Logs</h2>
+<h3>Dev 1.4.1</h3>
+<ul>
+  <li>Fixed a bug where the game crashed trying to look for the settings file, which didn't generate yet</h3>
+</ul>
 <h3>Dev 1.4</h3>
 <ul>
   <li>Added MacOS and Linux support</li>
