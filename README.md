@@ -7,7 +7,7 @@
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
 <lr></lr>
 <h2>Change Logs</h2>
-<h3>Dev 1.5 (Pre-Release updates)</h3>
+<h3>Dev 1.5 (Update Insight)</h3>
 <ul>
   <li>Added real-time combat</li>
   <li>Added melee attacks (direction depends on where your mouse is)</li>
