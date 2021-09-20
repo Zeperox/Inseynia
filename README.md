@@ -5,8 +5,72 @@
 <br>
 <br>
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
-<lr>
+<lr></lr>
 <h2>Change Logs</h2>
+<h3>Dev 1.5 (Pre-Release updates)</h3>
+<ul>
+  <li>Added real-time combat</li>
+  <li>Added melee attacks (direction depends on where your mouse is)</li>
+  <li>Added magic attacks (direction depends on where your mouse is)</li>
+  <li>Added ranged attacks (direction depends on where your mouse is)</li>
+  <li>Improved player stats</li>
+  <li>Fixed a bug where throwing items would crash your game</li>
+  <li>Fixed a bug where the equipment slots would render as 3 slots instead of 2</li>
+  <li>Updated the "No Shield" sprite (it looked childish)</li>
+  <li>Slight change to the "Wooden Shield" sprite (to fit with the new "No Shield" sprite)</li>
+  <li>Fixed a bug where enemies slingshot you when they touch you</li>
+  <li>Added the ability of having multiple classes, now the max amount of classes you can have is 2</li>
+  <li>Added projectiles
+    <ul>
+      <li>It contains 5 types: normal, mouse follow, nearest target follow, drop from sky (somehow even working when you are locked inside a box), boomerang</li>
+      <li>It contains different speed attributes</li>
+      <li>It has a max range, with each projectile type does something about this range
+        <ul>
+          <li>Normal, Mouse Follow, Nearest Target Follow: stops once reaches the range</li>
+          <li>Drop From Sky: Ignores range limit</li>
+          <li>Boomerange: Returns back once the projectile reaches the limit</li>
+        </ul>
+      <li>Some projectiles can go through enemies</li>
+    </ul></li>
+  <li>Fixed a bug where thrown equipments that are then picked up can crash your game</li>
+  <li>Added discord rich presence</li>
+  <li>Added a functional music volume slider</li>
+  <li>Fixed a bug where you couldn't see the chosen slots when your resolution was set to 4:3</li>
+  <li>Added dual wielding</li>
+  <li>Added the ability for enemies to damage the player</li>
+  <li>Fixed a bug where the game crashes when you try to equip an empty item</li>
+  <li>Fixed a bug where the debug menu appears behind buttons in the settings menu and its pages</li>
+  <li>Improved image rendering</li>
+  <li>Improved image loading</li>
+  <li>Complete overhaul of the assets folder</li>
+  <li>Made the camera movement cooler (though the player is slightly gittery)</li>
+  <li>Added evading
+    <ul>
+      <li>Rolling: ~250 pixels in 0.4 secs (10 pixels per frame, 1 stamina loss)</li>
+      <li>Dashing: ~300 pixels in 0.34 secs (15 pixels per frame, 2 stamina loss)</li>
+    </ul></li>
+  <li>Fixed a bug where equiping an item after throwing another item from the equipment would crash the game</li>
+  <li>Revamed the UI
+    <ul>
+      <li>Moved the inventory to the right</li>
+      <li>Moved the player stats to the left</li>
+      <li>Added text that shows your attack strength</li>
+      <li>Added text that shows your defense</li>
+      <li>Added text that shows your money</li>
+      <li>Added text that shows your level</li>
+      <li>Added icons for each bar and text</li>
+    </ul></li>
+  <li>Improved memory management for music (should hopefully take less RAM)</li>
+  <li>Removed weight-based speed (the heavier the armor, the less speed you have)</li>
+  <li>Added weight-based acceleration and weight-based stamina cost(the heavier the armor, the worse acceleration you have and the more stamina it takes to dash/roll)</li>
+  <li>Added functional defense for enemies and player</li>
+  <li>Improved test enemy movement AI</li>
+  <li>Added a ranged enemy, with its own AI (moves back when player is near, sprints towards the player if the player is far, and moves around semi-randomly to dodge player attacks and shoots 3 arrows at random times)</li>
+  <li>Fixed a bug where you couldn't play the game unless you are in the dev room (bug was in the leaked version)</li>
+  <li>Added the ability for enemies to go towards the last time they saw you when you leave their line of sight</li>
+  <li>Added rotating rectangle collisions</li>
+  <li>Improved debug collision rendering</li>
+  <li>Added polygon collisions</li>
 <h3>Dev 1.4.2</h3>
 <ul>
   <li>For some reason most of the files and folders didn't update from 1.3 to 1.4, which should now work</li>
