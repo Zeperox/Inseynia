@@ -71,7 +71,7 @@
   <li>Added rotating rectangle collisions</li>
   <li>Improved debug collision rendering</li>
   <li>Added polygon collisions</li>
-  <li><strong>Known Issues:</strong> 1) You can still teleport when you press a movement key in the pause menu. 2) projectiles don't change their rotations when they have to (I tried to fix it bug it caused an uncontrollable lag)</li>
+  <li><strong>Known Issues:</strong> 1) You can still teleport when you press a movement key in the pause menu. 2) projectiles don't change their rotations when they have to (I tried to fix it bug it caused an uncontrollable lag) 3) for some reason the UI stuggles to update, even though I made it check through the entire stats</li>
 </ul>
 <h3>Dev 1.4.2</h3>
 <ul>
