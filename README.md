@@ -71,6 +71,8 @@
   <li>Added rotating rectangle collisions</li>
   <li>Improved debug collision rendering</li>
   <li>Added polygon collisions</li>
+  <li><strong>Known Issues:</strong> 1) You can still teleport when you press a movement key in the pause menu.</li>
+</ul>
 <h3>Dev 1.4.2</h3>
 <ul>
   <li>For some reason most of the files and folders didn't update from 1.3 to 1.4, which should now work</li>
