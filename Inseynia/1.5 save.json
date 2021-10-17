@@ -1,0 +1,49 @@
+{
+    "gender": "female",
+    "class": [
+        "Archer",
+        "Mage"
+    ],
+    "difficulty": "hard",
+    "name": "Akesta",
+    "inventory": [
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ],
+    "equipment": [
+        "Fist",
+        "Fist",
+        "No Shield"
+    ],
+    "stats": {
+        "Health": 10,
+        "Max Health": 10,
+        "Attack": [
+            1,
+            1
+        ],
+        "Defense": 2,
+        "Stamina": 10,
+        "Max Stamina": 10,
+        "Extra Stats": [
+            10,
+            10
+        ],
+        "Max Extra Stats": [
+            10,
+            10
+        ],
+        "Money": 100,
+        "XP": 0,
+        "Level": 1
+    },
+    "location": "Dev Room"
+}
