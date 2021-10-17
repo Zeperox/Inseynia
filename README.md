@@ -7,7 +7,7 @@
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
 <lr></lr>
 <h2>Change Logs</h2>
-<h3>Dev 1.5 (Update Insight)</h3>
+<h3>Dev 1.5</h3>
 <ul>
   <li>Added real-time combat</li>
   <li>Added melee attacks (direction depends on where your mouse is)</li>
@@ -22,7 +22,7 @@
   <li>Added the ability of having multiple classes, now the max amount of classes you can have is 2</li>
   <li>Added projectiles
     <ul>
-      <li>It contains 5 types: normal, mouse follow, nearest target follow, drop from sky (somehow even working when you are locked inside a box), boomerang</li>
+      <li>It contains 5 types: normal, mouse follow, nearest target follow, boomerang, and drop from sky (somehow even working when you are locked inside a box</li>
       <li>It contains different speed attributes</li>
       <li>It has a max range, with each projectile type does something about this range
         <ul>
@@ -43,8 +43,13 @@
   <li>Improved image rendering</li>
   <li>Improved image loading</li>
   <li>Complete overhaul of the assets folder</li>
-  <li>Made the camera movement cooler (though the player is slightly gittery)</li>
-  <li>Added evading
+  <li>Completely new camera system
+    <ul>
+      <li>It can be set to be behind the player or exactly at the player</li>
+      <li>It now has the ability to focus on/move to other entities</li>
+      <li>It now has the ability to focus on/move to a specific location</li>
+    </ul></li>
+  <li>Added dodging
     <ul>
       <li>Rolling: ~250 pixels in 0.4 secs (10 pixels per frame, 1 stamina loss)</li>
       <li>Dashing: ~300 pixels in 0.34 secs (15 pixels per frame, 2 stamina loss)</li>
@@ -71,7 +76,11 @@
   <li>Added rotating rectangle collisions</li>
   <li>Improved debug collision rendering</li>
   <li>Added polygon collisions</li>
-  <li><strong>Known Issues:</strong> 1) You can still teleport when you press a movement key in the pause menu. 2) projectiles don't change their rotations when they have to (I tried to fix it bug it caused an uncontrollable lag) 3) for some reason the UI stuggles to update, even though I made it check through the entire stats</li>
+  <li>Updated the credits</li>
+  <li>Improved text rendering (it used to be a massive performance bottleneck)
+  <li>Added a boss (it has 2 stages, stage 1 has 3 attacks and stage 2 has 6 attacks in total... and the game became a bullet-hell :))
+  <li>Improved inventory rendering, making it less of a bottleneck for performance</li>
+  <li><strong>Known Issues:</strong> 1) You can still teleport when you press a movement key in the pause menu. 2) projectiles don't change their rotations when they have to (I tried to fix it bug it caused an uncontrollable lag)</li>
 </ul>
 <h3>Dev 1.4.2</h3>
 <ul>

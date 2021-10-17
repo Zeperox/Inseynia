@@ -1,5 +1,5 @@
 # Import modules
-import pygame, os, sys, random, time, getpass, platform
+import pygame, os, sys, random, time, platform, warnings
 
 from pygame.locals import *
 from pygame._sdl2.video import Window
@@ -13,7 +13,7 @@ from scripts.UI.slider import *
 from scripts.UI.textbox import *
 from scripts.UI.text import *
 
-from scripts.assets.sprites import *
+from scripts.assets.sprites import images
 from scripts.assets.SFX import *
 from scripts.assets.music_player import *
 
@@ -23,9 +23,16 @@ from scripts.game_logic.drops import *
 from scripts.game_logic.inventory import *
 from scripts.game_logic.enemy import *
 from scripts.game_logic.player import *
+from scripts.game_logic.boss import *
+from scripts.game_logic.camera import *
 
 from scripts.data.json_functions import *
 
+from scripts.custom_collisions.obb import *
+from scripts.custom_collisions.polygon import *
+
+
+pygame.event.set_allowed([KEYDOWN, MOUSEBUTTONDOWN, MOUSEMOTION, MOUSEBUTTONUP, QUIT])
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
 pygame.init()
@@ -101,6 +108,8 @@ caption_list = [
     "...yPRGDyAR yLB JMAIGLE GR BCCN GL y AyTC...",
     '"Game of the year" -Inseynia',
     "flip",
+    "Zelenor was the greatest leader of all time, but he made a mistake...",
+    "...mereljepeja jeu fhhse jepe b ebxh ibsle islero ujbhjesle xjememebjahsn..."
     "This caption will never appear, isn't that weird?"
 ]
 
@@ -109,7 +118,7 @@ randcaption = random.choice(caption_list[:-1])
 if randcaption == "騙你":
     pygame.display.set_caption(f"印西尼亞: {randcaption}") # yinxi ni ya
 elif randcaption == "Welcome, ":
-    randcaption += getpass.getuser()
+    randcaption += os.getlogin()
     pygame.display.set_caption(f"Inseynia: {randcaption}")
 elif randcaption == "Opposite of Inseynia":
     pygame.display.set_caption(f"Calmia: {randcaption}")
@@ -135,8 +144,8 @@ class Story:
 
     def render(self, window, img=None):
         for x, str_ in enumerate(self.str):
-            text = Text(0, 30*x+400, str_, os.path.join("assets", "Fonts", "DefaultFont.TTF"), 16, (255,255,255))
-            #text = Text(0, 30*x+400, str_, os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+            text = Text(0, 30*x+400, str_, os.path.join("assets", "fonts", "DefaultFont.TTF"), 16, (255,255,255))
+            #text = Text(0, 30*x+400, str_, os.path.join("assets", "fonts", "Font.png"), (255,255,255))
             text.x = Width*0.5-text.get_width()*0.5
             text.render(win)
         if img:
@@ -172,7 +181,7 @@ class Story:
                         last_call = time.time()
 
 # Vars
-#game data
+
 clock = pygame.time.Clock()
 FPS = settings["FPS"]
 fullscreen = settings["Fullscreen"]
@@ -181,43 +190,49 @@ keys = settings["Keys"]
 set_brightness = settings["Brightness"]
 volumes = settings["Volumes"]
 
-for music in musics:
+for music in musics.values():
     music.set_volume(volumes["Music"], True)
 
-scroll = [0, 0]
+true_scroll = [0, 0]; scroll = [0, 0]
 brightness_overlay = Brightness((0, 0), (Width, Height), set_brightness)
 
-BG["Main Menu"] = pygame.transform.scale(BG["Main Menu"], (Width, Height))
+images["Main Menu BG"] = pygame.transform.scale(images["Main Menu BG"], (Width, Height))
 
 #debug menu
 debug_menu = False
 show_hitboxes = False
+show_mid = False
 
 #discord rich presence
-'''try:
-    start_time = time.time()
-    rpc = Presence("871701732349079592")
-    rpc.connect()
+start_time = time.time()
+async def start_rpc():
+    try:
+        rpc = Presence("871701732349079592")
+        rpc.connect()
 
-    def update_rpc():
-        if Player.location:
-            rpc.update(
-                state=f"Region: {Player.location}",
-                large_image="inseynia",
-                large_text="Inseynia",
-                start=start_time
-            )
-        else:
-            rpc.update(
-                large_image="inseynia",
-                large_text="Inseynia",
-                start=start_time
-            )
+        await update_rpc()
+    except:
+        pass
 
-    update_rpc()
-except:
-    pass
-'''
+async def update_rpc(rpc: Presence):
+    if Player.location:
+        rpc.update(
+            state=f"Region: {Player.location}",
+            large_image="inseynia",
+            large_text="Inseynia",
+            start=start_time
+        )
+    else:
+        rpc.update(
+            large_image="inseynia",
+            large_text="Inseynia",
+            start=start_time
+        )
+warnings.filterwarnings("ignore")
+start_rpc()
+warnings.filterwarnings("default")
+
+
 # Program Functions
 def FPS_ind(last_time):
     return (time.time() - last_time) * 60
@@ -256,7 +271,7 @@ def change_resol(new_resol):
         pygame.display.set_mode((Width, Height), DOUBLEBUF | HWSURFACE | SCALED)
 
     brightness_overlay.reconfigure(size=(Width, Height))
-    BG["Main Menu"] = pygame.transform.scale(BG["Main Menu"], (Width, Height))
+    images["Main Menu BG"] = pygame.transform.scale(images["Main Menu BG"], (Width, Height))
 
 def save_settings():
     settings = load_json(["scripts", "data", "settings.json"])
@@ -272,21 +287,22 @@ def save_settings():
 
 def debug(last_call, player=None, enemies=[], rect_list=[], scroll=[0, 0]):
     fps = str(int(1/(time.time()-last_call)))
-    ticks = time.time() - last_call
+    # ticks = (time.time() - last_call)*dt
+
     if player:
-        pos = f"{int(round(player.x))}X, {int(round(player.y))}Y"
+        pos = f"{int(player.x)}X, {int(player.y)}Y"
         pos = pos.strip("'")
     else:
-        pos = "0X, 0Y"
+        pos = "Nonexistent"
 
-    fps_text = Text(3, 3, f"FPS: {fps}", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 24, (255,255,255))
-    #ticks_text = Text(3, 3, f"Ticks: {ticks}", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 24, (255,255,255))
-    pos_text = Text(3, 3, f"Pos: {pos}", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 24, (255,255,255))
-    room_text = Text(3, 3, f"Room: {Player.location}", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 24, (255,255,255))
-    #fps_text = Text(3, 3, f"FPS: {fps}", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
-    #ticks_text = Text(3, 3, f"Ticks: {ticks}", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
-    #pos_text = Text(3, 3, f"Pos: {pos}", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
-    #room_text = Text(3, 3, f"Room: {Player.location}", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+    fps_text = Text(3, 3, f"FPS: {fps}", os.path.join("assets", "fonts", "DefaultFont.TTF"), 24, (255,255,255))
+    #ticks_text = Text(3, 3, f"Ticks: {ticks}", os.path.join("assets", "fonts", "DefaultFont.TTF"), 24, (255,255,255))
+    pos_text = Text(3, 3, f"Pos: {pos}", os.path.join("assets", "fonts", "DefaultFont.TTF"), 24, (255,255,255))
+    room_text = Text(3, 3, f"Room: {Player.location}", os.path.join("assets", "fonts", "DefaultFont.TTF"), 24, (255,255,255))
+    #fps_text = Text(3, 3, f"FPS: {fps}", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
+    #ticks_text = Text(3, 3, f"Ticks: {ticks}", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
+    #pos_text = Text(3, 3, f"Pos: {pos}", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
+    #room_text = Text(3, 3, f"Room: {Player.location}", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
     
 
     def show_fps():
@@ -314,16 +330,27 @@ def debug(last_call, player=None, enemies=[], rect_list=[], scroll=[0, 0]):
         room_text.render(surf)
         win.blit(surf, (10, Height-room_text.get_height()-15))
     def show_hitbox():
+        def draw(_list):
+            for rect in _list:
+                if type(rect) == pygame.Rect:
+                    pygame.draw.rect(win, (0, 255, 0), (rect.x-scroll[0], rect.y-scroll[1], rect.width, rect.height), 1)
+                elif type(rect) == Polygon:
+                    draw_poly(win, (0, 255, 0), rect, scroll)
+                elif type(rect) == Projectiles:
+                    draw_obb(win, (0, 255, 0), rect.obb, scroll)
+                elif type(rect) == list:
+                    draw(rect)
+                else:
+                    pygame.draw.rect(win, (0, 255, 0), (rect.rect.x-scroll[0], rect.rect.y-scroll[1], rect.rect.width, rect.rect.height), 1)
         if player:
             pygame.draw.rect(win, (0, 255, 0), (player.x-scroll[0], player.y-scroll[1], player.rect.width, player.rect.height), 1)
         for rects in rect_list:
-            for rect in rects:
-                if type(rect) == pygame.Rect:
-                    pygame.draw.rect(win, (0, 255, 0), (rect.x-scroll[0], rect.y-scroll[1], rect.width, rect.height), 1)
-                else:
-                    pygame.draw.rect(win, (0, 255, 0), (rect.rect.x-scroll[0], rect.rect.y-scroll[1], rect.rect.width, rect.rect.height), 1)
+            draw(rects)
         for enemy in enemies:
             pygame.draw.rect(win, (255,0,0), (enemy.view_rect.x-scroll[0], enemy.view_rect.y-scroll[1], enemy.view_rect.width, enemy.view_rect.height), 2)
+    def show_middle():
+        pygame.draw.line(win, (128,128,128), (0, Height*0.5), (Width, Height*0.5))
+        pygame.draw.line(win, (128,128,128), (Width*0.5, 0), (Width*0.5, Height))
 
     show_fps()
     #show_ticks()
@@ -331,6 +358,8 @@ def debug(last_call, player=None, enemies=[], rect_list=[], scroll=[0, 0]):
     room_name()
     if show_hitboxes:
         show_hitbox()
+    if show_mid:
+        show_middle()
 
 def save_game(pick_ups):
     data = {
@@ -410,8 +439,8 @@ def pause(func, pick_ups):
     button_strt = Button(((Width*0.5)-(400*0.5))+37.5+(w2*2), Height*0.5-5, 75, 75, (0,0,0))
     button_return = Button(((Width*0.5)-(400*0.5))+(50*2)+(w2*3), Height*0.5+20, 50, 50, (0,0,0))
 
-    pause_text = Text(0, 0, "Paused Game", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 28, (255,255,255))
-    #pause_text = Text(0, 0, "Paused Game", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+    pause_text = Text(0, 0, "Paused Game", os.path.join("assets", "fonts", "DefaultFont.TTF"), 28, (255,255,255))
+    #pause_text = Text(0, 0, "Paused Game", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
 
     last_call = time.time()
     def redraw():
@@ -439,23 +468,23 @@ def pause(func, pick_ups):
         pause_text.x, pause_text.y = (Width*0.5)-(pause_text.get_width()*0.5), (Height*0.5)-(200*0.5)+20
 
         if not set_button_over:
-            win.blit(sprites_Buttons["Settings NotOver"], (button_set.x, button_set.y))
+            win.blit(images["SettingsNOver"], (button_set.x, button_set.y))
         else:
-            win.blit(sprites_Buttons["Settings Over"], (button_set.x, button_set.y))
+            win.blit(images["SettingsOver"], (button_set.x, button_set.y))
         if not strt_button_over:
-            win.blit(sprites_Buttons["Resume NotOver"], (button_strt.x, button_strt.y))
+            win.blit(images["ResumeNOver"], (button_strt.x, button_strt.y))
         else:
-            win.blit(sprites_Buttons["Resume Over"], (button_strt.x, button_strt.y))
+            win.blit(images["ResumeOver"], (button_strt.x, button_strt.y))
         if not return_button_over:
-            win.blit(sprites_Buttons["Return NotOver"], (button_return.x, button_return.y))
+            win.blit(images["ReturnNOver"], (button_return.x, button_return.y))
         else:
-            win.blit(sprites_Buttons["Return Over"], (button_return.x, button_return.y))
+            win.blit(images["ReturnOver"], (button_return.x, button_return.y))
 
         pause_text.render(win)
 
         brightness_overlay.draw(win)
 
-    while True:
+    while 1:
         if time.time() - last_call >= 1/FPS:
             if returned:
                 return
@@ -498,25 +527,57 @@ def pause(func, pick_ups):
             pygame.display.flip()
             last_call = time.time()
 
+def popup():
+    txts = [
+        Text(0, 0, "To experience the full 1.5 update, please do the following", "comicsans", 64, (255,255,255)),
+        Text(0, 0, "You can copy the " + '"1.5 save.json" (but first rename it to "save.json", this is important) and move it to ".\\scripts\\data\\"', "comicsans", 32, (255,255,255)),
+        Text(0, 0, "Press any button to continue", "comicsans", 28, (255,255,255))
+    ]
+    for i, txt in enumerate(txts):
+        txt.x = Width*0.5-txt.get_width()*0.5
+        txt.y = Height*0.5-txt.get_height()*0.5 + i*60
+
+    last_call = time.time()
+
+    def redraw():
+        win.fill((0, 0, 0))
+        for txt in txts:
+            txt.render(win)
+    
+    while 1:
+        if time.time() - last_call >= 1/FPS:
+            redraw()
+
+            for event in pygame.event.get():
+                if event.type == QUIT:
+                    pygame.quit(); sys.exit()
+                
+                if event.type == KEYDOWN:
+                    return
+
+            pygame.display.flip()
+
+
 def main_menu():
     global debug_menu
     set_button_over = False
     exit_button_over = False
 
-    button_new = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5), 400, 70, (0,0,0), "New Game", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+    button_new = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5), 400, 70, (0,0,0), "New Game", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
     if os.path.isfile(os.path.join("scripts", "data", "save.json")):
-        button_load = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+100, 400, 70, (0,0,0), "Load Game", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_load = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+100, 400, 70, (0,0,0), "Load Game", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
     else:
-        button_load = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+100, 400, 70, (0,0,0), "Load Game", (128,128,128), (128,128,128), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_load = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+100, 400, 70, (0,0,0), "Load Game", (128,128,128), (128,128,128), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
-    button_tutor = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+200, 400, 70, (0,0,0), "Tutorial", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+    button_tutor = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+200, 400, 70, (0,0,0), "Tutorial", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
     button_set = Button(25, Height-75, 50, 50, (0,0,0))
     button_exit = Button(Width-75, Height-75, 50, 50, (0,0,0))
 
-    music_main.start()
+    musics["Music Main"].start()
 
-    text = Text(0, 100, "Inseynia", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 72, (255,255,255))
-    #text = Text(0, 100, "Inseynia", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+    text = Text(0, 100, "Inseynia", os.path.join("assets", "fonts", "DefaultFont.TTF"), 72, (255,255,255))
+    version_text = Text(0, 0, "Version Indev 1.5", os.path.join("assets", "fonts", "DefaultFont.TTF"), 18, (50, 50, 50))
+    #text = Text(0, 100, "Inseynia", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
 
     last_call = time.time()
     def redraw():
@@ -524,11 +585,13 @@ def main_menu():
         display_size = pygame.display.get_surface().get_size()
         Width, Height = display_size
         
-        win.blit(BG["Main Menu"], (0,0))
+        win.blit(images["Main Menu BG"], (0,0))
 
         text.x = (Width*0.5)-(text.get_width()*0.5)
-
         text.render(win)
+
+        version_text.x, version_text.y = (Width*0.5)-(version_text.get_width()*0.5), Height-version_text.get_height()-20
+        version_text.render(win)
 
         button_new.x, button_new.y = (Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5); button_new.rect.x, button_new.rect.y = button_new.x, button_new.y
         button_tutor.x, button_tutor.y = (Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+200; button_tutor.rect.x, button_tutor.rect.y = button_tutor.x, button_tutor.y
@@ -541,21 +604,21 @@ def main_menu():
         button_load.draw(win)
 
         if set_button_over:
-            win.blit(sprites_Buttons["Settings Over"], (button_set.x, button_set.y))
+            win.blit(images["SettingsOver"], (button_set.x, button_set.y))
         else:
-            win.blit(sprites_Buttons["Settings NotOver"], (button_set.x, button_set.y))
+            win.blit(images["SettingsNOver"], (button_set.x, button_set.y))
         
         if exit_button_over:
-            win.blit(sprites_Buttons["Quit Over"], (button_exit.x, button_exit.y))
+            win.blit(images["QuitOver"], (button_exit.x, button_exit.y))
         else:
-            win.blit(sprites_Buttons["Quit NotOver"], (button_exit.x, button_exit.y))
+            win.blit(images["QuitNOver"], (button_exit.x, button_exit.y))
 
         if debug_menu:
             debug(last_call)
 
         brightness_overlay.draw(win)
 
-    while True:
+    while 1:
         if time.time() - last_call >= 1/FPS:
             redraw()
             
@@ -625,27 +688,29 @@ def main_menu():
 
 def settings_menu():
     global FPS
-    def global_redraw(last_call):
+    def global_redraw():
         win.fill((0,0,0))
-        win.blit(BG["Main Menu"], (0,0))
+        win.blit(images["Main Menu BG"], (0,0))
 
+    def debugg(last_call):
         if debug_menu:
             debug(last_call)
-    
+
+
     def main():
         global debug_menu, last_call
 
-        button_video = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5), 400, 70, (0,0,0), "Video", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-        button_volume = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+100, 400, 70, (0,0,0), "Volume", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-        button_controls = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+200, 400, 70, (0,0,0), "Controls", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-        button_back = Button((Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_video = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5), 400, 70, (0,0,0), "Video", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+        button_volume = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+100, 400, 70, (0,0,0), "Volume", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+        button_controls = Button((Width*0.5)-(400*0.5), (Height*0.5)-(70*0.5)+200, 400, 70, (0,0,0), "Controls", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+        button_back = Button((Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
-        text = Text(0, 100, "Settings", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 72, (255,255,255))
-        #text = Text(0, 100, "Settings", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+        text = Text(0, 100, "Settings", os.path.join("assets", "fonts", "DefaultFont.TTF"), 72, (255,255,255))
+        #text = Text(0, 100, "Settings", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
 
         last_call = time.time()
         def redraw():
-            global_redraw(last_call)
+            global_redraw()
 
             display_size = pygame.display.get_surface().get_size()
             Width, Height = display_size
@@ -663,9 +728,10 @@ def settings_menu():
             button_controls.draw(win)
             button_back.draw(win)
 
+            debugg(last_call)
             brightness_overlay.draw(win)
 
-        while True:
+        while 1:
             if time.time() - last_call >= 1/FPS:
                 redraw()
                 for event in pygame.event.get():
@@ -741,24 +807,24 @@ def settings_menu():
         resol_front = Button((Width*0.5)-(400*0.5)+425, (Height*0.5)-(70*0.5)-75, 100, 70, (128,128,128))
         resol_back = Button((Width*0.5)-(400*0.5)-125, (Height*0.5)-(70*0.5)-75, 100, 70, (128,128,128))
 
-        button_fullscreen = Button((Width*0.5)-(500*0.5), (Height*0.5)-(70*0.5), 500, 70, (0,0,0), "Fullscreen", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-        button_back = Button((Width*0.5)-(200*0.5)-175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-        button_apply = Button((Width*0.5)-(200*0.5)+175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Apply", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_fullscreen = Button((Width*0.5)-(500*0.5), (Height*0.5)-(70*0.5), 500, 70, (0,0,0), "Fullscreen", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+        button_back = Button((Width*0.5)-(200*0.5)-175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+        button_apply = Button((Width*0.5)-(200*0.5)+175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Apply", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
-        button_yes = Button((Width*0.5)-(400*0.5)+50, (Height*0.5)-(250*0.5)+170, 75, 35, (0,128,0), "Yes", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-        button_no = Button((Width*0.5)-(400*0.5)+275, (Height*0.5)-(250*0.5)+170, 75, 35, (128,0,0), "No", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_yes = Button((Width*0.5)-(400*0.5)+50, (Height*0.5)-(250*0.5)+170, 75, 35, (0,128,0), "Yes", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+        button_no = Button((Width*0.5)-(400*0.5)+275, (Height*0.5)-(250*0.5)+170, 75, 35, (128,0,0), "No", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
         AYS = False
-        AYS_text = Text(0, 0, "Are You Sure?",  os.path.join("assets", "Fonts", "DefaultFont.TTF"), 28, (255,255,255))
-        #AYS_text = Text(0, 0, "Are You Sure?",  os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+        AYS_text = Text(0, 0, "Are You Sure?",  os.path.join("assets", "fonts", "DefaultFont.TTF"), 28, (255,255,255))
+        #AYS_text = Text(0, 0, "Are You Sure?",  os.path.join("assets", "fonts", "Font.png"), (255,255,255))
         ASYI_texts = [
-            Text(0, 0, "The game was not optimized for",  os.path.join("assets", "Fonts", "DefaultFont.TTF"), 11, (255,255,255)),
-            Text(0, 0, "resolutions over 1080p, so a lot",  os.path.join("assets", "Fonts", "DefaultFont.TTF"), 11, (255,255,255)),
-            Text(0, 0, "of bugs might appear.",  os.path.join("assets", "Fonts", "DefaultFont.TTF"), 11, (255,255,255)),
-            Text(0, 0, "Are you willing to continue?",  os.path.join("assets", "Fonts", "DefaultFont.TTF"), 16, (255,255,255)),
-            #Text(0, 0, "The game was not optimized for",  os.path.join("assets", "Fonts", "Font.png"), (255,255,255)),
-            #Text(0, 0, "resolutions over 1080p, so a lot",  os.path.join("assets", "Fonts", "Font.png"), (255,255,255)),
-            #Text(0, 0, "of bugs might appear.",  os.path.join("assets", "Fonts", "Font.png"), (255,255,255)),
-            #Text(0, 0, "Are you willing to continue?",  os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+            Text(0, 0, "The game was not optimized for",  os.path.join("assets", "fonts", "DefaultFont.TTF"), 11, (255,255,255)),
+            Text(0, 0, "resolutions over 1080p, so a lot",  os.path.join("assets", "fonts", "DefaultFont.TTF"), 11, (255,255,255)),
+            Text(0, 0, "of bugs might appear.",  os.path.join("assets", "fonts", "DefaultFont.TTF"), 11, (255,255,255)),
+            Text(0, 0, "Are you willing to continue?",  os.path.join("assets", "fonts", "DefaultFont.TTF"), 16, (255,255,255)),
+            #Text(0, 0, "The game was not optimized for",  os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+            #Text(0, 0, "resolutions over 1080p, so a lot",  os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+            #Text(0, 0, "of bugs might appear.",  os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+            #Text(0, 0, "Are you willing to continue?",  os.path.join("assets", "fonts", "Font.png"), (255,255,255))
         ]
 
         if FPS_init == 10:
@@ -774,17 +840,17 @@ def settings_menu():
         slider_FPS_slide = False
         slider_brightness_slide = False
         
-        video_text = Text(0, 50, "Video Settings", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 48, (255,255,255))
-        resol_text = Text(0, 0, "", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 32, (255,255,255))
-        #video_text = Text(0, 50, "Video Settings", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
-        #resol_text = Text(0, 0, "", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+        video_text = Text(0, 50, "Video Settings", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255))
+        resol_text = Text(0, 0, "", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,255))
+        #video_text = Text(0, 50, "Video Settings", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
+        #resol_text = Text(0, 0, "", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
 
         brightness_slider = Brightness((slider_brightness.x-2, slider_brightness.y-2), (slider_brightness.width+5, slider_brightness.height+5), abs(brightness_init), brightness_init)
         brightness_foreground = Brightness((0, 0), (Width, Height), brightness=200, color=-1)
 
         last_call = time.time()
         def redraw():
-            global_redraw(last_call)
+            global_redraw()
 
             if fullscreen_init:
                 button_fullscreen.change_text("Fullscreen On")
@@ -818,8 +884,8 @@ def settings_menu():
 
             slider_brightness.text = f"Brightness {int(((slider_brightness.width2-40)/(slider_brightness.width-40))*100)}%"
 
-            win.blit(sprites_Buttons["Resol Next"], (resol_front.x, resol_front.y))
-            win.blit(sprites_Buttons["Resol Previous"], (resol_back.x, resol_back.y))
+            win.blit(images["Next Resol"], (resol_front.x, resol_front.y))
+            win.blit(images["Previous Resol"], (resol_back.x, resol_back.y))
             pygame.draw.rect(win, (255,255,255), resol_rect, 3)
             if not resol_init:
                 resol_text.text = "Current"
@@ -832,12 +898,13 @@ def settings_menu():
             button_back.draw(win)
             button_apply.draw(win)
 
-            slider_FPS.draw(win, (255,255,255), font_name=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+            slider_FPS.draw(win, (255,255,255), font_name=os.path.join("assets", "fonts", "DefaultFont.TTF"))
             
             if not AYS:
+                debugg(last_call)
                 brightness_overlay.draw(win)
             
-            slider_brightness.draw(win, (255,255,255), font_name=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+            slider_brightness.draw(win, (255,255,255), font_name=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
             brightness_slider.draw(win)
 
@@ -858,8 +925,9 @@ def settings_menu():
                 button_no.draw(win)
                 AYS_text.render(win)
                 
+                debugg(last_call)
                 brightness_overlay.draw(win)
-        while True:
+        while 1:
             if time.time() - last_call >= 1/FPS:
                 if not brightness_init:
                     brightness_init = 1
@@ -1012,34 +1080,35 @@ def settings_menu():
 
         #slider_master = SliderX((0,0,0), (Width*0.5)-(700*0.5), (Height*0.5)-(100*0.5)-25, 700, 100, (128,128,0), 700*0.5, "Master Volume")
         slider_music = SliderX((Width*0.5)-650*0.5, (Height*0.5)-(70*0.5), 650, 70, (0,0,0), 0, (0,128,0), "Music")
-        slider_music.width2 = music_main.volume*(slider_music.width-40)+40
+        slider_music.width2 = musics["Music Main"].volume*(slider_music.width-40)+40
         slider_sfx = SliderX((Width*0.5)-650*0.5, (Height*0.5)-(70*0.5)+100, 650, 70, (0,0,0), 325*0.5, (0,128,128), "SFX")
 
         slider_music_slide = False
         slider_sfx_slide = False
 
-        button_back = Button((Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_back = Button((Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
-        text = Text(0, 100, "Volume Settings", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 48, (255,255,255))
+        text = Text(0, 100, "Volume Settings", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255))
         text.x = Width*0.5-text.get_width()*0.5
-        #text = Text(0, 100, "Volume Settings", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+        #text = Text(0, 100, "Volume Settings", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
 
         last_call = time.time()
         def redraw():
-            global_redraw(last_call)
+            global_redraw()
 
             text.render(win)
 
-            slider_music.text = f"Music: {int(music_main.volume*100)}%"
+            slider_music.text = f"Music: {int(musics['Music Main'].volume*100)}%"
 
-            slider_music.draw(win, (255,255,255), font_name=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-            slider_sfx.draw(win, (255,255,255), font_name=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+            slider_music.draw(win, (255,255,255), font_name=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+            slider_sfx.draw(win, (255,255,255), font_name=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
             button_back.draw(win)
         
+            debugg(last_call)
             brightness_overlay.draw(win)
         
-        while True:
+        while 1:
             if time.time() - last_call >= 1/FPS:
                 redraw()
 
@@ -1052,9 +1121,9 @@ def settings_menu():
                 elif slider_music.width2 >= slider_music.width:
                     volumes["Music"] = 1
                 else:
-                    volumes["Music"] = int((slider_music.width2-40)/(slider_music.width-40)*100)/100
+                    volumes["Music"] = (slider_music.width2-40)/(slider_music.width-40)
 
-                for music in musics:
+                for music in musics.values():
                     music.set_volume(volumes["Music"], True)
                 
                 if slider_sfx_slide:
@@ -1118,24 +1187,25 @@ def settings_menu():
         old_key = None
         
         buttons = {
-            "Up": Button((Width*0.5)-(450*0.5), (Height*0.5)-160, 450, 35, (0,0,0), f"Up: {pygame.key.name(keys['Up'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF")),
-            "Down": Button((Width*0.5)-(450*0.5), (Height*0.5)-115, 450, 35, (0,0,0), f"Down: {pygame.key.name(keys['Down'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF")),
-            "Left": Button((Width*0.5)-(450*0.5), (Height*0.5)-25, 450, 35, (0,0,0), f"Left: {pygame.key.name(keys['Left'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF")),
-            "Right": Button((Width*0.5)-(450*0.5), (Height*0.5)-70, 450, 35, (0,0,0), f"Right: {pygame.key.name(keys['Right'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF")),
-            "Throw": Button((Width*0.5)-(450*0.5), (Height*0.5)+20, 450, 35, (0,0,0), f"Throw Item: {pygame.key.name(keys['Throw'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF")),
-            "Equip": Button((Width*0.5)-(450*0.5), (Height*0.5)+65, 450, 35, (0,0,0), f"Equip/Unequip Item: {pygame.key.name(keys['Equip'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF")),
-            "Switch": Button((Width*0.5)-(450*0.5), (Height*0.5)+110, 450, 35, (0,0,0), f"View Equipment/Inventory: {pygame.key.name(keys['Switch'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF")),
-            "Pause": Button((Width*0.5)-(450*0.5), (Height*0.5)+155, 450, 35, (0,0,0), f"Pause Gme: {pygame.key.name(keys['Pause'])}", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+            "Up": Button((Width*0.5)-(450*0.5), (Height*0.5)-160, 450, 35, (0,0,0), f"Up: {pygame.key.name(keys['Up'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Down": Button((Width*0.5)-(450*0.5), (Height*0.5)-115, 450, 35, (0,0,0), f"Down: {pygame.key.name(keys['Down'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Left": Button((Width*0.5)-(450*0.5), (Height*0.5)-25, 450, 35, (0,0,0), f"Left: {pygame.key.name(keys['Left'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Right": Button((Width*0.5)-(450*0.5), (Height*0.5)-70, 450, 35, (0,0,0), f"Right: {pygame.key.name(keys['Right'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Roll": Button((Width*0.5)-(450*0.5), (Height*0.5)-(35*0.5), 450, 35, (0,0,0), f"Roll: {pygame.key.name(keys['Roll'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Throw": Button((Width*0.5)-(450*0.5), (Height*0.5)+20, 450, 35, (0,0,0), f"Throw Item: {pygame.key.name(keys['Throw'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Equip": Button((Width*0.5)-(450*0.5), (Height*0.5)+65, 450, 35, (0,0,0), f"Equip/Unequip Item: {pygame.key.name(keys['Equip'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Switch": Button((Width*0.5)-(450*0.5), (Height*0.5)+110, 450, 35, (0,0,0), f"View Equipment/Inventory: {pygame.key.name(keys['Switch'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF")),
+            "Pause": Button((Width*0.5)-(450*0.5), (Height*0.5)+155, 450, 35, (0,0,0), f"Pause Gme: {pygame.key.name(keys['Pause'])}", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
         }
         
-        button_back = Button((Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_back = Button((Width*0.5)-(200*0.5), (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Back", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
-        text = Text(0, 50, "Controls", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 48, (255,255,255))
-        #text = Text(0, 50, "Controls", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+        text = Text(0, 50, "Controls", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255))
+        #text = Text(0, 50, "Controls", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
 
         last_call = time.time()
         def redraw():
-            global_redraw(last_call)
+            global_redraw()
 
             text.x = (Width*0.5)-(text.get_width()*0.5)
             text.render(win)
@@ -1154,8 +1224,9 @@ def settings_menu():
             
             button_back.draw(win)
         
+            debugg(last_call)
             brightness_overlay.draw(win)
-        while True:
+        while 1:
             if time.time() - last_call >= 1/FPS:
                 redraw()
 
@@ -1214,9 +1285,9 @@ def new_game_creator():
     chosen_name = random.choice(["Akesta", "Jonea", "John Cena", "Elat", "Inora"])
 
     classes = [
-        [Button((Width*0.5-144*0.5)-(144+92), 50, 144, 144, text="Swordsman"), pygame.transform.scale(sprites_Equipment['Wooden Sword'], (144, 144))],
-        [Button(Width*0.5-144*0.5, 50, 144, 144, text="Archer"), pygame.transform.scale(sprites_Equipment["Crossbow"], (144, 144))],
-        [Button((Width*0.5-144*0.5)+144+92, 50, 144, 144, text="Mage"), pygame.transform.scale(sprites_Equipment['Wooden Shield'], (144, 144))]
+        [Button((Width*0.5-144*0.5)-(144+92), 50, 144, 144, text="Swordsman"), pygame.transform.scale(images['Wooden Sword'], (144, 144))],
+        [Button(Width*0.5-144*0.5, 50, 144, 144, text="Archer"), pygame.transform.scale(images["Crossbow"], (144, 144))],
+        [Button((Width*0.5-144*0.5)+144+92, 50, 144, 144, text="Mage"), pygame.transform.scale(images['Wooden Shield'], (144, 144))]
     ]
     '''if settings["Permadeath Enabled"]:
         difficulties = [
@@ -1236,12 +1307,12 @@ def new_game_creator():
     slider_difficulty_move = False
 
     name = TextBox((0,0,0), Width*0.5-250, 400, 500, 100, "Enter your username", clear_text_when_click=True)
-    button_cancel = Button((Width*0.5)-(200*0.5)-175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Cancel", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-    button_apply = Button((Width*0.5)-(200*0.5)+175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Apply", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+    button_cancel = Button((Width*0.5)-(200*0.5)-175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Cancel", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+    button_apply = Button((Width*0.5)-(200*0.5)+175, (Height*0.5)-(35*0.5)+275, 200, 35, (0,0,0), "Apply", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
 
     def redraw():
         win.fill((0,0,0))
-        win.blit(BG["Main Menu"], (0,0))
+        win.blit(images["Main Menu BG"], (0,0))
 
         for _class in classes:
             win.blit(_class[1], (_class[0].x, _class[0].y))
@@ -1257,7 +1328,7 @@ def new_game_creator():
         #pygame.draw.line(win, (255,255,255), (Width*0.5, 0), (Width*0.5, Height))
 
         name.draw(win, (255,255,255))
-    while True:
+    while 1:
         redraw()
         mx, my = pygame.mouse.get_pos()
 
@@ -1384,13 +1455,13 @@ def story():
     def redraw():
         win.fill((0,0,0))
         try:
-            page.render(win, sprites_Story_Photoes[f"S{pg_num+1}"])
+            page.render(win, images[f"S{pg_num+1}"])
         except:
             page.render(win)
         brightness_overlay.draw(win)
 
-    continue_text = Text(0, Height-50, "Press space to continue", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 25, (255,255,255))
-    #continue_text = Text(0, Height-50, "Press space to continue", os.path.join("assets", "Fonts", "Font.png"), (255,255,255))
+    continue_text = Text(0, Height-50, "Press space to continue", os.path.join("assets", "fonts", "DefaultFont.TTF"), 25, (255,255,255))
+    #continue_text = Text(0, Height-50, "Press space to continue", os.path.join("assets", "fonts", "Font.png"), (255,255,255))
     continue_text.x = Width-65-continue_text.get_width()
 
     last_call = time.time()
@@ -1409,7 +1480,7 @@ def story():
             if not new_game_creator():
                 return
 
-        while True:
+        while 1:
             if time.time() - last_call >= 1/FPS:
                 redraw()
                 for event in pygame.event.get():
@@ -1441,7 +1512,7 @@ def story():
     new_game_creator()
 
 def main_game(loc):
-    global debug_menu, scroll, show_hitboxes
+    global debug_menu, scroll, show_hitboxes, show_mid
     
     pick_ups = load_json(["scripts", "data", "pick ups.json"])
     get_data = True
@@ -1452,58 +1523,60 @@ def main_game(loc):
     rdata = load_json(["scripts", "data", "rooms.json"])
 
     last_time = time.time()
-    player = Player(0, 0, "Down")
 
-    inventory = Inventory(resol, player, sprites_Misc['Inventory Slot'], sprites_Equipment)
+    player = Player(0, 0, "Down")
+    inventory = Inventory(resol, player, images['Inventory Slot'], images)
+    camera = Camera(true_scroll, player)
 
     drops = []
     enemies = []
+    
 
     brightness_night = Brightness((0, 0), (Width, Height), 100, -1)
 
     last_call = time.time()
 
+    slots_updated = False
+
     def redraw():
         win.fill((0,0,0))
-        map.draw_map(win, scroll)
+        game_map.draw_map(win, scroll)
         for item in drops:
             item[1].draw(win, scroll)
 
         for enemy in enemies:
             enemy.draw(win, scroll)
-        player.draw(win, (Width, Height), scroll)
-        inventory.draw_inventory(win)
+        player.draw(win, scroll)
+        inventory.draw_inventory(win, (Width, Height))
         
 
         if debug_menu:
-            drop_rects = []
-            for drop in drops:
-                drop_rects.append(drop[1])
-            debug(last_call, player, enemies, [drop_rects, map.tile_rects, player.projectiles, enemies], scroll)
+            debug(last_call, player, enemies, [drop_rects, game_map.tile_rects, player.projectiles, player.melee_dir_poly, enemies,  [enemy.projectiles for enemy in enemies]], scroll)
 
         if "Always Night" in rdata[loc]["extras"]:
             brightness_night.draw(win)
 
         brightness_overlay.draw(win)
         
-    while True:
+    while 1:
         if time.time() - last_call >= 1/FPS:
             if get_data:
                 try:
-                    map = TileMap(os.path.join("scripts", "tiles", f"{Player.location.split(' ')[0]}", f"{Player.location.replace(' ', '').lower()}.csv"), "House", (Width, Height))
+                    game_map = TileMap(os.path.join("scripts", "tiles", f"{Player.location.split(' ')[0]}", f"{Player.location.replace(' ', '').lower()}.csv"), "House", (Width, Height))
                 except:
-                    map = TileMap(os.path.join("scripts", "tiles", "House", "house1.csv"), "House", (Width, Height))
+                    game_map = TileMap(os.path.join("scripts", "tiles", "House", "house1.csv"), "House", (Width, Height))
 
-                player.rect.x, player.rect.y = map.start_x, map.start_y
+                player.rect.x, player.rect.y = game_map.start_x, game_map.start_y
 
                 drops = []; enemies = []; exits = []
                 for drop in rdata[loc]["drops"]:
-                    drops.append([drop[0], Drop(drop[1][0], drop[1][1], sprites_Equipment[drop[0]]), 0])
+                    drops.append([drop[0], Drop(drop[1][0], drop[1][1], images[drop[0]]), 0])
                 for enemy in rdata[loc]["enemies"]:
-                    enemies.append(Enemy(enemy[1][0], enemy[1][1], enemy[0], sprites_Enemies))
+                    enemies.append(Enemy(enemy[1][0], enemy[1][1], enemy[0], images))
                 for room, rect in rdata[loc]["exits"].items():
                     rect = pygame.Rect(rect[0], rect[1], rect[2], rect[3])
                     exits.append([room, rect])
+                drop_rects = [drop[1] for drop in drops]
 
                 try:
                     for item_name in pick_ups[loc].keys():
@@ -1516,14 +1589,16 @@ def main_game(loc):
 
                 get_data = False
 
-            if (Width, Height) != map.screen_size:
+            if (Width, Height) != game_map.screen_size:
                 try:
-                    map = TileMap(os.path.join("scripts", "tiles", f"{Player.location.split(' ')[0]}", f"{Player.location.replace(' ', '').lower()}.csv"), "House", (Width, Height))
+                    game_map = TileMap(os.path.join("scripts", "tiles", f"{Player.location.split(' ')[0]}", f"{Player.location.replace(' ', '').lower()}.csv"), "House", (Width, Height))
                 except:
-                    map = TileMap(os.path.join("scripts", "tiles", "House", "house1.csv"), "House", (Width, Height))
+                    game_map = TileMap(os.path.join("scripts", "tiles", "House", "house1.csv"), "House", (Width, Height))
 
-            dt = FPS_ind(last_time)
-            last_time = time.time()
+            if len(player.equipment) == 3 and not slots_updated:
+                inventory.update_slots()
+                slots_updated = True
+            player.update()
 
             if "Always Night" in rdata[loc]["extras"]:
                 if old_Width != Width:
@@ -1531,37 +1606,40 @@ def main_game(loc):
 
             redraw()
 
+            dt = FPS_ind(last_time)
+            last_time = time.time()
+
             for drop_index, item in enumerate(drops):
                 item[2] -= 1*dt
                 if player.rect.colliderect(item[1].rect) and item[2] <= 0:
-                    inventory.grab_item(item[0], 1)
+                    inventory.grab_item(item[0])
                     try:
                         pick_ups[loc][item[0]] = True
                     except KeyError:
                         pass
 
                     del drops[drop_index]
+                    drop_rects = [drop[1] for drop in drops]
 
-            for enemy_index, enemy in enumerate(enemies):
-                s = enemy.move(player.rect, dt, map.tile_rects)
+            for enemy in enemies:
+                s = enemy.ai(player, dt, game_map.tile_rects, game_map)
 
-                if enemy.collision(player.rect):
-                    #enemy.in_fight = True
-                    pass
+                if enemy.rect.colliderect(player.rect):
+                    player.lose_hp(enemy.stats["Attack"])
 
-                enemy.in_fight = False
+                enemy.projectiles_move(game_map.tile_rects, dt, scroll, [player])
+                for projectile in enemy.projectiles:
+                    player, enemy.projectiles = projectile.damage([player], enemy.projectiles)
+                    player = player[0]
+                    enemy.projectiles = projectile.offmap(game_map, enemy.projectiles)
 
-                if enemy.in_fight:
-                    #enemy.in_fight = fight(enemy)
-                    if enemy.in_fight == None:
-                        del enemies[enemy_index]
-                    elif enemy.in_fight == "dead":
-                        return "dead"
-                    player.x -= 100
-                    player.rect.x -= 100
+            for projectile in player.projectiles:
+                enemies, player.projectiles = projectile.damage(enemies, player.projectiles)
+                player.projectiles = projectile.offmap(game_map, player.projectiles)
 
-
-            _ = player.move(map.tile_rects, dt, keys)
+            if not camera.forced_loc:  
+                _ = player.move(game_map.tile_rects, dt, keys, enemies)
+            player.projectiles_move(game_map.tile_rects, dt, scroll, enemies, pygame.mouse.get_pos())
 
             for exit in exits:
                 if player.rect.colliderect(exit[1]):
@@ -1570,10 +1648,7 @@ def main_game(loc):
                     get_data = True
 
                     save_game(pick_ups)
-
                     break
-
-            scroll = player.scroll(scroll, map, (Width, Height))
 
             for event in pygame.event.get():
                 if event.type == QUIT:
@@ -1582,23 +1657,38 @@ def main_game(loc):
 
                 if event.type == KEYDOWN:
                     if event.key == keys["Equip"]:
-                        inventory.equip_item([player.x, player.y])
+                        d = inventory.equip_item([player.x, player.y])
+                        if d:
+                            drops.append(d)
+                        del d
                     if event.key == keys["Throw"]:
                         x = inventory.throw_item([player.x, player.y])
                         if x: drops.append(x)
                     if event.key == keys["Switch"]:
                         inventory.inv = not inventory.inv
                     if event.key == keys["Pause"]:
-                        pause(redraw, pick_ups)
+                        pause(redraw, None)
 
-                    if event.key == K_b:
-                        show_hitboxes = not show_hitboxes
                     if event.key == K_F11:
                         F11()
                     if event.key == K_F3:
                         debug_menu = not debug_menu
+                    if event.key == K_b:
+                        show_hitboxes = not show_hitboxes
+                    if event.key == K_v:
+                        show_mid = not show_mid
+                        
+                if event.type == MOUSEBUTTONDOWN:
+                    player.strong_charging = True
+                    player.strong_wind = time.time()
 
+                if event.type == MOUSEBUTTONUP:
+                    enemies = player.attack(enemies, event.button, pygame.mouse.get_pos(), (Width, Height), win, scroll)
+                    player.strong_wind = 0; player.strong_charging = False; player.strong_charged = False
                 inventory.select_item(event)
+                
+            scroll = camera.update(game_map, (Width, Height), dt)
+
             pygame.display.flip()
 
             last_call = time.time()
@@ -1612,18 +1702,18 @@ def dev_room():
         input_pass = TextBox((0,0,0), (Width*0.5)-(500*0.5)-50, (Height*0.5)-(100*0.5), 500, 100, "Enter Password", clear_text_when_click=True)
         password = "66VnGz28HH"
         
-        button_enter = Button(input_pass.x + input_pass.width+25, (Height*0.5)-(50*0.5)-25, 150, 40, (0,128,0), "Enter", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
-        button_cancel = Button(input_pass.x + input_pass.width+25, (Height*0.5)-(50*0.5)+25, 150, 40, (128,0,0), "Cancel", outline=(255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"))
+        button_enter = Button(input_pass.x + input_pass.width+25, (Height*0.5)-(50*0.5)-25, 150, 40, (0,128,0), "Enter", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
+        button_cancel = Button(input_pass.x + input_pass.width+25, (Height*0.5)-(50*0.5)+25, 150, 40, (128,0,0), "Cancel", outline=(255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"))
         
         def redraw():
             global_redraw()
 
-            input_pass.draw(win, (255,255,255), font_path=os.path.join("assets", "Fonts", "DefaultFont.TTF"), font_size=32)
+            input_pass.draw(win, (255,255,255), font_path=os.path.join("assets", "fonts", "DefaultFont.TTF"), font_size=32)
             button_enter.draw(win)
             button_cancel.draw(win)
 
             brightness_overlay.draw(win)
-        while True:
+        while 1:
             redraw()
             for event in pygame.event.get():
                 mx, my = pygame.mouse.get_pos()
@@ -1656,61 +1746,58 @@ def dev_room():
             pygame.display.flip()
 
     def room():
-        global scroll, debug_menu, show_hitboxes
+        global true_scroll, scroll, debug_menu, show_hitboxes, show_mid
 
-        map = TileMap(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), "Dev Room", (Width, Height))
+        game_map = TileMap(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), "Dev Room", (Width, Height))
         last_time = time.time()
 
-        player = Player(map.start_x, map.start_y, "Down") 
+        player = Player(game_map.start_x, game_map.start_y, "Down") 
+        inventory = Inventory(resol, player, images['Inventory Slot'], images)
+        camera = Camera(true_scroll, player)
 
-        inventory = Inventory(resol, player, sprites_Misc['Inventory Slot'], sprites_Equipment)
+        txt = Text(game_map.x+game_map.w+200, 0, "Bonjour :)", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,255))
 
         drops = [
-            ["Wooden Bow", Drop(500, 500, sprites_Equipment['Crossbow']), 0],
-            ["Wooden Sword", Drop(300, 300, sprites_Equipment["Wooden Sword"]), 0],
-            ["ph1", Drop(300, 100, sprites_Equipment["ph1"]), 0],
-            ["ph2", Drop(400, 200, sprites_Equipment["ph2"]), 0],
-            ["ph3", Drop(500, 300, sprites_Equipment["ph3"]), 0],
-            ["ph4", Drop(100, 300, sprites_Equipment["ph4"]), 0],
-            ["Wooden Shield", Drop(600, 500, sprites_Equipment["Wooden Shield"]), 0]
+            ["Wooden Bow", Drop(50+game_map.x, 250+game_map.y, images['Wooden Bow']), 0],
+            ["Crossbow", Drop(50+game_map.x, 350+game_map.y, images["Crossbow"]), 0],
+            ["Walking Staff", Drop(50+game_map.x, 450+game_map.y, images["Walking Staff"]), 0],
+            ["Amateur Staff", Drop(50+game_map.x, 550+game_map.y, images["Amateur Staff"]), 0],
+            ["Wooden Shield", Drop(50+game_map.x, 650+game_map.y, images["Wooden Shield"]), 0]
         ]
         enemies = []
         last_call = time.time()
         slots_updated = False
         def redraw():
             global_redraw()
-            map.draw_map(win, scroll)
+            game_map.draw_map(win, scroll)
 
             for item in drops:
                 item[1].draw(win, scroll)
 
             for enemy in enemies:
                 enemy.draw(win, scroll)
-            player.draw(win, (Width, Height), scroll)
-            inventory.draw_inventory(win)
+            player.draw(win, scroll)
+            inventory.draw_inventory(win, (Width, Height))
+            txt.render(win, scroll)
 
             if debug_menu:
                 drop_rects = []
                 for drop in drops:
                     drop_rects.append(drop[1])
-                debug(last_call, player, enemies, [drop_rects, map.tile_rects, player.projectiles, enemies], scroll)
+                debug(last_call, player, enemies, [drop_rects, game_map.tile_rects, player.projectiles, player.melee_dir_poly, enemies,  [enemy.projectiles for enemy in enemies]], scroll)
 
             brightness_overlay.draw(win)
             
-        while True:
+        while 1:
             if time.time() - last_call >= 1/FPS:
-                #map.update_map(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), (Width, Height))
-                if (Width, Height) != map.screen_size:
-                    map = TileMap(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), "Dev Room", (Width, Height))
+                #game_map.update_map(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), (Width, Height))
+                if (Width, Height) != game_map.screen_size:
+                    game_map = TileMap(os.path.join("scripts", "tiles", "Dev Room", "untitled.csv"), "Dev Room", (Width, Height))
                 if len(player.equipment) == 3 and not slots_updated:
                     inventory.update_slots()
                     slots_updated = True
                 player.update()
                 redraw()
-
-                if player.strong_charging:
-                    if time.time()-player.strong_wind >= 1:
-                        player.strong_charged = True
 
                 dt = FPS_ind(last_time)
                 last_time = time.time()
@@ -1721,18 +1808,25 @@ def dev_room():
                         if inventory.grab_item(item[0], 1):
                             del drops[drop_index]
 
-                for enemy_index, enemy in enumerate(enemies):
-                    s = enemy.ai(player, dt, map.tile_rects)
+                for enemy in enemies:
+                    s = enemy.ai(player, dt, game_map.tile_rects, game_map)
 
                     if enemy.rect.colliderect(player.rect):
                         player.lose_hp(enemy.stats["Attack"])
 
-                    for projectile in player.projectiles:
-                        if enemy.rect.colliderect(projectile.rect):
-                            enemies = enemy.lose_hp(projectile.attack, enemies)
-                            player.projectiles.remove(projectile)
-                            
-                _ = player.move(map.tile_rects, dt, keys, enemies)
+                    enemy.projectiles_move(game_map.tile_rects, dt, scroll, [player])
+                    for projectile in enemy.projectiles:
+                        player, enemy.projectiles = projectile.damage([player], enemy.projectiles)
+                        player = player[0]
+                        enemy.projectiles = projectile.offmap(game_map, enemy.projectiles)
+
+                for projectile in player.projectiles:
+                    enemies, player.projectiles = projectile.damage(enemies, player.projectiles)
+                    player.projectiles = projectile.offmap(game_map, player.projectiles)
+
+                if not camera.forced_loc:
+                    _ = player.move(game_map.tile_rects, dt, keys, enemies)
+                player.projectiles_move(game_map.tile_rects, dt, scroll, enemies, pygame.mouse.get_pos())
 
                 for event in pygame.event.get():
                     if event.type == QUIT:
@@ -1759,20 +1853,33 @@ def dev_room():
                             debug_menu = not debug_menu
                         if event.key == K_b:
                             show_hitboxes = not show_hitboxes
+                        if event.key == K_v:
+                            show_mid = not show_mid
 
                         if event.key == K_x:
-                            enemies.append(Test_Enemy(player.x+100, player.y, sprites_Enemies))
-                    
+                            enemies.append(Test_Enemy(player.x+100, player.y, images))
+                        if event.key == K_c:
+                            enemies.append(Ranged_Enemy(player.x+200, player.y, images))
+                        if event.key == K_z:
+                            enemies.append(Test_Boss(game_map.x+game_map.w, game_map.y+game_map.h, images))
+
+                        if event.key == K_BACKSPACE:
+                            if camera.forced_loc:
+                                camera.forced_loc = None
+                            else:
+                                camera.forced_loc = (txt.x+txt.get_width()*0.5, txt.y+txt.get_height()*0.5)
+
                     if event.type == MOUSEBUTTONDOWN:
                         player.strong_charging = True
                         player.strong_wind = time.time()
 
                     if event.type == MOUSEBUTTONUP:
-                        player.attack(enemies, event.button, pygame.mouse.get_pos(), (Width, Height), win, scroll)
+                        enemies = player.attack(enemies, event.button, pygame.mouse.get_pos(), (Width, Height), win, scroll)
                         player.strong_wind = 0; player.strong_charging = False; player.strong_charged = False
                     inventory.select_item(event)
                     
-                scroll = player.scroll(scroll, map, (Width, Height))
+                scroll = camera.update(game_map, (Width, Height), dt)
+
                 pygame.display.flip()
 
                 last_call = time.time()
@@ -1783,54 +1890,59 @@ def dev_room():
 def credits():
     last_time = time.time()
     texts = [
-        Text(0, Height, "Inseynia", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 72, (255,255,255)),
-        Text(0, Height+100, "Lead Developer", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+150, "Zeperox", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+200, "Lead Artist", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+250, "Bowie", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+300, "Composer", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+350, "Cthethan", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+400, "Manager", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+450, "Big Smoke", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+500, "Extra Developers", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+550, "Adam_    DevHedron", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+600, "Extra Artists", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+650, "Big Smoke    Chaino", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+700, "Extra Team Members", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+750, "Invarrow", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+800, "Special Thanks To:", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 48, (255,255,255)),
-        Text(0, Height+850, "!MAD!    Anais Snow", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+890, "LEO Thamoly    Fade_X", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+930, "Alexey_045    Gandster", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+970, "Jet Omnivore    Necrosway", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+1010, "AwesomeNoob999", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 32, (255,255,0)),
-        Text(0, Height+1050, "And you... for playing!", os.path.join("assets", "Fonts", "DefaultFont.TTF"), 32, (0,200,255)),
-        Text(0, Height+1700, " ", os.path.join('assets', "Fonts", "DefaultFont.TTF"), 1, (0,0,0)),
-        # Text(0, Height, "Inseynia", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+100, "Lead Developer", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+150, "Zeperox", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+200, "Lead Artist", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+250, "Bowie", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+300, "Composer", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+350, "Cthethan", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+400, "Manager", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+450, "Big Smoke", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+500, "Extra Developers", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+550, "Adam_    DevHedron", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+600, "Extra Artists", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+650, "Big Smoke    Chaino", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+700, "Extra Team Members", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+750, "Invarrow", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+800, "Special Thanks To:", os.path.join('assets', "Fonts", "Font.png"), (255,255,255)),
-        # Text(0, Height+850, "!MAD!    Anais Snow", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+890, "LEO Thamoly    Fade_X", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+930, "Alexey_045    Gandster", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+970, "Jet Omnivore    Necrosway", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+1010, "AwesomeNoob999", os.path.join('assets', "Fonts", "Font.png"), (255,255,0)),
-        # Text(0, Height+1050, "And you... for playing!", os.path.join("assets", "Fonts", "Font.png"), (0,200,255)),
-        # Text(0, Height+1700, " ", os.path.join('assets', "Fonts", "Font.png"), (0,0,0)),
+        Text(0, Height, "Inseynia", os.path.join("assets", "fonts", "DefaultFont.TTF"), 72, (255,255,255)),
+        Text(0, Height+100, "Lead Developer", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+150, "Zeperox", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+200, "Lead Artist", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+250, "Bowie", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+300, "Composer", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+350, "Cthethan", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+400, "Manager", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+450, "Big Smoke", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+500, "Extra Developers", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+550, "Adam    DevHedron", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+600, "Extra Artists", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+650, "Big Smoke    Chaino    gyroc1", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+700, "Extra Team Members", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+750, "Invarrow    k..  -ACE-", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+800, "Special Thanks To:", os.path.join("assets", "fonts", "DefaultFont.TTF"), 48, (255,255,255)),
+        Text(0, Height+850, "!MAD!    Alexey_045", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+890, "Anais Snow MY    CodeRxJesseJ", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+930, "Dark_Alliance    flakes", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+970, "Freddy Mercury    FADE_X", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+1010, "Grandster    Jaimses", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+1050, "Jumboost    K13", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+1090, "MartinWho    MightBeARobot", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+1130, "MKGamer    parapotato3", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+1170, "ItsGoat    Шкьрыоав)", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+1210, "wermz    X_X", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (255,255,0)),
+        Text(0, Height+1250, "And you... for playing!", os.path.join("assets", "fonts", "DefaultFont.TTF"), 32, (0,200,255)),
+        Text(0, Height+1900, " ", os.path.join("assets", "fonts", "DefaultFont.TTF"), 1, (0,0,0)),
+        # Text(0, Height, "Inseynia", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+100, "Lead Developer", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+150, "Zeperox", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+200, "Lead Artist", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+250, "Bowie", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+300, "Composer", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+350, "Cthethan", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+400, "Manager", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+450, "Big Smoke", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+500, "Extra Developers", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+550, "Adam_    DevHedron", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+600, "Extra Artists", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+650, "Big Smoke    Chaino", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+700, "Extra Team Members", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+750, "Invarrow", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+800, "Special Thanks To:", os.path.join("assets", "fonts", "Font.png"), (255,255,255)),
+        # Text(0, Height+850, "!MAD!    Anais Snow", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+890, "LEO Thamoly    Fade_X", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+930, "Alexey_045    Gandster", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+970, "Jet Omnivore    Necrosway", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+1010, "AwesomeNoob999", os.path.join("assets", "fonts", "Font.png"), (255,255,0)),
+        # Text(0, Height+1050, "And you... for playing!", os.path.join("assets", "fonts", "Font.png"), (0,200,255)),
+        # Text(0, Height+1700, " ", os.path.join("assets", "fonts", "Font.png"), (0,0,0)),
     ]
-    texaract_img_y = Height+1200
+    texaract_img_y = Height+1400
     for text in texts:
         text.x = (Width*0.5)-(text.get_width()*0.5)
     speed = 1
@@ -1839,11 +1951,11 @@ def credits():
         for text in texts:
             text.render(win)
 
-        win.blit(sprites_Logo["Texaract"], ((Width*0.5)-(sprites_Logo["Texaract"].get_width()*0.5), texaract_img_y))
+        win.blit(images["Texaract"], ((Width*0.5)-(images["Texaract"].get_width()*0.5), texaract_img_y))
 
     last_call = time.time()
 
-    while True:
+    while 1:
         if time.time() - last_call >= 1/FPS:
             redraw()
 
@@ -1858,11 +1970,12 @@ def credits():
                 if event.type == KEYDOWN and event.key != K_SPACE:
                     return
 
-            keys = pygame.key.get_pressed()
-            if keys[K_SPACE]:
-                speed = 2
-            elif not keys[K_SPACE]:
-                speed = 1
+                if event.type == MOUSEBUTTONDOWN:
+                    if event.button == 4:
+                        speed += .5
+                    elif event.button == 5:
+                        if speed > 0:
+                            speed -= .5
 
             for text in texts:
                 text.y -= speed*dt
@@ -1875,7 +1988,9 @@ def credits():
 
             last_call = time.time()
 
-while True:
+popup()
+
+while 1:
     if main_menu():
         stored_data = load_json(["scripts", "data", "save.json"])
     

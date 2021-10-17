@@ -80,6 +80,6 @@ class Music:
     def get_pos(self):
         return pygame.mixer.music.get_pos()
 
-musics = [
-    music_main := Music(["assets", "Songs", "Inseynia_Title.wav"], -1, 0, [10000, 0])
-]
+musics = {
+    "Music Main": Music(["assets", "SOUND", "songs", "Inseynia_Title.wav"], -1, 0, [10000, 0])
+}

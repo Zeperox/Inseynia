@@ -3,8 +3,27 @@
         "Health": 20,
         "Max Health": 20,
         "Attack": 1,
-        "Defense": 1,
+        "Defense": 0,
         "Speed": 2,
-        "View Radius": 250
+        "View Radius": 250,
+        "Unview Follow Time": 0.5
+    },
+    "Ranged Enemy": {
+        "Health": 20,
+        "Max Health": 20,
+        "Attack": 1,
+        "Defense": 0,
+        "Speed": 2,
+        "View Radius": 500,
+        "Unview Follow Time": 0.5
+    },
+    "Big Eye": {
+        "Health": 50,
+        "Max Health": 50,
+        "Attack": 3,
+        "Defense": 0,
+        "Speed": 4,
+        "View Radius": 100000,
+        "Unview Follow Time": 0
     }
 }

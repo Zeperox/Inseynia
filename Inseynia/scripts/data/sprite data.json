@@ -1,0 +1,73 @@
+{
+    "Main Menu BG": {},
+    "SettingsNOver": {},
+    "SettingsOver": {},
+    "ResumeNOver": {},
+    "ResumeOver": {},
+    "QuitNOver": {},
+    "QuitOver": {},
+    "ReturnNOver": {},
+    "ReturnOver": {},
+    "Next Resol": {},
+    "Previous Resol": {},
+    "Wooden Sword": {
+        "scale": 2
+    },
+    "Crossbow": {
+        "scale": 2
+    },
+    "Wooden Shield": {
+        "scale": 2
+    },
+    "Wooden Bow": {
+        "scale": 2
+    },
+    "Walking Staff": {
+        "scale": 2
+    },
+    "Amateur Staff": {
+        "scale": 2
+    },
+    "Test Enemy": {
+        "convert": null
+    },
+    "S1": {
+        "convert": null
+    },
+    "Inventory Slot": {},
+    "Ranged Enemy": {
+        "convert": null
+    },
+    "Heart": {},
+    "Stamina": {},
+    "Projectile": {},
+    "Mana": {},
+    "Attack": {},
+    "Defense": {},
+    "Level": {},
+    "Money": {},
+    "Player Data": {},
+    "Big Eye": {
+        "scale": 5
+    },
+    "Big Eye 2": {
+        "scale": 5
+    },
+    "Texaract": {
+        "convert": [0, 0, 0]
+    },
+    "Arrow": {
+        "scale": 3
+    },
+    "Fireball": {
+        "scale": 2
+    },
+    "Fist": {},
+    "No Shield": {
+        "scale": 2
+    },
+    "ph1": {},
+    "ph2": {},
+    "ph3": {},
+    "ph4": {}
+}

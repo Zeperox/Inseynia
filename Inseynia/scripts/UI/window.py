@@ -1,4 +1,4 @@
-import pygame, os, json, platform
+import pygame, platform
 from pygame.locals import *
 from scripts.data.json_functions import *
 
@@ -6,7 +6,7 @@ pygame.display.init()
 
 try:
     settings = load_json(["scripts", "data", "settings.json"])
-except FileNotFoundError:
+except:
     settings = {
         "FPS": 60,
         "Fullscreen": True,

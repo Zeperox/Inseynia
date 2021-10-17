@@ -41,70 +41,138 @@
             "Class": "Archer",
             "AP": 2,
             "Cooldown": 0.3,
-            "Speed": 3,
-            "Proj Type": "normal"
+            "Proj Data": {
+                "Proj Obj": "Arrow",
+                "Speed": 6,
+                "Proj Type": "normal",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         "Wooden Bow": {
             "Class": "Archer",
             "AP": 4,
             "Cooldown": 0.3,
-            "Speed": 6,
-            "Proj Type": "normal"
+            "Proj Data": {
+                "Proj Obj": "Arrow",
+                "Speed": 6,
+                "Proj Type": "normal",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         "Steel Halfbow": {
             "Class": "Archer",
             "AP": 7, 
             "Cooldown": 0.3,
-            "Speed": 3,
-            "Proj Type": "normal"
+            "Proj Data": {
+                "Proj Obj": "Arrow",
+                "Speed": 6,
+                "Proj Type": "normal",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         "Crossbow": {
             "Class": "Archer",
             "AP": 6, 
             "Cooldown": 2,
-            "Speed": 70,
-            "Proj Type": "normal"
+            "Proj Data": {
+                "Proj Obj": "Arrow",
+                "Speed": 6,
+                "Proj Type": "nearest follow",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         
         "Walking Staff": {
             "Class": "Mage",
             "AP": 3, 
-            "Cooldown": 0.3
+            "Cooldown": 0.3,
+            "Proj Data": {
+                "Proj Obj": "Fireball",
+                "Speed": 6,
+                "Proj Type": "boomerang",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         "Amateur Staff": {
             "Class": "Mage",
             "AP": 6, 
-            "Cooldown": 0.3
+            "Cooldown": 0.3,
+            "Proj Data": {
+                "Proj Obj": "Fireball",
+                "Speed": 6,
+                "Proj Type": "mouse follow",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         "Advanced Staff": {
             "Class": "Mage",
             "AP": 9, 
-            "Cooldown": 0.3
+            "Cooldown": 0.3,
+            "Proj Data": {
+                "Proj Obj": "Fireball",
+                "Speed": 6,
+                "Proj Type": "normal",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         "Book of Arcs": {
             "Class": "Mage",
             "AP": 13, 
-            "Cooldown": 0.3
+            "Cooldown": 0.3,
+            "Proj Data": {
+                "Proj Obj": "Arrow",
+                "Speed": 6,
+                "Proj Type": "normal",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         },
         "Lightning Charges": {
             "Class": "Mage",
             "AP": 25, 
-            "Cooldown": 0.3
+            "Cooldown": 0.3,
+            "Proj Data": {
+                "Proj Obj": "Arrow",
+                "Speed": 6,
+                "Proj Type": "normal",
+                "Range": 1000,
+                "End Destroy": true,
+                "Collision Destroy": true
+            }
         }
     },
     
     {
+        "No Shield": {
+            "DP": 0,
+            "Weight": 0
+        },
         "Wooden Shield": {
             "DP": 2,
-            "Speed": 15
+            "Weight": 75
         },
         "Rusty Shield": {
             "DP": 5,
-            "Speed": 50
+            "Weight": 0
         },
         "City Guard's Shield": {
             "DP": 8,
-            "Speed": 20
+            "Weight": 0
         }
     }
 ]

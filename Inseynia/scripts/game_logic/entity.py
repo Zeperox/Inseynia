@@ -17,6 +17,7 @@ class Entity:
 
         self.i_frame_time = 0
         self.i_frame_length = 0.5
+        self.disable_collision = False
 
     def collision_test(self, tiles):
         hit_list = []
@@ -24,6 +25,10 @@ class Entity:
             if self.rect.colliderect(tile):
                 hit_list.append(tile)
         return hit_list
+
+    def projectiles_move(self, tiles, dt, scroll, targeted_entities, mouse_pos=(0, 0)):
+        for projectile in self.projectiles:
+            projectile.move(tiles, dt, self, mouse_pos, scroll, targeted_entities, self.projectiles)
 
     def movement_collision(self, tiles, update_apos=True, update_rect=True):
         collision_types = {"top": False, "bottom": False, "left": False, "right": False}
@@ -54,9 +59,10 @@ class Entity:
         return collision_types
 
     def draw(self, window, scroll=[0, 0]):
-        window.blit(self.entity, (self.x-scroll[0], self.y-scroll[1]))
         for projectile in self.projectiles:
-            projectile.draw()
+            projectile.draw(window, scroll)
+
+        window.blit(self.entity, (self.x-scroll[0], self.y-scroll[1]))
 
     def collision(self, obj):
         return self.rect.colliderect(obj)

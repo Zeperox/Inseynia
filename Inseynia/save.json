@@ -1,0 +1,51 @@
+{
+    "gender": "female",
+    "class": [
+        "Archer",
+        null
+    ],
+    "difficulty": "hard",
+    "name": null,
+    "inventory": [
+        [
+            "Wooden Shield",
+            1
+        ],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        []
+    ],
+    "equipment": [
+        "Fist",
+        "No Shield"
+    ],
+    "stats": {
+        "Health": 10,
+        "Max Health": 10,
+        "Attack": [
+            1,
+            null
+        ],
+        "Defense": 2,
+        "Stamina": 10,
+        "Max Stamina": 10,
+        "Extra Stats": [
+            10,
+            null
+        ],
+        "Max Extra Stats": [
+            10,
+            null
+        ],
+        "Money": 100,
+        "XP": 0,
+        "Level": 1
+    },
+    "location": "Dev Room"
+}

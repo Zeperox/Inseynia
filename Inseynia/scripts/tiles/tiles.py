@@ -1,4 +1,3 @@
-from scripts.assets.sprites import load_image_asset
 import pygame, csv, os; from pygame.locals import *
 from scripts.data.json_functions import load_json
 
@@ -23,7 +22,7 @@ class TileMap:
         self.screen_size = screen_size
         self.tiles = self.load_tiles(filename)
         self.set_spawn(f"{filename.split('.')[0]} spawn.csv")
-        self.map_surface = pygame.Surface((self.map_w, self.map_h))
+        self.map_surface = pygame.Surface((self.w, self.h))
         self.map_surface.set_colorkey((0,0,0))
         self.load_map()
 
@@ -48,14 +47,14 @@ class TileMap:
         self.tile_rects = []
         map = self.read_csv(filename)
 
-        self.map_w, self.map_h = len(map[0])*(self.tile_size*2), len(map)*(self.tile_size*2)
+        self.w, self.h = len(map[0])*(self.tile_size*2), len(map)*(self.tile_size*2)
 
-        if self.screen_size[0] > self.map_w:
-            self.x = (self.screen_size[0]*0.5)-(self.map_w*0.5)
+        if self.screen_size[0] > self.w:
+            self.x = (self.screen_size[0]*0.5)-(self.w*0.5)
         else:
             self.x = 0
-        if self.screen_size[1] > self.map_h:
-            self.y = (self.screen_size[1]*0.5)-(self.map_h*0.5)
+        if self.screen_size[1] > self.h:
+            self.y = (self.screen_size[1]*0.5)-(self.h*0.5)
         else:
             self.y = 0
 
@@ -89,18 +88,16 @@ class TileMap:
             y += 1
     
     def update_map(self, filename, screen_size):
-        print(screen_size, self.screen_size)
         if screen_size != self.screen_size:
-            print("g")
             self.tile_rects = []
             map = self.read_csv(filename)
 
-            if self.screen_size[0] > self.map_w:
-                self.x = (self.screen_size[0]*0.5)-(self.map_w*0.5)
+            if self.screen_size[0] > self.w:
+                self.x = (self.screen_size[0]*0.5)-(self.w*0.5)
             else:
                 self.x = 0
-            if self.screen_size[1] > self.map_h:
-                self.y = (self.screen_size[1]*0.5)-(self.map_h*0.5)
+            if self.screen_size[1] > self.h:
+                self.y = (self.screen_size[1]*0.5)-(self.h*0.5)
             else:
                 self.y = 0
 

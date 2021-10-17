@@ -1,71 +1,51 @@
 import pygame, os
-from pygame.locals import *
+from scripts.data.json_functions import *
 
-def load_image_asset(location_list, Scale=None, Flip=None, Rotate=None, Alpha=False, Convert=False):
-    location = location_list[0]
-    for location_entry in location_list[1:]:
-        location = os.path.join(location, location_entry)
-    if Scale is not None:
-        return pygame.transform.scale(pygame.image.load(location), (Scale))
-    if Flip is not None:
-        return pygame.transform.flip(pygame.image.load(location), (Flip))
-    if Rotate is not None:
-        return pygame.transform.rotate(pygame.image.load(location), (Rotate))
-    if Alpha:
-        return pygame.image.load(location).convert_alpha()
-    if Convert:
-        return pygame.image.load(location).convert()
-    return pygame.image.load(location)
+sprite_data = load_json(["scripts", "data", "sprite data.json"])
 
+paths = []
+def get_files(dir):
+    for root, _, files in os.walk(dir):
+        for file in files:
+            if file.endswith(".png") and not file[:-4].endswith("DL") and not "DL" in root:
+                path = root
+                if "\\" in path:
+                    path += f"\\{file}"
+                    x = "\\"
+                elif "/" in path:
+                    path += f"/{file}"
+                    x = "/"
 
-# Images
-BG = dict()
-BG["Main Menu"] = load_image_asset(["assets", "BG", "Main Menu BG.png"], Convert=True)
+                paths.append(path.split(x))
 
-#logo
-sprites_Logo = dict()
-sprites_Logo["Texaract"] = load_image_asset(["assets", "icon", "Texaract.png"])
+images = {}
+def load_image():
+    global images
+    for path in paths:
+        location = path[0]
+        for location_entry in path[1:]:
+            location = os.path.join(location, location_entry)
 
-#button overlays
-sprites_Buttons = dict()
-sprites_Buttons["Quit NotOver"] = load_image_asset(['assets', 'Buttons', 'QuitNOver.png'])
-sprites_Buttons["Quit Over"] = load_image_asset(['assets', 'Buttons', 'QuitOver.png'])
-sprites_Buttons["Return NotOver"] = load_image_asset(['assets', 'Buttons', 'ReturnNOver.png'])
-sprites_Buttons["Return Over"] = load_image_asset(['assets', 'Buttons', 'ReturnOver.png'])
-sprites_Buttons["Settings NotOver"] = load_image_asset(['assets', 'Buttons', 'SettingsNOver.png'])
-sprites_Buttons["Settings Over"] = load_image_asset(['assets', 'Buttons', 'SettingsOver.png'])
-sprites_Buttons["Resume NotOver"] = load_image_asset(['assets', 'Buttons', 'ResumeNOver.png'])
-sprites_Buttons["Resume Over"] = load_image_asset(['assets', 'Buttons', 'ResumeOver.png'])
-sprites_Buttons["Resol Next"] = load_image_asset(["assets", "Buttons", "Next Resol.png"], Convert=True)
-sprites_Buttons["Resol Previous"] = load_image_asset(["assets", "Buttons", "Previous Resol.png"], Convert=True)
+        img = pygame.image.load(location)
 
-#story
-sprites_Story_Photoes = dict()
-sprites_Story_Photoes['S1'] = load_image_asset(['assets', 'Sprites', 'Story', 'S1.png'], Convert=True)
+        for key, value in sprite_data[path[-1][:-4]].items():
+            if key == "flip":
+                img = pygame.transform.flip(img, value[0], value[1])
+            elif key == "scale":
+                if type(value) == tuple:
+                    img = pygame.transform.scale(img, value)
+                elif type(value) == int or type(value) == float:
+                    img = pygame.transform.scale(img, (img.get_width()*value, img.get_height()*value))
+            elif key == "rotate":
+                img = pygame.transform.rotate(img, value)
+            elif key == "alpha":
+                img.convert_alpha()
+            elif key == "convert":
+                img.convert()
+                if value:
+                    img.set_colorkey(tuple(value))
+        
+        images[path[-1][:-4]] = img
 
-
-# Sprites
-#inv
-sprites_Equipment = dict()
-sprites_Equipment['Wooden Sword'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Wooden Sword.png'], (48, 48))
-sprites_Equipment['No Shield'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'No Shield.png'], (48, 48))
-sprites_Equipment['Crossbow'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Crossbow.png'], (48, 48))
-sprites_Equipment['Wooden Bow'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Crossbow.png'], (48, 48))
-sprites_Equipment['Wooden Shield'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Wooden Shield.png'], (48, 48))
-sprites_Equipment['ph1'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'ph1.png'])
-sprites_Equipment['ph2'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'ph2.png'])
-sprites_Equipment['ph3'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'ph3.png'])
-sprites_Equipment['ph4'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'ph4.png'])
-sprites_Equipment['Fist'] = load_image_asset(['assets', 'Sprites', 'Arsenal & Tools', 'Fist.png'], (48, 48))
-
-#misc
-sprites_Misc = dict()
-sprites_Misc['Inventory Slot'] = load_image_asset(['assets', 'Sprites', 'Misc', 'Inventory Slot.png'])
-
-#projectiles
-sprites_Proj = dict()
-sprites_Proj["Arrow"] = load_image_asset(["assets", "Sprites", "Arsenal & Tools", "Arrow.png"], (33, 33))
-
-#test enemy
-sprites_Enemies = dict()
-sprites_Enemies["Test Enemy"] = load_image_asset(["assets", "Sprites", "Enemies", "Test Enemy.png"])
+get_files("assets")
+load_image()
