@@ -2,15 +2,12 @@
     "gender": "female",
     "class": [
         "Archer",
-        null
+        "Mage"
     ],
     "difficulty": "hard",
-    "name": null,
+    "name": "Akesta",
     "inventory": [
-        [
-            "Wooden Shield",
-            1
-        ],
+        [],
         [],
         [],
         [],
@@ -23,6 +20,7 @@
     ],
     "equipment": [
         "Fist",
+        "Fist",
         "No Shield"
     ],
     "stats": {
@@ -30,18 +28,18 @@
         "Max Health": 10,
         "Attack": [
             1,
-            null
+            1
         ],
         "Defense": 2,
         "Stamina": 10,
         "Max Stamina": 10,
         "Extra Stats": [
             10,
-            null
+            10
         ],
         "Max Extra Stats": [
             10,
-            null
+            10
         ],
         "Money": 100,
         "XP": 0,

@@ -6,7 +6,7 @@ pygame.display.init()
 
 try:
     settings = load_json(["scripts", "data", "settings.json"])
-except:
+except FileNotFoundError:
     settings = {
         "FPS": 60,
         "Fullscreen": True,
@@ -19,7 +19,9 @@ except:
             "Throw": 113,
             "Equip": 101,
             "Switch": 114,
-            "Pause": 27
+            "Pause": 27,
+            "Roll": 32,
+            "Dash": 1073742049
         },
         "Brightness": 0,
         "Permadeath Enabled": False,
