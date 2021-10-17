@@ -78,9 +78,9 @@
   <li>Added polygon collisions</li>
   <li>Updated the credits</li>
   <li>Improved text rendering (it used to be a massive performance bottleneck)
-  <li>Added a boss (it has 2 stages, stage 1 has 3 attacks and stage 2 has 6 attacks in total... and the game became a bullet-hell :))
+  <li>Added a boss (it has 2 phases, phase 1 has 3 attacks and phase 2 has 6 attacks in total... and the game became a bullet-hell :))
   <li>Improved inventory rendering, making it less of a bottleneck for performance</li>
-  <li><strong>Known Issues:</strong> 1) You can still teleport when you press a movement key in the pause menu. 2) projectiles don't change their rotations when they have to (I tried to fix it bug it caused an uncontrollable lag)</li>
+  <li><strong>Known Issues:</strong> 1) You can still teleport when you press a movement key in the pause menu. 2) projectiles don't change their rotations when they have to (I tried to fix it but it caused an uncontrollable lag)</li>
 </ul>
 <h3>Dev 1.4.2</h3>
 <ul>
