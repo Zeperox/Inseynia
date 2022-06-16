@@ -1,6 +1,10 @@
 try:
     # python -m cProfile -m main.py >> output.txt
 
+    # Create the cache folder in case it's missing
+    if "cache" not in os.listdir("scripts"):
+        os.mkdir(os.path.join("scripts", "cache"))
+
     # Import modules
     import pygame, sys, os, random, time, platform, warnings
 
