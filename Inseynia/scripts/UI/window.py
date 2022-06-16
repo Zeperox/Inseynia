@@ -1,6 +1,24 @@
-import pygame, platform
+import pygame, os, json, random, sys
+
 from pygame.locals import *
-from scripts.data.json_functions import *
+try:
+    from scripts.loading.json_functions import load_json, dump_json
+except ModuleNotFoundError:
+    def load_json(location_list):
+        location = location_list[0]
+        for location_entry in location_list[1:]:
+            location = os.path.join(location, location_entry)
+
+        with open(location, "r") as f:
+            return json.load(f)
+
+    def dump_json(location_list, var):
+        location = location_list[0]
+        for location_entry in location_list[1:]:
+            location = os.path.join(location, location_entry)
+
+        with open(location, "w") as f:
+            json.dump(var, f, indent=4)
 
 pygame.display.init()
 
@@ -10,18 +28,14 @@ except FileNotFoundError:
     settings = {
         "FPS": 60,
         "Fullscreen": True,
-        "Resol": None,
         "Keys": {
-            "Up": 119,
-            "Down": 115,
-            "Right": 100,
-            "Left": 97,
-            "Throw": 113,
-            "Equip": 101,
-            "Switch": 114,
-            "Pause": 27,
-            "Roll": 32,
-            "Dash": 1073742049
+            "Up": K_w,
+            "Down": K_s,
+            "Left": K_a,
+            "Right": K_d,
+            "Dash": K_SPACE,
+            "Inventory": K_TAB,
+            "Pause": K_ESCAPE
         },
         "Brightness": 0,
         "Permadeath Enabled": False,
@@ -33,23 +47,88 @@ except FileNotFoundError:
 
     dump_json(["scripts", "data", "settings.json"], settings)
 
-fullscreen = settings["Fullscreen"]
-resol = tuple(settings["Resol"]) if settings["Resol"] else None
-if not "Volumes" in settings.keys():
-    settings["Volumes"] = {"Music": 1, "SFX": 1}
-    dump_json(["scripts", "data", "settings.json"], settings)
-
-# Screen
 info = pygame.display.Info()
-screen_w, screen_h = info.current_w, info.current_h
-if not resol:
-    Width, Height = screen_w, screen_h
-else:
-    Width, Height = resol[0], resol[1]
+Width, Height = 1280, 720
 
-old_Width, old_Height = Width, Height
-
-if fullscreen and platform.system() == "Windows":
-    win = pygame.display.set_mode((Width, Height), FULLSCREEN | DOUBLEBUF | HWSURFACE | SCALED)
+if settings["Fullscreen"]:
+    win = pygame.display.set_mode((Width, Height), DOUBLEBUF | HWSURFACE | SCALED)
 else:
     win = pygame.display.set_mode((Width, Height), DOUBLEBUF | HWSURFACE | SCALED)
+
+if random.randint(0, 1000) == 1:
+    with open("Crash Report.txt", "w") as f:
+        text = random.choice([
+            "The game crashed",
+            "It do be crashin' doe",
+            "Have you tried reopening the game?",
+            "Exited with code 0",
+            "Crash Report\n\nReason of crash: idk ¯\_(ツ)_/¯",
+            "You were too beautiful that the game got so shy and jealous that it crashed... sorry",
+            "'|, |, :|° '|, '\\' ¯---_ ¯---_ == has caused it",
+            "Uhhh... What happened?",
+            "Delete System32 to grant access to the game",
+            "This crash has a chance of 0.1% chance of happening, do I consider you lucky or unlucky?"
+        ])
+        f.write(text)
+        pygame.quit()
+        sys.exit()
+
+jsons = [
+    [load_json(["scripts", "data", "captions.json"]), "captions.json"],
+    [load_json(["scripts", "data", "enemies.json"]), "enemies.json"],
+    [load_json(["scripts", "data", "equipment.json"]), "equipment.json"],
+    [load_json(["scripts", "data", "IDs.json"]), "IDs.json"],
+    [load_json(["scripts", "data", "items.json"]), "items.json"],
+    [load_json(["scripts", "data", "rooms.json"]), "rooms.json"],
+    [load_json(["scripts", "data", "sprite data.json"]), "sprite data.json"]
+]
+for mod in os.scandir(os.path.join("mods")):
+    if mod.is_dir():
+        try:
+            for i, file in enumerate(os.scandir(os.path.join("mods", mod.name, "scripts", "data"))):
+                if file.is_file() and file.name.endswith(".json"):
+                    if i not in [0, 2, 3]:
+                        jsons[i][0].update(load_json(["mods", mod.name, "scripts", "data", jsons[i][1]]))
+                    elif i == 0:
+                        jsons[i][0] += load_json(["mods", mod.name, "scripts", "data", jsons[i][1]])
+        except:
+            continue
+for json_file in jsons:
+    dump_json(["scripts", "cache", json_file[1]], json_file[0])
+
+captions = load_json(["scripts", "cache", "captions.json"])
+try:
+    i = captions.remove("This caption will never appear, isn't that weird?")
+    captions.append("This caption will never appear, isn't that weird?")
+except:
+    pass
+
+randcaption = random.choice(captions[:-1])
+
+if randcaption == "騙你":
+    pygame.display.set_caption(f"印西尼亞: {randcaption}") # yinxi ni ya
+elif randcaption == "Welcome, ":
+    randcaption += os.getlogin()
+    pygame.display.set_caption(f"Inseynia: {randcaption}")
+elif randcaption == "Opposite of Inseynia":
+    pygame.display.set_caption(f"Calmia: {randcaption}")
+elif randcaption == "نَاْوْ إِنْ أَرَبِكْ":
+    pygame.display.set_caption(f"إنسينيا: {randcaption}")
+elif randcaption == "なお イン じゃぱねせ":
+    pygame.display.set_caption(f"いんせいにあ: {randcaption}")
+elif randcaption == "¯\_(ツ)_/¯":
+    pygame.display.set_caption(randcaption)
+elif randcaption == "flip":
+    pygame.display.set_caption(f"Inseynia | ainyesnI")
+else:
+    pygame.display.set_caption(f"Inseynia: {randcaption}")
+
+'''icon = pygame.image.load("icon.ico")
+pygame.display.set_icon(icon)'''
+
+
+if __name__ == "__main__":
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                quit()

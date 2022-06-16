@@ -89,8 +89,8 @@ class OBB:
     def colliderect(self, rect) -> bool:
         return self.collideobb(OBB.from_rect(rect))
 
-def draw_obb(display, color, obb, scroll):
-    pygame.draw.lines(display, color, True, [obb.topleft-scroll, obb.topright-scroll, obb.bottomright-scroll, obb.bottomleft-scroll])
+    def draw_obb(self, display, color, scroll):
+        pygame.draw.lines(display, color, True, [self.topleft-scroll, self.topright-scroll, self.bottomright-scroll, self.bottomleft-scroll])
 
 if __name__ == "__main__":
     pygame.init()
@@ -125,7 +125,7 @@ if __name__ == "__main__":
             col = pygame.Color("black")
 
         screen.fill(pygame.Color("white"))
-        draw_obb(screen, col, sq1)
-        draw_obb(screen, col, sq2)
+        sq1.draw_obb(screen, col)
+        sq2.draw_obb(screen, col)
         pygame.display.flip()
         clock.tick(60)

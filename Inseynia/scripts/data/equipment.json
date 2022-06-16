@@ -1,178 +1,50 @@
 [
-    {
-        "Fist": {
-            "Class": null,
-            "AP": 1,
-            "Cooldown": 0.1
-        },
+    [
+        "Wooden Halfbow",
+        "Wooden Bow",
+        "Steel Halfbow",
+        "Crossbow",
         
-        "Wooden Sword": {
-            "Class": "Swordsman",
-            "AP": 3, 
-            "Cooldown": 0.3,
-            "Proj": false
-        },
-        "Rusty Dagger": {
-            "Class": "Swordsman",
-            "AP": 5, 
-            "Cooldown": 0.3,
-            "Proj": false
-        },
-        "Rusty Sword": {
-            "Class": "Swordsman",
-            "AP": 10, 
-            "Cooldown": 0.3,
-            "Proj": false
-        },
-        "Spear": {
-            "Class": "Swordsman",
-            "AP": 12, 
-            "Cooldown": 0.3,
-            "Proj": false
-        },
-        "Steel Scimitar": {
-            "Class": "Swordsman",
-            "AP": 15, 
-            "Cooldown": 0.3,
-            "Proj": false
-        },
-        
-        "Wooden Halfbow": {
-            "Class": "Archer",
-            "AP": 2,
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Arrow",
-                "Speed": 6,
-                "Proj Type": "normal",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        "Wooden Bow": {
-            "Class": "Archer",
-            "AP": 4,
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Arrow",
-                "Speed": 6,
-                "Proj Type": "normal",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        "Steel Halfbow": {
-            "Class": "Archer",
-            "AP": 7, 
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Arrow",
-                "Speed": 6,
-                "Proj Type": "normal",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        "Crossbow": {
-            "Class": "Archer",
-            "AP": 6, 
-            "Cooldown": 2,
-            "Proj Data": {
-                "Proj Obj": "Arrow",
-                "Speed": 6,
-                "Proj Type": "nearest follow",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        
-        "Walking Staff": {
-            "Class": "Mage",
-            "AP": 3, 
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Fireball",
-                "Speed": 6,
-                "Proj Type": "boomerang",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        "Amateur Staff": {
-            "Class": "Mage",
-            "AP": 6, 
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Fireball",
-                "Speed": 6,
-                "Proj Type": "mouse follow",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        "Advanced Staff": {
-            "Class": "Mage",
-            "AP": 9, 
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Fireball",
-                "Speed": 6,
-                "Proj Type": "normal",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        "Book of Arcs": {
-            "Class": "Mage",
-            "AP": 13, 
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Arrow",
-                "Speed": 6,
-                "Proj Type": "normal",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        },
-        "Lightning Charges": {
-            "Class": "Mage",
-            "AP": 25, 
-            "Cooldown": 0.3,
-            "Proj Data": {
-                "Proj Obj": "Arrow",
-                "Speed": 6,
-                "Proj Type": "normal",
-                "Range": 1000,
-                "End Destroy": true,
-                "Collision Destroy": true
-            }
-        }
-    },
+        "Walking Staff",
+        "Amateur Staff",
+        "Advanced Staff",
+        "Book of Arcs",
+        "Lightning Charge"
+    ],
     
     {
         "No Shield": {
-            "DP": 0,
-            "Weight": 0
+            "ricochet": false,
+            "rico speed": 0,
+            "rico dist": 0
         },
         "Wooden Shield": {
-            "DP": 2,
-            "Weight": 75
+            "ricochet": true,
+            "rico speed": 3,
+            "rico dist": 4
         },
         "Rusty Shield": {
-            "DP": 5,
-            "Weight": 0
+            "ricochet": false,
+            "rico speed": 0.5,
+            "rico dist": 4
         },
         "City Guard's Shield": {
-            "DP": 8,
-            "Weight": 0
+            "ricochet": false,
+            "rico speed": 0.5,
+            "rico dist": 4
+        }
+    },
+
+    {
+        "No Armor": {
+            "dp": 0,
+            "weight": 0,
+            "knockback resistence": 0
+        },
+        "Leather Armor": {
+            "dp": 20,
+            "weight": 40,
+            "knockback resistence": 50
         }
     }
 ]

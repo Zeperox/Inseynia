@@ -1,0 +1,44 @@
+{
+    "Tiles": {
+        "DevRoom": [
+            "Spawn",
+            ["assets/SPRITES/tilesDL/Dev Room/floor1.png", false],
+            ["assets/SPRITES/tilesDL/Dev Room/wall1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallD1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallDL1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallDR1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallL1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallR1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallU1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallUL1.png", true],
+            ["assets/SPRITES/tilesDL/Dev Room/wallUR1.png", true]
+        ],
+        "House": [
+            "Spawn",
+            ["assets/SPRITES/tilesDL/House/Floor.png", false],
+            ["assets/SPRITES/tilesDL/House/WallR.png", true],
+            ["assets/SPRITES/tilesDL/House/WallU.png", true],
+            ["assets/SPRITES/tilesDL/House/WallL.png", true],
+            ["assets/SPRITES/tilesDL/House/WallD.png", true],
+            ["assets/SPRITES/tilesDL/House/Inner-CornerRD.png", true],
+            ["assets/SPRITES/tilesDL/House/Inner-CornerLD.png", true],
+            ["assets/SPRITES/tilesDL/House/Inner-CornerRU.png", true],
+            ["assets/SPRITES/tilesDL/House/Inner-CornerLU.png", true],
+            ["assets/SPRITES/tilesDL/House/Outer-CornerRD.png", true],
+            ["assets/SPRITES/tilesDL/House/Outer-CornerLD.png", true],
+            ["assets/SPRITES/tilesDL/House/Outer-CornerRU.png", true],
+            ["assets/SPRITES/tilesDL/House/Outer-CornerLU.png", true]
+        ]
+    },
+    "Items": [
+        "Wooden Bow",
+        "Walking Staff",
+        "Wooden Shield",
+        "Crossbow",
+        "Amateur Staff",
+        "Leather Armor"
+    ],
+    "Enemies": [
+        "Test Enemy"
+    ]
+}

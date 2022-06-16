@@ -1,0 +1,46 @@
+{
+    "classes": [
+        "Archer",
+        null
+    ],
+    "name": "John Cena",
+    "difficulty": "Normal",
+    "inventory": [],
+    "equipment": [
+        "No Primary",
+        "No Shield",
+        "No Armor"
+    ],
+    "stats": {
+        "HP": [
+            10,
+            10
+        ],
+        "SP": [
+            10,
+            10
+        ],
+        "AP": [
+            0,
+            null
+        ],
+        "DP": 0,
+        "EP": [
+            [
+                10,
+                10
+            ],
+            [
+                null,
+                null
+            ]
+        ],
+        "M": 100,
+        "XP": [
+            0,
+            3,
+            1
+        ]
+    },
+    "location": "DevRoom"
+}

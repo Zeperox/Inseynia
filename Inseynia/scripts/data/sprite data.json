@@ -1,73 +1,100 @@
 {
-    "Main Menu BG": {},
-    "SettingsNOver": {},
-    "SettingsOver": {},
-    "ResumeNOver": {},
-    "ResumeOver": {},
-    "QuitNOver": {},
-    "QuitOver": {},
-    "ReturnNOver": {},
-    "ReturnOver": {},
-    "Next Resol": {},
-    "Previous Resol": {},
-    "Wooden Sword": {
+    "hf": {
+        "scale": 2
+    },
+    "he": {
+        "scale": 2
+    },
+    "lf": {
+        "scale": 2
+    },
+    "le": {
+        "scale": 2
+    },
+    "mf": {
+        "scale": 2
+    },
+    "me": {
+        "scale": 2
+    },
+    "pf": {
+        "scale": 2
+    },
+    "pe": {
+        "scale": 2
+    },
+    "sf": {
+        "scale": 2
+    },
+    "se": {
+        "scale": 2
+    },
+    "ap": {
+        "scale": 2
+    },
+    "dp": {
+        "scale": 2
+    },
+    "money": {
+        "scale": 2
+    },
+    "Texaract": {
+        "convert": [0, 0, 0]
+    },
+
+    "Inventory Slot": {
+        "scale": 2
+    },
+    "Main Menu BG": {
+        "convert": null
+    },
+    
+    "S1": {
+        "convert": null
+    },
+
+
+    "Amateur Staff": {
+        "scale": 2
+    },
+    "Arrow": {
+        "scale": 3
+    },
+    "Spirit": {
+        "scale": 2
+    },
+    "Fireball": {
         "scale": 2
     },
     "Crossbow": {
         "scale": 2
     },
-    "Wooden Shield": {
+    "Leather Armor": {
         "scale": 2
     },
-    "Wooden Bow": {
+    "No Armor": {
+        "scale": 2
+    },
+    "No AWeapon": {
+        "scale": 2
+    },
+    "No MWeapon": {
+        "scale": 2
+    },
+    "No Shield": {
         "scale": 2
     },
     "Walking Staff": {
         "scale": 2
     },
-    "Amateur Staff": {
-        "scale": 2
-    },
+    
     "Test Enemy": {
         "convert": null
     },
-    "S1": {
-        "convert": null
-    },
-    "Inventory Slot": {},
-    "Ranged Enemy": {
-        "convert": null
-    },
-    "Heart": {},
-    "Stamina": {},
-    "Projectile": {},
-    "Mana": {},
-    "Attack": {},
-    "Defense": {},
-    "Level": {},
-    "Money": {},
-    "Player Data": {},
-    "Big Eye": {
-        "scale": 5
-    },
-    "Big Eye 2": {
-        "scale": 5
-    },
-    "Texaract": {
-        "convert": [0, 0, 0]
-    },
-    "Arrow": {
-        "scale": 3
-    },
-    "Fireball": {
+    "Wooden Bow": {
         "scale": 2
     },
-    "Fist": {},
-    "No Shield": {
+    "Wooden Shield": {
         "scale": 2
-    },
-    "ph1": {},
-    "ph2": {},
-    "ph3": {},
-    "ph4": {}
+    }
 }

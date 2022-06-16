@@ -1,63 +1,110 @@
 import pygame
 from pygame.locals import *
 
+from .text import Text
+
 class Button:
-    def __init__(self, x, y, width, height, color=(0,0,0), text="", text_color=(255,255,255),
-        outline=None, outline_thickness=2, font_path=None, font_size=None
+    def __init__(self, x: int, y: int, width: int, height: int, color: tuple[int, int, int]=None, text: str="", text_color: tuple[int, int, int]=(255,255,255),
+        outline: tuple[int, int, int]=None, outline_thickness: int=2, font_path: str=None, font_size: int=None, change_width: bool = True
     ):
         self.x = x
         self.y = y
+        self.height = height
+        self._color = color
+
         self.width = width
         self.width_init = width
-        self.height = height
-        self.color = color
+        self.change_width = change_width
 
-        self.text = text
-        self.text_color = text_color
+        self.surf = pygame.Surface((width+1, height+1), SRCALPHA)
+        self._outline = outline
+        self._outline_thickness = outline_thickness
 
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
-
-        self.surf = pygame.Surface((width+1, height+1))
-        self.outline = outline
-        self.outline_thickness = outline_thickness
-        self.font_path = font_path
-        self.font_size = font_size
+        font_size = self.height*0.5 if not font_size else font_size
+        if text:
+            self.text = Text(font_path, text, font_size, text_color)
+        else:
+            self.text = None
 
         self.update_surf()
         
     def update_surf(self):
-        self.surf.fill(self.color)
-        if self.outline:
-            pygame.draw.rect(self.surf, self.outline, (0, 0, self.width, self.height), self.outline_thickness)
+        if self.text:
+            if self.change_width:
+                if self.text.width > self.width_init:
+                    self.width = self.text.width
+                else:
+                    self.width = self.width_init
+
+        self.surf = pygame.Surface((self.width+1, self.height+1), SRCALPHA)
+        if self._color:
+            self.surf.fill(self._color)
+        if self._outline:
+            pygame.draw.rect(self.surf, self._outline, (0, 0, self.width, self.height), self._outline_thickness)
 
         if self.text:
-            try:
-                button_font = pygame.font.Font(self.font_path, self.font_size) if self.font_size else pygame.font.Font(self.font_path, int(self.height*0.5))
-            except FileNotFoundError:
-                button_font = pygame.font.SysFont(self.font_path, self.font_size) if self.font_size else pygame.font.SysFont(self.font_path, int(self.height*0.5))
-            button_label = button_font.render(self.text, 1, self.text_color)
-            if button_label.get_width() > self.width_init:
-                self.width = button_label.get_width()
-            else:
-                self.width = self.width_init
-            self.surf.blit(button_label, (self.width*0.5 - button_label.get_width()*0.5, self.height*0.5 - button_label.get_height()*0.5))
+            self.text.render(self.surf, (self.width*0.5 - self.text.width*0.5, self.height*0.5 - self.text.height*0.5))
 
-    def draw(self, window):
-        window.blit(self.surf, (self.x, self.y))
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
-    def isOver(self, pos):
+    def draw(self, win: pygame.Surface, scroll: list[int, int]=[0, 0]):
+        win.blit(self.surf, (self.x-scroll[0], self.y-scroll[1]))
+
+    def is_over(self, pos):
         return self.rect.collidepoint(pos)
 
-    def change_color(self, color=None, text_color=None):
-        if color != self.color and color is not None:
-            self.color = color
-            self.update_surf()
-        if text_color != self.text_color and text_color is not None:
-            self.text_color = text_color
-            self.update_surf()
 
-    def change_text(self, text):
-        if text != self.text:
-            self.text = text
-            self.update_surf()
-            
+    @property
+    def color(self):
+        return self._color
+
+    @color.setter
+    def color(self, color):
+        self._color = color if color != "None" else None
+        self.update_surf()
+
+    @property
+    def outline(self):
+        return self._outline
+
+    @outline.setter
+    def outline(self, outline_color):
+        self._outline = outline_color if outline_color != "None" else None
+        self.update_surf()
+
+    @property
+    def text_content(self):
+        return self.text.content
+
+    @text_content.setter
+    def text_content(self, text):
+        self.text.content = text
+        self.update_surf()
+
+
+if __name__ == "__main__":
+    win = pygame.display.set_mode((800, 600))
+    pygame.init()
+    button = Button(200, 200, 400, 200, (0, 0, 0), "click me", (255,255,255), (255,255,255), 2, None, 32)
+    while True:
+        button.draw(win)
+        mpos = pygame.mouse.get_pos()
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                quit()
+
+            if event.type == MOUSEMOTION:
+                if button.is_over(mpos):
+                    button.color = (255, 255, 255)
+                    button.text.color = (0, 0, 0)
+                else:
+                    button.color = (0, 0, 0)
+                    button.text.color = (255, 255, 255)
+
+            if event.type == MOUSEBUTTONDOWN:
+                if button.is_over(mpos):
+                    print("click")
+
+        pygame.display.flip()
+        

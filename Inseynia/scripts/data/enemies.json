@@ -1,29 +1,24 @@
 {
     "Test Enemy": {
-        "Health": 20,
-        "Max Health": 20,
-        "Attack": 1,
-        "Defense": 0,
-        "Speed": 2,
-        "View Radius": 250,
-        "Unview Follow Time": 0.5
+        "health": 20,
+        "attack": 1,
+        "defense": 0,
+        "speed": 1,
+        "knockback resistence": 0,
+        "view": [45, 100],
+        "suspicious view": [65, 300],
+        "AI": "Follower",
+        "animations": ["idle"]
     },
-    "Ranged Enemy": {
-        "Health": 20,
-        "Max Health": 20,
-        "Attack": 1,
-        "Defense": 0,
-        "Speed": 2,
-        "View Radius": 500,
-        "Unview Follow Time": 0.5
-    },
-    "Big Eye": {
-        "Health": 50,
-        "Max Health": 50,
-        "Attack": 3,
-        "Defense": 0,
-        "Speed": 4,
-        "View Radius": 100000,
-        "Unview Follow Time": 0
+    "Ekreta Tree": {
+        "health": 200,
+        "attack": 5,
+        "defense": 10,
+        "speed": 4,
+        "knockback resistence": 100,
+        "view": [360, 100000],
+        "suspicious view": [0, 0],
+        "AI": "Ekreta Tree",
+        "animations": ["idle"]
     }
 }

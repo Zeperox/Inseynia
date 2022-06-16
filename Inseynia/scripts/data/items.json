@@ -1,34 +1,42 @@
 {
-    "Crossbow": {
+    "Amateur Staff": {
         "sell": 100,
-        "stack": 1
+        "tooltip": "Test\nHiAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    "Crossbow": {
+        "sell": 65,
+        "tooltip": "Test\nHi"
+    },
+    "Leather Armor": {
+        "sell": 100,
+        "tooltip": "Weak but feels comfy, allows for more breathing space"
+    },
+    "No Armor": {
+        "sell": 0,
+        "tooltip": ""
+    },
+    "No Primary": {
+        "sell": 0,
+        "tooltip": ""
+    },
+    "No Secondry": {
+        "sell": 0,
+        "tooltip": ""
+    },
+    "No Shield": {
+        "sell": 0,
+        "tooltip": ""
+    },
+    "Walking Staff": {
+        "sell": 50,
+        "tooltip": "Test\nHi"
     },
     "Wooden Bow": {
-        "sell": 65,
-        "stack": 1
-    },
-    "Wooden Sword": {
         "sell": 50,
-        "stack": 1
+        "tooltip": "Test\nHi"
     },
     "Wooden Shield": {
         "sell": 50,
-        "stack": 1
-    },
-    "ph1": {
-        "sell": 50,
-        "stack": 100
-    },
-    "ph2": {
-        "sell": 50,
-        "stack": 100
-    },
-    "ph3": {
-        "sell": 50,
-        "stack": 100
-    },
-    "ph4": {
-        "sell": 50,
-        "stack": 100
+        "tooltip": "Test\nHi"
     }
 }
