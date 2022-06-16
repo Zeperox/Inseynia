@@ -1,16 +1,14 @@
 try:
-    # python -m cProfile -m main.py >> output.txt
-
-    # Create the cache folder in case it's missing
-    if "cache" not in os.listdir("scripts"):
-        os.mkdir(os.path.join("scripts", "cache"))
-
     # Import modules
     import pygame, sys, os, random, time, platform, warnings
 
     from pygame.locals import *
     from pypresence import Presence
 
+    # Create the cache folder in case it's missing
+    if "cache" not in os.listdir("scripts"):
+        os.mkdir(os.path.join("scripts", "cache"))
+    
     # Import Scripts
     from scripts.UI.window import settings, Width, Height, win
 
