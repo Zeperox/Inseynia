@@ -7,8 +7,122 @@
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
 <lr></lr>
 <h1>Change Logs</h1>
-<h2>Dev 1.5 (Combat Update)</h2>
-<h3>Additions</h3>
+<h2>Dev 1.6 (Overwrite)</h2>
+<h3>Additions/Removals</h3>
+<ul>
+  <li>Added tile, drop, and enemy IDs</li>
+  <li>Added drop map and loading drops from the map</li>
+  <li>Added enemy map and loading enemies from the map</li>
+  <li>Added animation support to entities</li>
+  <li>Added a special menu of save selection</li>
+  <li>Added the ability to have up to 3 standalone saves</li>
+  <li>Added a functional SFX slider (there aren't any sound effects yet though)</li>
+  <li>Removed standalone enemy classes</li>
+  <li>Added AI classes to group enemies</li>
+  <li>Removed inventory hotbar</li>
+  <li>Added inventory menu, which contains your inventory, your equipment, your stats, and a map (map isn't done yet)</li>
+  <li>Removed stackable items</li>
+  <li>Removed resolution setting, now it is hard-set to 1280x720 (programming the game was harder and tons of sprites broke when using different resolutions)</li>
+  <li>Added item tooltip</li>
+  <li>Added music room</li>
+  <li>Added a song that I... totally didn't steal from cthethan</li>
+  <li>Removed melee combat</li>
+  <li>Removed rolling, leaving only dashes to use to avoid</li>
+  <li>Added the ability for an enemy's projectile to hit other enemies</li>
+  <li>Added the ability for certain projectiles to stick to the wall or "fall" to the ground</li>
+  <li>Added a new dedicated slot for armor equipment</li>
+  <li>Removed the second weapon slot</li>
+  <li>Added secondry slot, which could either hold a shield or, if you have 2 classes, a second weapon (basically if you wanna be offensive then you gotta sacrifice using the shield)</li>
+  <li>Shields no longer account for you defense and your weight</li>
+  <li>Added the ability to stop projectiles when holding your shield</li>
+  <li>Added the ability to cause projectiles to ricochet if you hold your shield at the correct timing (each shield has a different ricochet speed and distance)</li>
+  <li>Added a small miniboss, called Ekreta Tree</li>
+  <li>Removed Big Eye boss</li>
+  <li>Removed Fist</li>
+  <li>Added "No Archer Weapon", "No Mage Weapon", and "No Armor" sprites</li>
+  <li>Changed how entities are drawn so that they look like as if they're behind or infront of a wall (looks wonky because of the art but once that's fixed it should look good)</li>
+  <li>Added the ability to pick up thrown projectiles</li>
+  <li>Added an error popup whenever the game crashes</li>
+  <li>Removed charged attacks (could be brought back though)</li>
+  <li>Added piercing projectiles</li>
+  <li>Added a new random caption</li>
+  <li>Added the ability to delete saves</li>
+  <li>Removed story intro (might be brought back though)</li>
+  <li>Added the ability for certain weapons to auto-fire</li>
+  <li>Added knockback</li>
+  <li>Added knockback resistence tag for enemies and armor</li>
+  <li>Added the ability to chain dashes if timed right</li>
+  <li>Added the ability to regain mana</li>
+  <li>Added a knockback power tag to projectiles</li>
+  <li>Added .py files for each weapon</li>
+</ul>
+<h3>Changes/Improvements</h3>
+<ul>
+  <li>Improved map loading</li>
+  <li>Changed dash input to spacebar</li>
+  <li>Revamped inventory (it was extremely similar to survival games)</li>
+  <li>Changed text system from .ttf based to .png based</li>
+  <li>Text rendering is now much faster</li>
+  <li>Changed font</li>
+  <li>Improved player movement and made it even smoother (it used to be kinda choppy before)</li>
+  <li>Completely redid the menus</li>
+  <li>Optimized sliders</li>
+  <li>Changed from stat bars to stat icons and numbers</li>
+  <li>Completely changed how the player interacts with the inventory (hover over item with mouse to select it, use left click to equip/unequip or use right click to throw)</li>
+  <li>Updated a bunch of sprites</li>
+  <li.Changed how FPS works since it turned out to be broken</li>
+  <li>Made projectiles independent of the shooter (meaning if the shooter dies the projectile won't "die" with him)</li>
+  <li>Changed projectile's travel length to time-based rather than distance based</li>
+  <li>Heavily improved enemy point-of-view, now it isn't a rectangle and you can hide behind walls to ambush them</li>
+  <li>Heavily improved enemy AI (bound to change)
+    <ul>
+      <li>Added 4 AI phases: wander, suspicious, alert, and lookout
+        <ul>
+          <li>Wander: the enemy moves around its current location</li>
+          <li>Suspicious: the enemy moves towards the player slowly once the player enters its suspicion fov, and after a certain amount of time it will be alert</li>
+          <li>Alert: the enemy aggresively charges at the player and starts attacking once the player enters its alert fov or has been in its suspicion fov for a while, its alert point-of-view will also massively increase, covering the suspicion fov</li>
+          <li>the enemy goes to your last known location and looks for you, if it couldn't find you then it will go back to wandering</li>
+        </ul></il>
+      <li>Hitting an enemy will cause it to look where it was hit, which also increases its alert point-of-view</li>
+    </ul></il>
+  <il>Heavily improved the debug mode's performance (used to take away up to 70% of the FPS)</li>
+  <li>Separated between shield and armor</li>
+  <li>Updated the "No Shield" sprite</li>
+  <li>Heavily improved mod support
+    <ul>
+      <li>Added the ability to play with multiple mods</li>
+      <li>Added the ability to write down your own AI and add it to the game</li>
+      <li>Added the ability to compose your own music and add it to the game</li>
+      <li>Added the ability to add your own maps to the game</li>
+    </ul></li>
+  <li>Changed dashing from being player movement direction based to mouse position based</li>
+  <li>Improved textbox rendering</li>
+  <li>Changed FPS slider to only increase by increments of 5</li>
+  <li>Improved how menus are linked together</li>
+  <li>Improved camera</li>
+  <li>Optimized collision detection</li>
+  <li>Improved image loading</li>
+  <li>Replaced "end destroy" and "wall destroy" projectile tags with "end stick" and "wall stick"</li>
+  <li>Changed weapon data from being stored in a json to being stored in .py files</li>
+  <li>Made the wooden bow shoot 5 arrows (temporary change, just for testing the new weapon code capabilities)</li>
+  <li>Changed the stats of some weapons</li>
+  <li>Improved button, slider, and textbox backend code</li>
+  <li>Updated credits</li>
+</ul>
+<h3>Bug Fixes</h3>
+<ul>
+  <li>Fixed a bug where sometimes the sliders would break</li>
+  <li>Fixed a bug where the game could crash if the image wasn't in the image data file</li>
+  <li>Fixed a bug where just 5 projectiles would hinder the FPS</li>
+  <li>Fixed a bug where projectiles wouldn't rotate if their path has changed</li>
+  <li>Fixed a bug where you can still attack with an empty quiver or mana, causing the stat to go to negative numbers</li>
+  <li>Fixed a bug where UIs can sometimes appear above one another</li>
+  <li>Fixed a bug where holding the dash button will allow you to perform the next dash (should be based on button presses ONLY)</li>
+</ul>
+<br>
+  
+<h2>Dev 1.5 (Combat)</h2>
+<h3>Additions/Removals</h3>
 <ul>
   <li>Added real-time combat</li>
   <li>Added melee attacks (direction depends on where your mouse is)</li>
@@ -92,6 +206,7 @@
   <li>projectiles don't change their rotations when they have to (I tried to fix it but it caused an uncontrollable lag)</li>
 </ul>
 <br>
+
 <h2>Dev 1.4.2</h2>
 <h3>Bug Fixes</h3>
 <ul>
@@ -103,7 +218,7 @@
   <li>Fixed a bug where the game crashed trying to look for the settings file, which didn't generate yet</h3>
 </ul>
 <h2>Dev 1.4 (Improvements)</h2>
-<h3>Additions</h3>
+<h3>Additions/Removals</h3>
 <ul>
   <li>Added MacOS and Linux support</li>
   <li>Added acceleration and friction to all moveable entities (enemies don't have it yet though)</li>
@@ -112,6 +227,9 @@
   <li>Added permadeath mode which is only accessible by beating hard mode (though it doesn't do anything till now)</li>
   <li>Added smooth movement to enemies</li>
   <li>Added the ability to hold multiple stacks of one item in your inventory</li>
+  <li>Removed ticks from the debug menu</li>
+  <li>Removed combat temporarily</li>
+  <li>Removed daylight cycle</li>
 </ul>
 <h3>Changes/Improvements</h3>
 <ul>
@@ -123,12 +241,9 @@
   <li>Improved brightness backend</li>
   <li>Improved inventory rendering</li>
   <li>Improved map rendering</li>
-  <li>Removed ticks from the debug menu</li>
   <li>Improved button rendering</li>
   <li>Improved player bars (health bar and stamina/projectiles/mana bar) rendering</li>
   <li>Made the game run MUCH smoother, jumping from 80 FPS all the way up to ~500 FPS (tested on an Intel core i5 6200U)</li>
-  <li>Removed combat temporarily</li>
-  <li>Removed daylight cycle</li>
 </ul>
 <h3>Bug Fixes</h3>
 <ul>
@@ -144,13 +259,14 @@
   <li>Touching enemies can slingshot you off the map</li>
 </ul>
 <br>
+
 <h2>Dev 1.3.1</h2>
 <h3>Bug Fixes</h3>
 <ul>
   <li>Fixed player and enemy positioning problems when a fight starts</li>
 </ul>
 <h2>Dev 1.3 (World Taking Shape)</h2>
-<h3>Additions</h3>
+<h3>Additions/Removals</h3>
 <ul>
   <li>Added a message saying "the game was not optimized for resolutions over 1080p" when you choose your resolution as "current"</li>
   <li>Added rooms to the main game</li>
@@ -179,13 +295,14 @@
   <li>Fixed a bug where the attack cooldown didn't sync with different FPS (i.e. the enemy's turn)</li>
 </ul>
 <br>
+
 <h2>Dev 1.2.1</h2>
 <h3>Bug Fixes</h3>
 <ul>
   <li>Fixed a major bug where the settings file generator was outdated, cause the game to crash once it starts (after the story)</li>
 </ul>
 <h2>Dev 1.2 (Effects)</h2>
-<h3>Additions</h3>
+<h3>Additions/Removals</h3>
 <ul>
   <li>Added credits</li>
   <li>Added proper rooms (only in the dev room)</li>
@@ -204,8 +321,9 @@
   <li>Fixed a bug where the pick-up range of items was longer in one side but not the other</li>
 </ul>
 <br>
+
 <h2>Dev 1.1.1</h2>
-<h3>Additions</h3>
+<h3>Additions/Removals</h3>
 <ul>
   <li>Added "Always Day" and "Always Night" areas</li>
 </ul>
@@ -214,7 +332,7 @@
   <li>Fixed a bug where day and night were swapped</li>
 </ul>
 <h2>Dev 1.1 (Time)</h2>
-<h3>Additions</h3>
+<h3>Additions/Removals</h3>
 <ul>
   <li>Added daylight cycle</li>
 </ul>
@@ -225,10 +343,12 @@
 </ul>
 <br>
 <h2>Dev 1.0.1</h2>
-<h3>Additions</h3>
+<h3>Additions/Removals</h3>
 <ul>
   <li>Added pause menu</li>
 </ul>
+<br>
+
 <h2>Dev 1.0</h2>
 <h3>Release</h3>
 <ul>
