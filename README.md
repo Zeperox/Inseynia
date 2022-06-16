@@ -58,6 +58,7 @@
 </ul>
 <h3>Changes/Improvements</h3>
 <ul>
+  <li>Completely rewrote the entire code</li>
   <li>Improved map loading</li>
   <li>Changed dash input to spacebar</li>
   <li>Revamped inventory (it was extremely similar to survival games)</li>
@@ -70,7 +71,7 @@
   <li>Changed from stat bars to stat icons and numbers</li>
   <li>Completely changed how the player interacts with the inventory (hover over item with mouse to select it, use left click to equip/unequip or use right click to throw)</li>
   <li>Updated a bunch of sprites</li>
-  <li.Changed how FPS works since it turned out to be broken</li>
+  <li>Changed how FPS works since it turned out to be broken</li>
   <li>Made projectiles independent of the shooter (meaning if the shooter dies the projectile won't "die" with him)</li>
   <li>Changed projectile's travel length to time-based rather than distance based</li>
   <li>Heavily improved enemy point-of-view, now it isn't a rectangle and you can hide behind walls to ambush them</li>
@@ -352,5 +353,5 @@
 <h2>Dev 1.0</h2>
 <h3>Release</h3>
 <ul>
-  <li>Released into GitHub</li>
+  <li>Released to GitHub</li>
 </ul>
