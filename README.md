@@ -272,7 +272,7 @@
 <ul>
   <li>Fixed player and enemy positioning problems when a fight starts</li>
 </ul>
-<h2>Dev 1.3 (World Taking Shape)</h2>
+<h2>Dev 1.3 (Maps)</h2>
 <h3>Additions/Removals</h3>
 <ul>
   <li>Added a message saying "the game was not optimized for resolutions over 1080p" when you choose your resolution as "current"</li>
