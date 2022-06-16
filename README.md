@@ -7,7 +7,7 @@
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
 <lr></lr>
 <h1>Change Logs</h1>
-<h2>Dev 1.5</h2>
+<h2>Dev 1.5 (Combat Update)</h2>
 <h3>Additions</h3>
 <ul>
   <li>Added real-time combat</li>
@@ -102,7 +102,7 @@
 <ul>
   <li>Fixed a bug where the game crashed trying to look for the settings file, which didn't generate yet</h3>
 </ul>
-<h2>Dev 1.4</h2>
+<h2>Dev 1.4 (Improvements)</h2>
 <h3>Additions</h3>
 <ul>
   <li>Added MacOS and Linux support</li>
@@ -149,7 +149,7 @@
 <ul>
   <li>Fixed player and enemy positioning problems when a fight starts</li>
 </ul>
-<h2>Dev 1.3</h2>
+<h2>Dev 1.3 (World Taking Shape)</h2>
 <h3>Additions</h3>
 <ul>
   <li>Added a message saying "the game was not optimized for resolutions over 1080p" when you choose your resolution as "current"</li>
@@ -184,7 +184,7 @@
 <ul>
   <li>Fixed a major bug where the settings file generator was outdated, cause the game to crash once it starts (after the story)</li>
 </ul>
-<h2>Dev 1.2</h2>
+<h2>Dev 1.2 (Effects)</h2>
 <h3>Additions</h3>
 <ul>
   <li>Added credits</li>
@@ -213,7 +213,7 @@
 <ul>
   <li>Fixed a bug where day and night were swapped</li>
 </ul>
-<h2>Dev 1.1</h2>
+<h2>Dev 1.1 (Time)</h2>
 <h3>Additions</h3>
 <ul>
   <li>Added daylight cycle</li>
