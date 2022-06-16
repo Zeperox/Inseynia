@@ -58,6 +58,7 @@
 </ul>
 <h3>Changes/Improvements</h3>
 <ul>
+  <li>Completely rewrote the entire code</li>
   <li>Improved map loading</li>
   <li>Changed dash input to spacebar</li>
   <li>Revamped inventory (it was extremely similar to survival games)</li>
@@ -352,5 +353,5 @@
 <h2>Dev 1.0</h2>
 <h3>Release</h3>
 <ul>
-  <li>Released into GitHub</li>
+  <li>Released to GitHub</li>
 </ul>
