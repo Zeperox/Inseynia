@@ -6,6 +6,9 @@ from scripts.logic.drops import Drop
 from scripts.logic.entity import Entity
 from scripts.loading.sprites import sprites
 
+if "maps" not in os.listdir(os.path.join("scripts", "cache")):
+    os.mkdir(os.path.join("scripts", "cache", "maps"))
+
 enemy_list = {}
 for file in os.scandir(os.path.join("scripts", "AI")):
     if file.is_file():
