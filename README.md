@@ -7,6 +7,12 @@
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
 <lr></lr>
 <h1>Change Logs</h1>
+<h2>Dev 1.6.1</h2>
+<h3>Bug Fixes</h3>
+<ul>
+  <li>Fixed a bug where the game would crash because the cache file would be missing (thanks github)</li>
+  <li>Fixed a bug where the game would fail to generate a map folder in the cache causing it to crash</li>
+</ul>
 <h2>Dev 1.6 (Overwrite)</h2>
 <h3>Additions/Removals</h3>
 <ul>
