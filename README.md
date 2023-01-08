@@ -161,7 +161,7 @@
 <h3>Known Bugs</h3>
 <ul>
   <li>Dashing towards the end of the map that isn't enclosed by a tile would cause you to get stuck outside the map</li>
-  <li>Starteding a dialogue using a controller would bug out the dialogue</li>
+  <li>Starting a dialogue using a controller would bug out the dialogue</li>
   <li>Triggering the cutscene in certain areas would cause the cutscene's test enemy to get stuck behind some walls making it unable to continue</li>
 </ul>
 <br>
