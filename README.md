@@ -465,7 +465,7 @@
 <h2>Dev 1.2.1</h2>
 <h3>Bug Fixes</h3>
 <ul>
-  <li>Fixed a major bug where the settings file generator was outdated, cause the game to crash once it starts (after the story)</li>
+  <li>Fixed a major bug where the settings file generator was outdated, causing the game to crash once it starts (after the story)</li>
 </ul>
 <h2>Dev 1.2 (Effects)</h2>
 <h3>Additions/Removals</h3>
