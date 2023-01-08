@@ -70,7 +70,7 @@
   <li>Added camera zoom (cannot be previewed in the pre-alpha)</li>
   <li>Added game over screen</li>
   <li>Added a popup for when you can interact with an object</li>
-  <li>Removed the main menu background</li>
+  <li>Removed the main menu background (will be readded in the next update hopefully)</li>
 </ul>
 <h3>Changes/Improvements</h3>
 <ul>
@@ -157,6 +157,11 @@
   <li>Fixed a bug where entering the music room plays the main menu theme at first instead of the first song in the list</li>
   <li>Fixed a bug where if you died and restarted the game without quitting the game, enemies will still have their lost health from when you fought them before you died</li>
   <li>Fixed a bug where the text would break if there are more than 2 lines</li>
+</ul>
+<h3>Known Bugs</h3>
+<ul>
+  <li>Dashing towards the end of the map that isn't enclosed by a tile would cause you to get stuck outside the map</li>
+  <li>Starteding a dialogue using a controller would bug out the dialogue</li>
 </ul>
 <br>
 
