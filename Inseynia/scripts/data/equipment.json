@@ -1,50 +1,72 @@
 [
-    [
-        "Wooden Halfbow",
-        "Wooden Bow",
-        "Steel Halfbow",
-        "Crossbow",
-        
-        "Walking Staff",
-        "Amateur Staff",
-        "Advanced Staff",
-        "Book of Arcs",
-        "Lightning Charge"
-    ],
-    
-    {
-        "No Shield": {
-            "ricochet": false,
-            "rico speed": 0,
-            "rico dist": 0
-        },
-        "Wooden Shield": {
-            "ricochet": true,
-            "rico speed": 3,
-            "rico dist": 4
-        },
-        "Rusty Shield": {
-            "ricochet": false,
-            "rico speed": 0.5,
-            "rico dist": 4
-        },
-        "City Guard's Shield": {
-            "ricochet": false,
-            "rico speed": 0.5,
-            "rico dist": 4
-        }
-    },
+	[
+		"Wooden Halfbow",
+		"Wooden Bow",
+		"Steel Halfbow",
+		"Crossbow",
+		
+		"Walking Staff",
+		"Amateur Staff",
+		"Advanced Staff",
+		"Book of Arcs",
+		"Lightning Charge"
+	],
+	
+	{
+		"No Shield": {
+			"ricochet": false,
+			"rico speed": 0,
+			"rico dist": 0,
+			"knockback reduction": 0
+		},
+		"Wooden Shield": {
+			"ricochet": true,
+			"rico speed": 3,
+			"rico dist": 4,
+			"knockback reduction": 10
+		},
+		"Rusty Shield": {
+			"ricochet": false,
+			"rico speed": 0.5,
+			"rico dist": 4,
+			"knockback reduction": 10
+		},
+		"City Guard's Shield": {
+			"ricochet": false,
+			"rico speed": 0.5,
+			"rico dist": 4,
+			"knockback reduction": 15
+		}
+	},
 
-    {
-        "No Armor": {
-            "dp": 0,
-            "weight": 0,
-            "knockback resistence": 0
-        },
-        "Leather Armor": {
-            "dp": 20,
-            "weight": 40,
-            "knockback resistence": 50
-        }
-    }
+	{
+		"No Armor": {
+			"defense": 0,
+			"weight": 0,
+			"knockback resistence": 0
+		},
+		"Leather Armor": {
+			"defense": 20,
+			"weight": 40,
+			"knockback resistence": 50
+		}
+	},
+
+	{
+		"No Backpack": {
+			"slots": 5,
+			"max weight": null
+		},
+		"Backpack": {
+			"slots": 10,
+			"max weight": 5
+		}
+	},
+
+	{
+		"Heafish": [["HP+5"], [null, "0"]],
+		"Stafish": [["SP+5"], [null, "0"]],
+		"Mafish": [["MP+5"], [null, "0"]],
+		"Enchanted Arrow": [["QP++"], [null, "0"]]
+	}
 ]

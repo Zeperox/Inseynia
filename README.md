@@ -7,6 +7,159 @@
 <p>Anyways, this is where you can look at the code and help find issues that you probably found while testing. We appreciate your help 🙂</p>
 <lr></lr>
 <h1>Change Logs</h1>
+<h2>Pre-Alpha 0</h2>
+<h3>Additions/Removals</h3>
+<ul>
+  <li>Added a low HP effect at the screen edge</li>
+  <li>Added language support
+    <ul>
+      <li>English</li>
+      <li>Arabic</li>
+      <li>Japanese</li>
+      <li>Russian</li>
+      <li>Spanish</li>
+      <li>French</li>
+    </ul></il>
+  <li>Added the ability to mod your own custom main loops (cannot overwrite the main loop of the main game)</li>
+  <li>Added dialogues</li>
+  <li>Added NPCs</li>
+  <li>Added cutscenes</li>
+  <li>Added signs</li>
+  <li>Added friction to all enemies</li>
+  <li>Added acceleration to enemies</li>
+  <li>Added enemy sub-AI (basically a file with a modified version of a certain AI)</li>
+  <li>Stopped the functions entities and tiles outside of the screen</li>
+  <li>Added the ability for stuck arrows to dissappear if there are too much of them, lowering the lag</li>
+  <li>Removed projectile types</li>
+  <li>Added the ability for enemies and weapons to have their own unique projectile movement</li>
+  <li>Added backpacks
+    <ul>
+      <li>Added item weight (won't affect movement like armor weight)</li>
+      <li>Backpacks would break if the items exceed the backpack's max weight</li>
+    <ul></il>
+  <il>Added player levels, which increases the player's health, stamina, and mana</li>
+  <li>(IN CODE) Removed unnecessary data stored in projectiles</li>
+  <li>Added a way to manually save the game</li>
+  <li>Removed auto-save</li>
+  <li>Added sleeping which increases your stamina, health, and mana</li>
+  <li>Removed spawn map</li>
+  <li>Added connectors to maps, or areas that get you to a new map</li>
+  <li>Added the ability to spawn pre-damaged enemies</li>
+  <li>Added VFX for spirits being sucked out of their mana</li>
+  <li>Spirits no longer stay in place when your mana is full but rather disappear</li>
+  <li>Removed the "Map coming soon :)" text</li>
+  <li>Added critical hits</li>
+  <li>Added a damage multiplyer range, between *0.75 to *1.25</li>
+  <li>Added a visual indicator for damage output</li>
+  <li>Added the ability to pause the game by simply moving your mouse outside the game, this is to help accidentally minimizing of the game</li>
+  <li>Added a new map with some new tiles</li>
+  <li>Removed a bunch of random captions</li>
+  <li>Added the ability to have invisible collideable tiles</li>
+  <li>Added a boss named "Jlokshi"</li>
+  <li>Added controller support</li>
+  <li>Added the ability to use your keyboard for the menus and for the inventory</li>
+  <li>Added room and boss music</li>
+  <li>Added health, stamina, and mana potions (well more precisely fish)</li>
+  <li>Added an icon for the game</li>
+  <li>Added enchanted arrows (a drop) which when used would refill your quiver</li>
+  <li>Added text that shows the version</li>
+  <li>Added "projnum" in the debug menu</li>
+  <li>Added player health, stamina, and mana regen</li>
+  <li>Added pixel-perfect collisions (only used for colliding with entities/projectiles)</li>
+  <li>Added diagonal tiles</li>
+  <li>Added camera zoom (cannot be previewed in the pre-alpha)</li>
+  <li>Added game over screen</li>
+  <li>Added a popup for when you can interact with an object</li>
+  <li>Removed the main menu background</li>
+</ul>
+<h3>Changes/Improvements</h3>
+<ul>
+  <li>Slightly changed menus</li>
+  <li>Improved rendering speed</li>
+  <li>Changed FPS limiter</li>
+  <li>Heavily boosted FPS</li>
+  <li>Slightly improved RAM usage when loading maps</li>
+  <li>Completely rewrote the text rendering system</li>
+  <li>Slightly improved player movement</li>
+  <li>Completely changed how animations are handled</li>
+  <li>Slightly changed how knockback works</li>
+  <li>Changed the screen resolution from 1280x720 to 640x360 with 2x scale, also scales up with monitor size</li>
+  <li>Updated credits</li>
+  <li>Increased image loading speed</li>
+  <li>Changed how projectile movement is handled</li>
+  <li>Improved error popup's text</li>
+  <li>Changed the inventory size to 5 slots</li>
+  <li>Fixed a misalignment bug with items in the inventory</li>
+  <li>Improved new save creation</li>
+  <li>Improved save file
+    <ul>
+      <li>Enemies now save their data</li>
+      <li>Drops now save their locations</li>
+      <li>NPCs and cutscenes now save their locations</li>
+    </ul></li>
+  <li>Changed inventory stats UI</li>
+  <li>Seperated the background tiles from the normal tiles, making a seperate map for background tiles</li>
+  <li>Slightly improved inventory FPS</li>
+  <li>Improved fullscreen options code</li>
+  <li>Changed dashes from dashing to the mouse location to the direction you are facing</li>
+  <li>Improved UI rendering speed</li>
+  <li>Slightly changed the English font</li>
+  <li>Improved item tooltip loading speed</li>
+  <li>Changed doors from immediately going through them to having the requirement to press "E" in order to enter them</li>
+  <li>Slightly changed dev room map layout to show some sort of a "doorway" into another room</li>
+  <li>Imporoved entity functions speed</li>
+  <li>Made the camera to lock to the midpoint coordinates between you and the boss(es) if there is any boss</li>
+  <li>Made bosses display their HP</li>
+  <li>EkretaTree is no longer considered as a boss</li>
+  <li>Changed the stats of EkretaTree</li>
+  <li>Changed the i-frames from 0.5 seconds to 0.1 seconds</li>
+  <li>Made it possible to change the i-frames for specific entities</li>
+  <li>Slightly improved inventory slot collision (used for detecting where the mouse is)</li>
+  <li>Separated between spirits, projectile drops, and normal drops (backend)</li>
+  <li>Made projectiles only pickable if you (the player) threw them</li>
+  <li>Changed how projectile drops are registered (backend</li>
+  <li>Changed the collisions of entities, now it's smaller than the sprite</li>
+  <li>Changed how tile collisions work</li>
+  <li>Slightly improved the math with inventory rendering</li>
+  <li>Made music pause when you're in the pause menu rather than play the main menu theme</li>
+  <li>Changed how enemy AI is loaded</li>
+  <li>Changed the starting ammo count for archers to 200</li>
+</ul>
+<h3>Bug Fixes</h3>
+<ul>
+  <li>Fixed a bug where the game's rendering would break if you die</li>
+  <li>Fixed a bug where invalid text characters would crash the game</li>
+  <li>Fixed a bug where trying to load custom enemies/weapons from mods would crash the game</li>
+  <li>Fixed a bug where the player would shake instead of dash in lower FPS</li>
+  <li>Fixed a bug where the dash distance is much higher in lower FPS</li>
+  <li>Fixed a bug where the entities would shake instead of getting knockbacked in lower FPS</li>
+  <li>Fixed a bug where the knockback distance is much higher in lower FPS</li>
+  <li>Fixed a bug where holding a shield while being knockbacked would just pause the knockback, leaving the shield would cause you to continue</li>
+  <li>Fixed a bug where the error popup wouldn't work when the game is in fullscreen</li>
+  <li>Fixed a bug where projectiles can sometimes be jittery</li>
+  <li>Fixed a misalignment bug with items in the inventory</li>
+  <li>Fixed a bug where you can skip the wait time of picking up items by opening the inventory</li>
+  <li>Fixed a bug where projectiles' shot time (the time the projectile was shot) would break once you open the inventory</li>
+  <li>Fixed a bug where everything gets teleported/skipped once you pause</li>
+  <li>Fixed a bug where spirits would no longer render after 1 has already been spawned</li>
+  <li>Fixed a bug where touching a projectile as it disappears could cause a crash</li>
+  <li>Fixed a backend bug where text alpha would return "None" rather than a number</li>
+  <li>Fixed a bug where if the map has an opening at the end of it you would be able to leave</li>
+  <li>Fixed a bug where holes in a map would cause visual bugs</li>
+  <li>Fixed a bug where setting the FPS to any value other than "unlimited" would cause the "unlimited" option to break</li>
+  <li>Fixed a bug where entering a new room wouldn't reset the camera position, causing the camera to move through the room to reach your location</li>
+  <li>Fixed a bug where if you die while there is a lot of bullets on the screen to the point that they despawn, then reload you save file, the game would crash</li>
+  <li>Fixed a bug where if you have more than 1 of the same item, the inventory would always use the first item in the inventory rather than the selected item</li>
+  <li>Fixed a bug where you could open the pause menu in the inventory menu</li>
+  <li>Fixed a bug where camera movement based on coordinates rather than an entity would always ignore the map borders</li>
+  <li>Fixed a bug where if you dash into a wall you would freeze</li>
+  <li>Fixed a bug where if you press "apply" while there is a control waiting for a new key the game would crash</li>
+  <li>Fixed a bug where entering the music room plays the main menu theme at first instead of the first song in the list</li>
+  <li>Fixed a bug where if you died and restarted the game without quitting the game, enemies will still have their lost health from when you fought them before you died</li>
+  <li>Fixed a bug where the text would break if there are more than 2 lines</li>
+</ul>
+<br>
+
 <h2>Dev 1.6.1</h2>
 <h3>Bug Fixes</h3>
 <ul>

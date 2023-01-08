@@ -1,100 +1,71 @@
 {
-    "hf": {
-        "scale": 2
-    },
-    "he": {
-        "scale": 2
-    },
-    "lf": {
-        "scale": 2
-    },
-    "le": {
-        "scale": 2
-    },
-    "mf": {
-        "scale": 2
-    },
-    "me": {
-        "scale": 2
-    },
-    "pf": {
-        "scale": 2
-    },
-    "pe": {
-        "scale": 2
-    },
-    "sf": {
-        "scale": 2
-    },
-    "se": {
-        "scale": 2
-    },
-    "ap": {
-        "scale": 2
-    },
-    "dp": {
-        "scale": 2
-    },
-    "money": {
-        "scale": 2
-    },
-    "Texaract": {
-        "convert": [0, 0, 0]
-    },
+	"he": {
+		"convert": [0, 0, 0]
+	},
+	"hf": {
+		"convert": [0, 0, 0]
+	},
+	"se": {
+		"convert": [0, 0, 0]
+	},
+	"sf": {
+		"convert": [0, 0, 0]
+	},
+	"pe": {
+		"convert": [0, 0, 0]
+	},
+	"pf": {
+		"convert": [0, 0, 0]
+	},
+	"me": {
+		"convert": [0, 0, 0]
+	},
+	"mf": {
+		"convert": [0, 0, 0]
+	},
 
-    "Inventory Slot": {
-        "scale": 2
-    },
-    "Main Menu BG": {
-        "convert": null
-    },
-    
-    "S1": {
-        "convert": null
-    },
+	"archer": {
+		"convert": [0, 0, 0]
+	},
+	"defense": {
+		"convert": [0, 0, 0]
+	},
+	"health": {
+		"convert": [0, 0, 0]
+	},
+	"level": {
+		"convert": [0, 0, 0]
+	},
+	"mage": {
+		"convert": [0, 0, 0]
+	},
+	"mana": {
+		"convert": [0, 0, 0]
+	},
+	"money": {
+		"convert": [0, 0, 0]
+	},
+	"none": {
+		"convert": [0, 0, 0]
+	},
+	"projectiles": {
+		"convert": [0, 0, 0]
+	},
+	"stamina": {
+		"convert": [0, 0, 0]
+	},
 
+	"Inventory Slot": {
+		"convert": [0, 0, 0]
+	},
+	"Texaract": {
+		"convert": [0, 0, 0]
+	},
+	"Main Menu BG": {
+		"convert": null
+	},
 
-    "Amateur Staff": {
-        "scale": 2
-    },
-    "Arrow": {
-        "scale": 3
-    },
-    "Spirit": {
-        "scale": 2
-    },
-    "Fireball": {
-        "scale": 2
-    },
-    "Crossbow": {
-        "scale": 2
-    },
-    "Leather Armor": {
-        "scale": 2
-    },
-    "No Armor": {
-        "scale": 2
-    },
-    "No AWeapon": {
-        "scale": 2
-    },
-    "No MWeapon": {
-        "scale": 2
-    },
-    "No Shield": {
-        "scale": 2
-    },
-    "Walking Staff": {
-        "scale": 2
-    },
-    
-    "Test Enemy": {
-        "convert": null
-    },
-    "Wooden Bow": {
-        "scale": 2
-    },
-    "Wooden Shield": {
-        "scale": 2
-    }
+	"S1": {
+		"convert": null
+	}
 }

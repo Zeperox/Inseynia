@@ -1,0 +1,10 @@
+{
+	"cut:0": [
+		["dialogue"],
+		["summon Test_Enemy -320 0 center"],
+		["move Test_Enemy0 315 0 5"],
+		["dialogue"],
+		["move Test_Enemy0 -350 0 7"],
+		["remove Test_Enemy0", "dialogue"]
+	]
+}

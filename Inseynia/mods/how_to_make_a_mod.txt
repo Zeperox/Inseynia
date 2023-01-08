@@ -1,0 +1,103 @@
+THIS IS NOT A FINISHED FEATURE
+
+So you want to make an Inseynia mod eh?
+well, it'll take a while to get accustomed to, it this guide should hopefully make it easy to comprehend
+
+
+1) TEXTURE PACKS
+DISCLAIMER: assets can be overwritten by other mods
+required knowledge: art & json (if you're facing troubles with sizes or rotations)
+
+texture packs are probably the simplest thing you could do, you just basically copy the assets folder into your mod folder, and edit the sprites, but there are still some stuff worth knowing:
+- you can add "DL" (Don't Load) at the end of an image name to tell the game not to load the image, or you can add it to a folder to let the game skip the entire folder
+
+if you want to edit the json file as well, add a "scripts" folder to your mod folder and add a "data" folder to the new folder as well, then add a json file named "sprite data.json", keep in mind this:
+- if you don't add an image in the json file the game will use the default
+- the structure of the json file should be as follows:
+{
+	"imageName (no .png)": { // you can leave empty for a raw image or you can add one or more of the following
+		"convert": null OR [r, g, b], // the rgb value is basically which color to remove, could be useful with sprites that include uncolored pixels since these are converted to black upon converting
+		"alpha": null,
+		"flip" [true/false, true/false], // xflip, yflip
+		"scale": int OR [int, int], // you can put a single number to make the image scale up by multiplying its size with the number, adding 2 in a list means that the image will scale up to the size of the numbers, ignoring the image's original size
+		"rotate": degrees
+	}
+}
+
+
+2) MOD SUPPORT
+DISCLAIMER: certain files can be overwritten by other mods, I will say which files could get overwritten
+required knowledge: python + pygame & json
+
+adding mod support is much more complicated than texture packs (no surprise), but hopefully this would guide you
+
+2.1) SPECIAL DATA
+these are the files that could be used by the game in the "./mods/mod/scripts/data" folder:
+- captions.json, a list containing strings, these captions will have a random chance to be chosen as the game's title, cannot be overwritten
+- enemies.json, a dictionary that contains the following data:
+{
+	"enemyName": {
+		"health": int, // the health of the enemy
+		"attack": int, // the amount of damage the enemy deals per hit
+		"defense": percent, // the damage reduction the enemy has
+		"speed": int, // the movement speed of the enemy
+		"knockback resistence": percent, // the knockback reduction the enemy has
+		"view": [degrees, int], // the viewpoint of the enemy that would cause an immediate trigger, first value is the viewpoint degrees and the second value is the length of sight
+		"suspicious view": [degrees, int], // the viewpoint of the enemy that would cause the enemy to get suspicious (basically getting closer to the player without attacking), first value is the viewpoint degrees and the second value is the length of sight
+		"AI": str, // the AI the enemy follows
+		"animations": [str, ...] // the animations the enemy can have, all of which would be .gif files
+	}
+}
+COULD BE OVERWRITTEN
+- equipment.json, a list containing a list and 2 dictionaries like the following:
+[
+	[
+		"weapon1",
+		"weapon2",
+		"weapon3"
+	],
+	{
+		"shield": {
+			"ricochet": bool, // whether holding the shield at the right timing allows for projectiles to bounce back
+			"rico speed": int, // the speed at which projectiles would bounce back
+			"rico dist": int, // the distance the projectiles can bounce back to
+			"knockback reduction": percent // the knockback reduction once you hold your shield while being knockbacked
+		}
+	},
+	{
+		"armor": {
+			"defense": int, // the defense that the armor gives to the player
+			"weight": int, // the weight of the armor, affects acceleration and stamina cost
+			"knockback resistence": percent // the knockback reduction the armor gives to the player
+		}
+	}
+]
+STATE UNKNOWN
+- IDs.json, this file determines how maps would load, so it's essential to get it right
+{
+	"Tiles": {
+		"Room Group": [ // the data entered here would ONLY be used in the corresponding room group
+			"Spawn", // must always be the first value
+			["tile1.png", bool] // the first value is the image path to the file, the second value determines whether the tile is collideable or not
+		]
+	},
+	"Items": [ // the order of items determines their item ID, with the first item having the ID of 0
+		"item1",
+		"item2"
+	],
+	"Enemies": [ // the order of enmies determines their enemy ID, with the first enemy having the ID of 0
+		"enemy1",
+		"enemy2"
+	],   
+}
+STATE UNKNOWN, SUBJECT TO CHANGE
+- items.json, this file contains the data of pickable items (the only data there are the item price and the tooltip)
+{
+	"item1": {
+		"price": int, // the price of the item
+		"tooltip" str // the text that appears when hovering over the item
+	}
+}
+CAN BE OVERWRITTEN
+
+dialogue IDs: trg:dialogueID:name:page | npc:npcNameImg:npcDialogueNum:name:page

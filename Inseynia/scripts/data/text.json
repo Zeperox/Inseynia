@@ -1,0 +1,59 @@
+{
+	"text:inseynia": ["Inseynia", "إنسينيا", "インセーニア", "Инсейния", "Inseynia", "Inseynia"],
+	"button:start_game": ["Start Game", "إبدأ اللعب", "ゲーム を はじめる", "Начать Игру", "Empezar juego", "Démarrer jeu"],
+	"button:resume_game": ["Resume Game", "أكمل اللعب", "ゲーム を さいかい", "Продолжить Игру", "Reanudar juego", "Reprendre le jeu"],
+	"button:continue": ["Continue", "أكمل", "つづける", "Продолжать", "Seguir", "Continuez"],
+	"text:gameover": ["Game Over", "لقد مت", "ゲームオーバー", "Игра окончена", "Juego terminado", "Jeu terminé"],
+	"button:settings": ["Settings", "الإعدادات", "せってい", "Настройки", "Ajustes", "Réglages"],
+	"button:quit_game": ["Quit Game", "أخرج من اللعبة", "ゲーム をやめる", "Выйти Из Игры", "Salir del juego", "Quitter le jeu"],
+	
+	"text:graphics": ["Graphics", "الرسومات", "グラフィックス", "Графика", "Gráficos", "Graphique"],
+	"button:fullscreen": ["Fullscreen: ", "شاشة كاملة: ", "ぜんがめんひょうじ: ", "Полный экран: ", "pantalla completa: ", "plein écran: "],
+	"status:on": ["On", "شغال", "オン", "Включен", "Activado", "Activé"],
+	"status:off": ["Off", "متوقف", "オフ", "Выключен", "Apagado", "Désactivé"],
+	"slider:fps": ["FPS: ", "لقطة في الثانية: ", "フレーム/びょう: ", "Kадров в секунду: ", "Cuadro por segundo: ", "FPS: "],
+	"slider:brightness": ["Brightness: ", "قوة الإضاءة: ", "きど: ", "Яркость: ", "Brillo: ", "Luminosité: "],
+	"text:volume": ["Volume", "الصوت", "おんりょう", "Звук", "Volumen", "Le volume"],
+	"slider:music": ["Music: ", "موسيقى: ", "おんがく: ", "Музыка: ", "Música: ", "Musique: "],
+	"slider:sfx": ["Sound Effects: ", "مؤثرات صوتية: ", "おんきょう こうか: ", "Звуковые эффекты: ", "Efectos de sonido: ", "Effets sonores: "],
+	"text:controls": ["Controls", "التحكمات", "コントロール", "Элементы управления", "Controls", "Les contrôles"],
+	"button:controller": ["Controller: ", "قبضة: ", "コントローラ: ", "Контроллер: ", "Controlador: ", "Manette: "],
+	"status:disconnected": ["Disconnected", "غير متصلة", "せつだん さ れた", "Отключено", "Desconectado", "Débranché"],
+	"status:connected": ["Connected", "متصلة", "せつぞく ずみ", "Связано", "Conectado", "Lié"],
+	"text:languages": ["Languages", "اللغات", "げんご", "Языки", "Idiomas", "Langages"],
+	"text:paused": ["Paused", "اللعبة متوقفة", "ーいちじ ていし", "Пауза", "En Pause", "En Pausa"],
+	"button:back": ["Back", "عد", "うしろむき", "Назад", "Hacia atrás", "En arrière"],
+	"button:apply": ["Apply", "تأكيد", "もうしこみ", "Применить", "Aplicar", "Appliquer"],
+
+	"text:saves": ["Saves", "ملفات الحفظ", "ファイル を ほぞん", "Сохранённые файлы", "Guardar archivos", "Enregistrer les fichiers"],
+	"button:save": ["Save", "الملف رقم", "ほぞん", "Сохранить", "Guardar", "Enregistrer"],
+	"button:delete": ["Delete", "إحذف", "しょうきょ", "Удалить", "Borrar", "Effacer"],
+
+	"trg:0:unknown:0": {"Unknown": "hello", "غير معروف": "مرحبا", "みしらぬ": "こんにちは", "Неизвестный": "привет", "Desconocido": "hola", "Inconnue": "salut"},
+	"trg:0:unknown:1": {"Unknown": "you good?", "غير معروف": "هل انت بخير؟", "みしらぬ": "げんきですか?", "Неизвестный": "все в порядке?", "Desconocido": "estas bien?", "Inconnue": "ça va?"},
+	"trg:0:player:2": {"Player": "yes", "لاعب": "أجل", "プレーヤー": "はい", "Игрок": "да", "Jugador": "sí", "Joueur": "oui"},
+	"trg:0:unknown:3": {"Unknown": "good...", "غير معروف": "...جيد", "みしらぬ": "おういなる...", "Неизвестный": "хорошо...", "Desconocido": "bueno...", "Inconnue": "bien..."},
+
+	"npc:TestNPC:0:TestNPC:0": {"TestNPC": "Here are the controls (keyboard):\nWASD: Movement\nSpace: Dash"},
+	"npc:TestNPC:0:TestNPC:1": {"TestNPC": "Left Click: Main Weapon\nRight Click: Secondry Weapon/Shield\nTab: Inventory"},
+	"npc:TestNPC:0:TestNPC:3": {"TestNPC": "E: Interact\nF: Sleep and Save\nESC: Pause"},
+	"npc:TestNPC:0:TestNPC:4": {"TestNPC": "Dev Controls:\nF11: Full Screen\nF3: Debug Menu"},
+	"npc:TestNPC:0:TestNPC:5": {"TestNPC": "F3+B: Toggle Hitboxes\nF3+N: Toggle Enemy View\nF3+M: Toggle Screen Midpoint"},
+	"npc:TestNPC:0:TestNPC:6": {"TestNPC": "P: Spawn EkretaTree\nL: Get the other class"},
+	"npc:TestNPC:0:TestNPC:7": {"TestNPC": "Have Fun! (There is a boss at the top right of the map)"},
+
+	"npc:TestNPC:1:TestNPC:0": {"TestNPC": "Here are the controls (XBOX controller):\nLeft Stick/Dpad: Movement\nA: Dash"},
+	"npc:TestNPC:1:TestNPC:1": {"TestNPC": "RT: Main Weapon\nLT: Secondry Weapon/Shield\nBack: Inventory"},
+	"npc:TestNPC:1:TestNPC:3": {"TestNPC": "RB: Interact\nLB: Sleep and Save\nStart: Pause"},
+	"npc:TestNPC:1:TestNPC:4": {"TestNPC": "Have Fun! (There is a boss at the top right of the map)"},
+	
+	"npc:Sign:0:Sign:0": {"Sign": "Boss Ahead!", "لوحة": "وحش في الأمام!", "かんばん": "ボス せん!", "Вывеска": "Битва с боссом впереди!", "Letrero": "Jefe lucha por delante!", "Enseigne": "Patron combat devant!"},
+
+	"cut:0:0:test:0": {"Test Enemy": "WAIT!", "وحش تجريبي": "انتظر!", "テストてき": "まつ!", "Испытательный враг": "СТОЙ!", "Enemigo de prueba": "ESPERE!", "Tester l'ennemi": "ATTENDEZ"},
+	"cut:0:1:test:0": {"Test Enemy": "alright cya", "وحش تجريبي": "حسنا وداعا", "テストてき": "さようなら", "Испытательный враг": "хорошо, пока", "Enemigo de prueba": "esta bien adios", "Tester l'ennemi": "d'accord au revoir"},
+	"cut:0:2:player:0": {"Player": "what was that...", "لاعب": "ما كان هذا...", "プレーヤー": "なにだって...", "Игрок": "что это было...", "Jugador": "Qué fue eso...", "Joueur": "Ca c'était quoi..."},
+
+	"npc:attack=False:0:{npc}": {"NPC_en": "Why!"},
+	"npc:attack=False:1:{npc}": {"NPC_en": "Help!"},
+	"npc:attack=True:0:{npc}": {"NPC_en": "You will regret this!", "NPC_ar": "سوف تندم على هذا!", "NPC_jp": "あなた わ これ を こうかい するでしょう!", "NPC_ru": "Вы пожалеете об этом!", "NPC_sp": "¡Te arrepentirás de esto!", "NPC_fr": "Tu vas le regretter !"}
+}

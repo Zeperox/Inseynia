@@ -1,18 +1,8 @@
 {
-    "DevRoom": {
-        "exits": {},
-        "extras": ["Always Day"]
-    },
-    "House 1": {
-        "exits": {
-            "House 2": [200, 200, 100, 50]
-        },
-        "extras": ["Always Day"]
-    },
-    "House 2": {
-        "exits": {
-            "House 1": [200, 200, 100, 50]
-        },
-        "extras": ["Always Day"]
-    }
+	"DevRoom": {
+		"music": "Aiduran Szoroso"
+	},
+	"DevBoss": {
+		"music":"Aiduran Szoroso"
+	}
 }
