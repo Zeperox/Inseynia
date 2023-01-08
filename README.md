@@ -37,7 +37,7 @@
       <li>Added item weight (won't affect movement like armor weight)</li>
       <li>Backpacks would break if the items exceed the backpack's max weight</li>
     </ul></il>
-  <il>Added player levels, which increases the player's health, stamina, and mana</li>
+  <li>Added player levels, which increases the player's health, stamina, and mana</li>
   <li>(IN CODE) Removed unnecessary data stored in projectiles</li>
   <li>Added a way to manually save the game</li>
   <li>Removed auto-save</li>
