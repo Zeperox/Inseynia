@@ -98,6 +98,7 @@
     </ul></li>
   <li>Changed inventory stats UI</li>
   <li>Seperated the background tiles from the normal tiles, making a seperate map for background tiles</li>
+  <li>Changed the dev room's tiles</li>
   <li>Slightly improved inventory FPS</li>
   <li>Improved fullscreen options code</li>
   <li>Changed dashes from dashing to the mouse location to the direction you are facing</li>
@@ -161,6 +162,7 @@
 <ul>
   <li>Dashing towards the end of the map that isn't enclosed by a tile would cause you to get stuck outside the map</li>
   <li>Starteding a dialogue using a controller would bug out the dialogue</li>
+  <li>Triggering the cutscene in certain areas would cause the cutscene's test enemy to get stuck behind some walls making it unable to continue</li>
 </ul>
 <br>
 
