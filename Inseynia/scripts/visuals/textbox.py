@@ -1,11 +1,10 @@
 import pygame, time
-from pygame.locals import *
 
 from .text import Text
 
 class Textbox:
 	def __init__(self, x, y, width, height, color=None, pre_text="", text_color=(255,255,255), text_pos="left",
-		outline=None, outline_thickness=2, font_path: str=None, font_size: int=None, change_width: bool = True, clear_text_when_click=False, numeric=False, alpha=False, alnum=False
+		outline=None, outline_thickness=1, font_path: str=None, font_size: int=None, change_width: bool = True, clear_text_when_click=False, numeric=False, alpha=False, alnum=False, limit="hard"
 	):
 		self.x = x
 		self.y = y
@@ -17,8 +16,8 @@ class Textbox:
 		self.width_init = width
 		self.change_width = change_width
 
-		font_size = self.height*0.5//7 if not font_size else font_size
-		self.text = Text(font_path, pre_text, font_size, text_color)
+		font_size = self.height*0.5//8*8 if not font_size else font_size
+		self.text = Text(font_path, pre_text, font_size, text_color, max_width=self.width)
 		self.text_pos = text_pos
 
 		self.clear_text_when_click = clear_text_when_click
@@ -27,8 +26,9 @@ class Textbox:
 		self.numeric = numeric
 		self.alpha = alpha
 		self.alnum = alnum
+		self.limit = limit
 
-		self.surf = pygame.Surface((width+1, height+1), SRCALPHA)
+		self.surf = pygame.Surface((width+1, height+1), pygame.SRCALPHA)
 		self._outline = outline
 		self._outline_thickness = outline_thickness
 
@@ -60,7 +60,7 @@ class Textbox:
 			else:
 				self.width = self.width_init
 
-		self.surf = pygame.Surface((self.width+1, self.height+1), SRCALPHA)
+		self.surf = pygame.Surface((self.width+1, self.height+1), pygame.SRCALPHA)
 		if self._color:
 			self.surf.fill(self._color)
 		if self._outline:
@@ -72,7 +72,7 @@ class Textbox:
 			text_x = self.width*0.5 - self.text.width*0.5
 		elif self.text_pos == "right":
 			text_x = self.text.width-15
-		self.text.render(self.surf, (text_x, self.height*0.5 - self.text.height*0.5))
+		self.surf.blit(self.text.surf, (text_x, self.height*0.5-self.text.height*0.5))
 
 		self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
@@ -85,35 +85,39 @@ class Textbox:
 			self.update_surf()
 
 	def update_text(self, event):
-		capslock = pygame.key.get_mods() & pygame.KMOD_CAPS
-		shift = pygame.key.get_mods() & pygame.KMOD_SHIFT
-
 		if self.selected:
-			if event.type == KEYDOWN:
-				key = pygame.key.name(event.key)
-				if (capslock and not shift) or (not capslock and shift):
-					key = key.capitalize()
-				if event.key == K_BACKSPACE:
-					self.text.content = self.text.content[:-1]
-				else:
-					if self.alnum or (self.numeric and self.alpha):
-						if event.unicode.isalnum():
-							self.text.content += key
-					elif self.numeric:
-						if event.unicode.isnumeric():
-							if self.text.content == "0":
-								self.text.content = ""
-							self.text.content += key
-					elif self.alpha:
-						if event.unicode.isalpha():
-							self.text.content += key
-					else:
-						self.text.content += key
+			capslock = pygame.key.get_mods() & pygame.KMOD_CAPS
+			shift = pygame.key.get_mods() & pygame.KMOD_SHIFT
 
-				if self.text.content == "" and self.numeric:
-					self.text.content = "0"
+			key: str = event.unicode
+			if (capslock and not shift) or (not capslock and shift):
+				key = key.capitalize()
 			
-				self.update_surf()
+			if event.key == pygame.K_BACKSPACE:
+				self.text.content = self.text.content[:-1]
+			else:
+				if self.limit == "hard" and self.text.width >= self.width-20:
+					return
+				elif self.limit == "soft" and self.text.width >= self.width-20:
+					self.text.content = self.text.content[:-1]
+				if self.alnum or (self.numeric and self.alpha):
+					if key.isalnum():
+						self.text.content += key
+				elif self.numeric:
+					if key.isnumeric():
+						if self.text.content == "0":
+							self.text.content = ""
+						self.text.content += key
+				elif self.alpha:
+					if key.isalpha():
+						self.text.content += key
+				else:
+					self.text.content += key
+
+			if self.text.content == "" and self.numeric:
+				self.text.content = "0"
+		
+			self.update_surf()
 
 
 	@property
@@ -145,13 +149,13 @@ if __name__ == "__main__":
 		mpos = pygame.mouse.get_pos()
 
 		for event in pygame.event.get():
-			if event.type == QUIT:
+			if event.type == pygame.QUIT:
 				quit()
 			
-			if event.type == KEYDOWN:
+			if event.type == pygame.KEYDOWN:
 				textbox.update_text(event)
 
-			if event.type == MOUSEBUTTONDOWN:
+			if event.type == pygame.MOUSEBUTTONDOWN:
 				textbox.is_over(mpos)
 
 		pygame.display.flip()

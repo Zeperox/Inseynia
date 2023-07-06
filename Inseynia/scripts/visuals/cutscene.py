@@ -1,16 +1,19 @@
 import math, pygame, os
 
-from .dialogue import Dialogue
-from scripts.logic.entity import Entity
-from scripts.loading.json_functions import load_json
+from scripts.loadingDL.files import files
+from scripts.loadingDL.json_functions import load_json
+
+Entity = files["entity"].Entity
+Dialogue = files["dialogue"].Dialogue
 
 entity_based_animations = ["goto", "cameralock", "move"]
+cutscenes = load_json(["scripts", "dataDL", "cutscenes.json"])
 
 class Cutscene:
 	def __init__(self, id):
 		self.id = id
 
-		self.animation_command = load_json(["scripts", "data", "cutscenes.json"])[id]
+		self.animation_command = cutscenes[id]
 		self.animaion_index = 0
 		self.triggered = False
 		self.pause = 0
@@ -28,7 +31,7 @@ class Cutscene:
 
 		self.animaion_index += 1
 
-	def _command(self, game_map, player, camera, dt):
+	def _command(self, game_map, scroll, player, camera, dt):
 		if self.animaion_index >= len(self.animation_command):
 			self.triggered = True
 			return True
@@ -76,7 +79,7 @@ class Cutscene:
 				entity.movement[0] += vel.x*dt
 				entity.movement[1] += vel.y*dt
 
-				entity.movement_collision(game_map.tile_rects)
+				entity.movement_collision(game_map.tiles)
 				
 				# next frame
 				if math.dist((entity.x, entity.y), (float(curr_animation[2]), float(curr_animation[3]))) <= 5:
@@ -108,6 +111,6 @@ class Cutscene:
 				
 				self._next_frame(curr_animations)
 
-	def animate(self, game_map, player, camera, dt):
-		done = self._command(game_map, player, camera, dt)
+	def animate(self, game_map, scroll, player, camera, dt):
+		done = self._command(game_map, scroll, player, camera, dt)
 		return done

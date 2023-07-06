@@ -1,5 +1,8 @@
 import pygame, math
-from scripts.custom_collisions.angle import AngleRect
+
+from scripts.loadingDL.files import files
+
+AngleRect = files["angle"].AngleRect
 
 class View:
 	def __init__(self, loc: list[int, int], angle: int, length: int, offset: int=0):
@@ -35,12 +38,12 @@ class View:
 				for tile in _list:
 					if tile == None:
 						continue
-					if type(tile) == list:
+					if isinstance(tile, list):
 						t_collision = collide_tiles(tile)
 						if t_collision != None:
 							return t_collision
 					else:
-						if type(tile) == AngleRect:
+						if isinstance(tile, AngleRect):
 							tile = tile.rect
 						t_collision = colliderect_line(line, tile)
 						if t_collision:
@@ -72,8 +75,8 @@ class View:
 		return False
 
 	def draw(self, win, c, scroll):
-		pygame.draw.lines(win, c, False, (((self.lines[0][1][0]-scroll[0], self.lines[0][1][1]-scroll[1]), (self.lines[1][0][0]-scroll[0], self.lines[1][0][1]-scroll[1]), (self.lines[2][1][0]-scroll[0], self.lines[2][1][1]-scroll[1]))))
-		pygame.draw.line(win, c, (self.lines[1][0][0]-scroll[0], self.lines[1][0][1]-scroll[1]), (self.lines[1][1][0]-scroll[0], self.lines[1][1][1]-scroll[1]))
+		pygame.draw.lines(win, c, False, (((self.lines[0][1][0]-scroll.x, self.lines[0][1][1]-scroll.y), (self.lines[1][0][0]-scroll.x, self.lines[1][0][1]-scroll.y), (self.lines[2][1][0]-scroll.x, self.lines[2][1][1]-scroll.y))))
+		pygame.draw.line(win, c, (self.lines[1][0][0]-scroll.x, self.lines[1][0][1]-scroll.y), (self.lines[1][1][0]-scroll.x, self.lines[1][1][1]-scroll.y))
 
 	def update_lines(self, loc):
 		self.lines = [

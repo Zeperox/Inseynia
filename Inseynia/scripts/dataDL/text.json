@@ -1,0 +1,326 @@
+{
+	"text:inseynia": ["Inseynia", "إنسينيا", "インセーニア", "Инсейния", "Inseynia", "Inseynia"],
+	"button:start_game": ["Start Game", "إبدأ اللعب", "ゲームをスタート", "Начать Игру", "Empezar juego", "Démarrer jeu"],
+	"button:resume_game": ["Resume Game", "أكمل اللعب", "ゲーム を さいかい", "Продолжить Игру", "Reanudar juego", "Reprendre le jeu"],
+	"button:continue": ["Continue", "أكمل", "つづける", "Продолжать", "Seguir", "Continuez"],
+	"text:gameover": ["Game Over", "لقد مت", "ゲームオーバー", "Игра окончена", "Juego terminado", "Jeu terminé"],
+	"button:settings": ["Settings", "الإعدادات", "設定", "Настройки", "Ajustes", "Réglages"],
+	"button:mods": ["Mods"],
+	"button:assets": ["Asset Packs"],
+	"button:quit_game": ["Quit Game", "أخرج من اللعبة", "ゲームをやめる", "Выйти Из Игры", "Salir del juego", "Quitter le jeu"],
+	
+	"text:graphics": ["Graphics", "الرسومات", "グラフィックス", "Графика", "Gráficos", "Graphique"],
+	"button:fullscreen": ["Fullscreen: ", "شاشة كاملة: ", "ぜんがめんひょうじ: ", "Полный экран: ", "pantalla completa: ", "plein écran: "],
+	"status:on": ["Enabled", "مفعل", "オン", "Включен", "Activado", "Activé"],
+	"status:off": ["Disabled", "غير مفعل", "オフ", "Выключен", "Apagado", "Désactivé"],
+	"slider:fps": ["FPS: ", "لقطة في الثانية: ", "フレーム/びょう: ", "Kадров в секунду: ", "Cuadro por segundo: ", "FPS: "],
+	"slider:brightness": ["Brightness: ", "قوة الإضاءة: ", "きど: ", "Яркость: ", "Brillo: ", "Luminosité: "],
+	"text:volume": ["Volume", "الصوت", "音量", "Звук", "Volumen", "Le volume"],
+	"slider:music": ["Music: ", "موسيقى: ", "おんがく: ", "Музыка: ", "Música: ", "Musique: "],
+	"slider:sfx": ["Sound Effects: ", "مؤثرات صوتية: ", "おんきょう こうか: ", "Звуковые эффекты: ", "Efectos de sonido: ", "Effets sonores: "],
+	"text:controls": ["Controls", "التحكمات", "コントロール", "Элементы управления", "Controls", "Les contrôles"],
+	"button:controller": ["Controller: ", "قبضة: ", "コントローラ: ", "Контроллер: ", "Controlador: ", "Manette: "],
+	"status:disconnected": ["Disconnected", "غير متصلة", "せつだん さ れた", "Отключено", "Desconectado", "Débranché"],
+	"status:connected": ["Connected", "متصلة", "せつぞく ずみ", "Связано", "Conectado", "Lié"],
+	"text:languages": ["Languages", "اللغات", "げんご", "Языки", "Idiomas", "Langages"],
+	"text:paused": ["Paused", "اللعبة متوقفة", "ーいちじ ていし", "Пауза", "En Pause", "En Pausa"],
+	"button:back": ["Back", "عد", "うしろむき", "Назад", "Hacia atrás", "En arrière"],
+	"button:apply": ["Apply", "تأكيد", "もうしこみ", "Применить", "Aplicar", "Appliquer"],
+
+	"text:saves": ["Saves", "ملفات الحفظ", "ファイル を ほぞん", "Сохранённые файлы", "Guardar archivos", "Enregistrer les fichiers"],
+	"button:save": ["Save", "الملف رقم", "ほぞん", "Сохранить", "Guardar", "Enregistrer"],
+	"button:delete": ["Delete", "إحذف", "しょうきょ", "Удалить", "Borrar", "Effacer"],
+
+	"trg:0": [
+		{
+			"pic": "unknown",
+			"name": ["Unknown", "غير معروف", "みしらぬ", "Неизвестный", "Desconocido", "Inconnue"],
+			"text": ["hello", "مرحبا", "こんにちは", "привет", "hola", "salut"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "unknown",
+			"name": ["Unknown", "غير معروف", "みしらぬ", "Неизвестный", "Desconocido", "Inconnue"],
+			"text": ["you good?", "هل انت بخير؟", "げんきですか?", "все в порядке?", "estas bien?", "ça va?"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "player",
+			"name": ["Player", "لاعب", "プレーヤー", "Игрок", "Jugador", "Joueur"],
+			"text": ["yes", "أجل", "はい", "да", "sí", "oui"],
+			"input": [],
+			"extra": "goto trg:0.1"
+		},
+		{
+			"pic": "unknown",
+			"name": ["Unknown", "غير معروف", "みしらぬ", "Неизвестный", "Desconocido", "Inconnue"],
+			"text": ["good...", "...جيد", "おういなる...", "хорошо...", "bueno...", "bien..."],
+			"input": [],
+			"extra": null
+		}
+	],
+
+	"trg:0.1": [
+		{
+			"pic": "unknown",
+			"name": ["Unknown", "غير معروف", "みしらぬ", "Неизвестный", "Desconocido", "Inconnue"],
+			"text": ["oh hey the goto works!", "goto　يعمل!", "こんにちは", "привет", "hola", "salut"],
+			"input": [],
+			"extra": null
+		}
+	],
+	
+	"npc:TestNPC:0": [
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["You want the controls of the keyboard or the controller?"],
+			"input": [
+				[["keyboard"], "goto npc:TestNPC:0.k"],
+				[["controller"], "goto npc:TestNPC:0.c"],
+				[["neither"], "return"]
+			],
+			"extra": null
+		}
+	],
+
+	"npc:TestNPC:0.k": [
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["Here are the controls (keyboard):\nWASD: Movement\nSpace: Dash"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["Left Click: Main Weapon\nRight Click: Secondry Weapon/Shield\nTab: Inventory"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["E: Interact\nF: Sleep and Save\nESC: Pause"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["Dev Controls:\nF11: Full Screen\nF3: Debug Menu"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["F3+B: Toggle Hitboxes\nF3+N: Toggle Enemy View\nF3+M: Toggle Screen Midpoint"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["P: Spawn EkretaTree\nL: Get the other class"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["Have Fun! (There is a boss at the top right of the map)"],
+			"input": [],
+			"extra": null
+		}
+	],
+
+	"npc:TestNPC:0.c": [
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["Here are the controls (XBOX controller):\nLeft Stick/Dpad: Movement\nA: Dash"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["RT: Main Weapon\nLT: Secondry Weapon/Shield\nBack: Inventory"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["RB: Interact\nLB: Sleep and Save\nStart: Pause"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["TestNPC"],
+			"text": ["Have Fun! (There is a boss at the top right of the map)"],
+			"input": [],
+			"extra": null
+		}
+	],
+
+	"npc:Sign:0": [
+		{
+			"pic": "sign",
+			"name": ["Sign", "لوحة", "かんばん", "Вывеска", "Letrero", "Enseigne"],
+			"text": ["Boss Ahead!", "وحش في الأمام!", "ボス せん!", "Битва с боссом впереди!", "Jefe lucha por delante!", "Patron combat devant!"],
+			"input": [],
+			"extra": null
+		}
+	],
+
+	"npc:NPC_alice:0.quest_start": [
+		{
+			"pic": "test",
+			"name": ["Alice"],
+			"text": ["Hi, can you please send this letter to a guy named Bob?"],
+			"input": [
+				[["Sure I guess why not"], "quest alice_letter"],
+				[["Do it yourself"], "goto npc:NPC_alice:0.no"],
+				[["I'm busy"], "return"]
+			],
+			"extra": null
+		}
+	],
+	"npc:NPC_alice:0.no": [
+		{
+			"pic": "test",
+			"name": ["Alice"],
+			"text": ["B-but I'm quite b-busy right now a-and this letter is q-quite important."],
+			"input": [
+				[["Fine"], "quest alice_letter"],
+				[["I'm also busy"], "return"]
+			],
+			"extra": null
+		}
+	],
+	"npc:NPC_alice:0.quest_progress": [
+		{
+			"pic": "test",
+			"name": ["Alice"],
+			"text": ["Please deliver the letter as quickly as possible"],
+			"input": [],
+			"extra": null
+		}
+	],
+	"npc:NPC_alice:0.quest_end": [
+		{
+			"pic": "test",
+			"name": ["Alice"],
+			"text": ["Thank you so much!"],
+			"input": [],
+			"extra": null
+		}
+	],
+	"npc:NPC_alice:0": [
+		{
+			"pic": "test",
+			"name": ["Alice"],
+			"text": ["Thank you so much!"],
+			"input": [],
+			"extra": null
+		}
+	],
+
+	"npc:NPC_bob:0.alice_quest": [
+		{
+			"pic": "test",
+			"name": ["Bob"],
+			"text": ["Oh a letter? Is this from you or from someone else?"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["Player"],
+			"text": ["This is from someone named Alice"],
+			"input": [],
+			"extra": null
+		},
+		{
+			"pic": "test",
+			"name": ["Bob"],
+			"text": ["Oh, uh... thank you"],
+			"input": [],
+			"extra": null
+		}
+	],
+	"npc:NPC_bob:0": [
+		{
+			"pic": "test",
+			"name": ["Bob"],
+			"text": ["GET OUT OF MY LAWN"],
+			"input": [],
+			"extra": null
+		}
+	],
+
+	"cut:0:0": [
+		{
+			"pic": "test_enemy",
+			"name": ["Test Enemy", "وحش تجريبي", "テストてき", "Испытательный враг", "Enemigo de prueba", "Tester l'ennemi"],
+			"text": ["WAIT!", "انتظر!", "まつ!", "СТОЙ!", "ESPERE!", "ATTENDEZ!"],
+			"input": [],
+			"extra": null
+		}
+	],
+	"cut:0:1": [
+		{
+			"pic": "test_enemy",
+			"name": ["Test Enemy", "وحش تجريبي", "テストてき", "Испытательный враг", "Enemigo de prueba", "Tester l'ennemi"],
+			"text": ["alright cya", "حسنا وداعا", "こんにちは", "привет", "hola", "salut"],
+			"input": [],
+			"extra": null
+		}
+	],
+	"cut:0:2": [
+		{
+			"pic": "player",
+			"name": ["Player", "لاعب", "プレーヤー", "Игрок", "Jugador", "Joueur"],
+			"text": ["what was that...", "ما كان هذا...", "こんにちは", "привет", "hola", "salut"],
+			"input": [],
+			"extra": null
+		}
+	],
+	
+
+	"npc:attack=False:0": [
+		{
+			"pic": "{npc}",
+			"name": ["{NPC_en}"],
+			"text": ["Why?!"],
+			"input": [],
+			"extra": null
+		}
+	],
+
+	"npc:attack=False:1": [
+		{
+			"pic": "{npc}",
+			"name": ["{NPC_en}"],
+			"text": ["Help!"],
+			"input": [],
+			"extra": null
+		}
+	],
+	
+	"npc:attack=True:0": [
+		{
+			"pic": "{npc}",
+			"name": ["{NPC_en}", "{NPC_ar}", "{NPC_jp}", "{NPC_ru}", "{NPC_sp}", "{NPC_fr}"],
+			"text": ["You will regret this!", "سوف تندم على هذا!", "こうかい するよ!", "Вы пожалеете об этом!", "¡Te arrepentirás de esto!", "Tu vas le regretter !"],
+			"input": [],
+			"extra": null
+		}
+	]
+}

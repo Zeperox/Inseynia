@@ -1,8 +1,10 @@
 import math, pygame, time, random, os, copy
 
-from scripts.logic.entity import Entity
-from scripts.logic.view import View
-from scripts.visuals.text import Text
+from scripts.loadingDL.files import files
+
+Entity = files["entity"].Entity
+View = files["view"].View
+Text = files["text"].Text
 
 class MainAI(Entity):
 	def __init__(self, x: int, y: int, animation_dirs: str | pygame.Surface, stats, name, _type):
@@ -11,7 +13,7 @@ class MainAI(Entity):
 		self.type = _type
 		stats = copy.deepcopy(stats)
 		try:
-			if type(stats["health"]) == int:
+			if isinstance(stats["health"], int):
 				stats["health"] = [stats["health"], stats["health"]]
 			self.stats = {
 				"HP": stats["health"],
@@ -20,6 +22,7 @@ class MainAI(Entity):
 				"SP": stats["speed"],
 				"V": stats["view"],
 				"SV": stats["suspicious view"],
+				"HR": stats["hearing radius"],
 				"XP": stats["XP"]
 			}
 		except:
@@ -33,6 +36,7 @@ class MainAI(Entity):
 
 		self.view = View(list(self.rect.center), self.stats["V"][0], self.stats["V"][1], 180)
 		self.sus_view = View(list(self.rect.center), self.stats["SV"][0], self.stats["SV"][1], 180) # please kill me
+		self.hearing_radius = self.stats["HR"]
 
 		self.ai_action = "wander"
 		self._move = True
@@ -42,6 +46,19 @@ class MainAI(Entity):
 		self.en_ta_angle = 0
 
 		self.proj_cooldown = 0
+
+		self.drops = []
+		try:
+			stats["drops"]
+		except:
+			stats["drops"] = []
+		for drop in stats["drops"]:
+			if isinstance(drop, str):
+				self.drops.append(drop)
+			else:
+				if drop[3] == 0 or random.randint(1, drop[3]) == 1:
+					for _ in range(random.randint(drop[1], drop[2]) if drop[1] < drop[2] else drop[2]):
+						self.drops.append(drop[0])
 
 		# wander
 		self.target_change_timer = 0
@@ -57,21 +74,16 @@ class MainAI(Entity):
 
 	def dmg_counter_log(self, dt):
 		for dmg_counter in reversed(self.damage_counters):
-			if dmg_counter[1][1] > 0.1 and not dmg_counter[1][2]:
-				dmg_counter[1][1] *= 0.8
-			else:
-				if not dmg_counter[1][2]:
-					dmg_counter[1][1] = -dmg_counter[1][1]
-				dmg_counter[1][2] = True
-				dmg_counter[1][1] /= 0.95
-			dmg_counter[1][0][1] -= dmg_counter[1][1]*dt
+			dmg_counter[1][1] -= dt
+			
+			dmg_counter[0].alpha = dmg_counter[0].alpha-7.5*dt
+			if dmg_counter[0].alpha <= 5 and dmg_counter in self.damage_counters:
+				self.damage_counters.remove(dmg_counter)
 
-			if dmg_counter[1][1] < 0:
-				dmg_counter[0].alpha = dmg_counter[0].alpha-7.5*dt
-				if dmg_counter[0].alpha <= 5 and dmg_counter in self.damage_counters:
-					self.damage_counters.remove(dmg_counter)
+	def ai(self, game_map, target: Entity, dt: float, difficulty):
+		self.dmg_counter_log(dt)
+		rects = [tile.main_rect for tile in game_map.tiles.values()]
 
-	def ai(self, game_map, target: Entity, projs: list[Entity], dt: float, ai=True):
 		self.sus_view.update_lines(self.rect.center)
 		self.view.update_lines(self.rect.center)
 		self.view.lines[1][1] = list(target.rect.center)
@@ -103,18 +115,18 @@ class MainAI(Entity):
 		if self.stats["HP"][0] < self.stats["HP"][1] or self.ai_action == "alert":
 			self.view.length = self.sus_view.length*1.5
 
-		self.alert(target, projs, game_map) if self.ai_action == "alert" else self.lookout(target, game_map) if self.ai_action == "lookout" else self.suspicious(target, game_map) if self.ai_action == "suspicious" else self.wander(game_map)
+		self.alert(target, game_map, difficulty) if self.ai_action == "alert" else self.lookout(target, game_map) if self.ai_action == "lookout" else self.suspicious(target, game_map) if self.ai_action == "suspicious" else self.wander(game_map)
 		
 		if self.view.lines[1][2] < -math.pi/2 or self.view.lines[1][2] >= math.pi/2:
 			self.flip = True
 		else:
 			self.flip = False
 
-		if (self.sus_time[1] and time.time()-self.sus_time[0] >= (math.dist(self.rect.center, target.rect.center))*0.1) or self.view.collision(game_map.tile_rects, target.rect):
+		if (self.sus_time[1] and time.time()-self.sus_time[0] >= (math.dist(self.rect.center, target.rect.center))*0.1) or self.view.collision(rects, target.rect):
 			self.ai_action = "alert"
 			self.sus_time[1] = False
 
-		elif self.sus_view.collision(game_map.tile_rects, target.rect):
+		elif self.sus_view.collision(rects, target.rect) or (math.dist(target.rect.center, self.rect.center) <= self.hearing_radius*target.stealth and target.movement != [0, 0]):
 			if self.ai_action != "alert":
 				self.ai_action = "suspicious"
 				if not self.sus_time[1]:
@@ -161,7 +173,7 @@ class MainAI(Entity):
 				self.vel.x = 0
 			if self.movement[1] == 0:
 				self.vel.y = 0
-		self.movement_collision(game_map.tile_rects)
+		self.movement_collision(game_map.tiles)
 		if self.ai_action == "wander" and True in self.collisions.values():
 			self.target_loc = list(self.rect.center)
 
@@ -181,12 +193,12 @@ class MainAI(Entity):
 		self.view.offset = [math.degrees(self.en_ta_angle), self.en_ta_angle]
 		self.speed_affect = 0.5
 
-	def alert(self, target: Entity, projs: list[Entity], game_map):
+	def alert(self, target: Entity, game_map, difficulty):
 		self.target_loc = target.rect.center
 		self.view.offset = [math.degrees(self.en_ta_angle), self.en_ta_angle]
 		self.speed_affect = 1
 
-		self.attack(target, projs, game_map)
+		self.attack(target, game_map, difficulty)
 
 	def lookout(self, target: Entity, game_map):
 		if self.last_known == []:
@@ -195,7 +207,7 @@ class MainAI(Entity):
 		self.target_loc = self.last_known
 		self.speed_affect = 1.5
 
-	def attack(self, target: Entity, projs: list[Entity], game_map):
+	def attack(self, target: Entity, game_map, difficulty):
 		pass
 
 	def damage(self, dmg, proj):
@@ -219,23 +231,16 @@ class MainAI(Entity):
 
 				if dmg < main_dmg:
 					c = (211, 142, 23)
-					s = 2
+					s = 16
 				elif dmg >= main_dmg and not critical:
 					c = (244, 111, 9)
-					s = 2
+					s = 16
 				elif critical:
 					c = (204, 23, 0)
-					s = 3
-				self.damage_counters.append([Text(os.path.join("assets", "fontsDL", "font.png"), str(dmg), s, c), [list(self.rect.center), 10, False]])
+					s = 24
+				self.damage_counters.append([Text(os.path.join("assets", "fontsDL", "font.ttf"), str(dmg), s, c, bold=True), list(self.rect.center)])
 
 		return self.stats["HP"][0], hit, critical
 
-	def proj_move(self, proj_list, game_map, dt):
-		pass
-
-	def proj_dmg(self, proj_list, entities):
-		pass
-
 	def draw_UI(self, win, scroll):
-		for dmg_counter in self.damage_counters:
-			dmg_counter[0].render(win, (dmg_counter[1][0][0], dmg_counter[1][0][1]), scroll)
+		win.fblits([(dmg_counter[0].surf, (dmg_counter[1][0]-scroll.x, dmg_counter[1][1]-scroll.y)) for dmg_counter in self.damage_counters])

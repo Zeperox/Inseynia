@@ -1,0 +1,164 @@
+{
+	"Amateur Staff": {
+		"name": ["Amateur Staff", "عصا الهواة", "しろうとスタッフ", "Любительский Персонал", "Personal Aficionado", "Personnel Amateur"],
+		"price": 100,
+		"tooltip": ["Test\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n<sp:mage>", "تجربة\nاااااااااااااااااااااااااا", "テスト\nあああああああああああああああ", "Тест\nААААААААААААААААААААААААААААААААААААА", "Prueba\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "Test\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"],
+		"weight": 1
+	},
+	"Backpack": {
+		"name": ["Backpack", "حقيبة ظهر", "バックパック", "Рюкзак", "Mochila", "Sac à Dos"],
+		"price": 65,
+		"tooltip": ["Hold up to 10 items <sp:Backpack>", "احمل الى 10 اشياء", "さいだい10このアイテムをほじ", "Храните до 10 предметов", "Guarda hasta 10 artículos", "Peut contenir jusqu'à 10 articles"],
+		"weight": 1
+	},
+	"Crossbow": {
+		"name": ["Crossbow", "قوس والنشاب", "クロスボー", "Арбалет", "Ballesta", "Arbalète"],
+		"price": 65,
+		"tooltip": ["Test\nHi\n<sp:archer>", "تجربة\nمرحبا", "テスト\nやほー", "Тест\nЗдравствуй", "Prueba\nHola", "Test\nSalut"],
+		"weight": 1
+	},
+	"Leather Armor": {
+		"name": ["Leather Armor", "درع جلدي", "かわのよろい", "Кожаная Броня", "Armadura de cuero", "Armure en cuir"],
+		"price": 100,
+		"tooltip": ["Weak but feels comfy\n<sp:defense>", "ضعيف ولاكنه مريح", "よわいが、きもちがいい", "Слабый, но чувствует себя комфортно", "Débil pero se siente cómodo", "Faible mais confortable"],
+		"weight": 1
+	},
+	"No Helmet": {
+		"name": ["No Helmet", "بدون خوذة", "ヘルメット なし", "Без Шлема", "Sin Casco", "Sans Casque"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No Chest": {
+		"name": ["No Chestplate", "بدون درع صدر", "チェストプレート なし", "Без нагрудника", "sin Peto", "Sans Plastron"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No Leggings": {
+		"name": ["No Leggings", "بدون درع بنطال", "レギンス なし", "Без леггинсов", "sin polainas", "Sans legging"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No AWeapon": {
+		"name" : ["No Ranged Weapon", "بدون سلاح بعيد المدى", "えきょりぶき なし", "Нет Оружия Дальнего Боя", "Sin arma a distancia", "Aucune arme à distance"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No MWeapon": {
+		"name": ["No Magic Weapon", "بدون سلاح سحري", "まほうのぶきがない", "Нет Волшебного Оружия", "Sin arma mágica", "Sans arme magique"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No SWeapon": {
+		"name": ["No Sword", "بدون سيف", "まほうのぶきがない", "Нет Волшебного Оружия", "Sin arma mágica", "Sans arme magique"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No TWeapon": {
+		"name": ["No Dagger", "بدون خنجر", "まほうのぶきがない", "Нет Волшебного Оружия", "Sin arma mágica", "Sans arme magique"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No Shield": {
+		"name": ["No Shield", "بدون درع", "シールド なし", "Нет Щита", "Sin escudo", "Sans bouclier"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"No Backpack": {
+		"name": ["No Backpack", "بدون حقيبة ظهر", "バックパック なし", "Нет Рюкзака", "sin mochila", "Sans sac à dos"],
+		"price": 0,
+		"tooltip": ["", "", "", "", "", ""],
+		"weight": 0
+	},
+	"Walking Staff": {
+		"name": ["Walking Staff", "عصا يمشي", "ウォーキングスタッフ", "Ходячий Посох", "Bastón ambulante", "Bâton de marche"],
+		"price": 50,
+		"tooltip": ["Test\nHi\n<sp:mage>", "تجربة\nمرحبا", "テスト\nやほー", "Тест\nЗдравствуй", "Prueba\nHola", "Test\nSalut"],
+		"weight": 1
+	},
+	"Wooden Bow": {
+		"name": ["Wooden Bow", "قوص خشبي", "もくせいのゆみ", "Деревянный Лук", "Arco de madera", "Arc en bois"],
+		"price": 50,
+		"tooltip": ["Test\nHi\n<sp:archer> 9 Ranged damage\n<sp:mage>efe", "تجربة\nمرحبا", "テスト\nやほー", "Тест\nЗдравствуй", "Prueba\nHola", "Test\nSalut"],
+		"weight": 1
+	},
+	"Wooden Shield": {
+		"name": ["Wooden Shield", "درع خشبي", "きのたち", "Деревянный Щит", "Escudo de madera", "Bouclier en bois"],
+		"price": 50,
+		"tooltip": ["Test\nHi", "تجربة\nمرحبا", "テスト\nやほー", "Тест\nЗдравствуй", "Prueba\nHola", "Test\nSalut"],
+		"weight": 1
+	},
+	"Heafish": {
+		"name": ["Heafish", "هيفيش", "ヒーフィシュ", "Хифиш", "Heafish", "Heafich"],
+		"price": 50,
+		"tooltip": ["A healing fish, eating it would give you +5 HP\n<sp:health>", "سمكة شافية، أكلها يمنحك +5 نقاط صحة", "いやしのぎょ、たべる と HP+5", "Исцеляющая рыба, поедание которой даст вам +5 HP", "Un pez curativo, comerlo te daría +5 HP", "Un poisson guérisseur, le manger vous donnerait +5 HP"],
+		"weight": 1
+	},
+	"Stafish": {
+		"name": ["Stafish", "ستافيش", "スタフィッシュ", "Стафиш", "Stafish", "Stafich"],
+		"price": 50,
+		"tooltip": ["A stamina fish, eating it would give you +5 SP\n<sp:stamina>", "سمكة التحمل، أكلها يمنحك +5 نقاط تحمل", "たべる と SP+5 の スタミナフィッシュ", "Выносливая рыба, поедание которой даст вам +5 SP", "Un pez de resistencia, comértelo te daría +5 SP", "Un poisson d'endurance, le manger vous donnerait +5 SP"],
+		"weight": 1
+	},
+	"Mafish": {
+		"name": ["Mafish", "مافيش", "マフィッシュ", "Мафиш", "Mafish", "Mafich"],
+		"price": 50,
+		"tooltip": ["A mana healing fish, eating it would give you +5 MP\n<sp:mana>", "سمكة شافية للسحر، أكلها يمنحك +5 نقاط سحر", "マナかいふくぎょ、たべる と MP+5", "Исцеляющая рыба, поедание которой даст вам +5 HP", "Un pez curativo de maná, comerlo te daría +5 MP", "Un poisson guérisseur de mana, le manger vous donnerait +5 MP"],
+		"weight": 1
+	},
+	"Enchanted Arrow": {
+		"name": ["Enchanted Arrow", "سهم مسحور", "まほう の や", "Зачарованная стрела", "Flecha encantada", "Flèche enchantée"],
+		"price": 50,
+		"tooltip": ["An enchanted arrow,\nusing it would refill your quiver\n<sp:projectiles>", "سهم مسحور، سيملأ جعبتك عند استخدامه", "エンチャント さ れた や、しよう すると やじゅつ が ほじゅう さ れます", "Зачарованная стрела, используя ее, ты наполнишь свой колчан", "Una flecha encantada, usándola llenará tu carcaj", "Une flèche enchantée, son utilisation remplira votre carquois"],
+		"weight": 1
+	},
+	"Sword": {
+		"name": ["Sword", "سيف", "きのたち", "Деревянный Щит", "Escudo de madera", "Bouclier en bois"],
+		"price": 50,
+		"tooltip": ["Test\nHi\n<sp:swordsman>", "تجربة\nمرحبا", "テスト\nやほー", "Тест\nЗдравствуй", "Prueba\nHola", "Test\nSalut"],
+		"weight": 1
+	},
+	"Dagger": {
+		"name": ["Dagger", "خنجر", "きのたち", "Деревянный Щит", "Escudo de madera", "Bouclier en bois"],
+		"price": 50,
+		"tooltip": ["Test\nHi\n<sp:thief>", "تجربة\nمرحبا", "テスト\nやほー", "Тест\nЗдравствуй", "Prueba\nHola", "Test\nSalut"],
+		"weight": 1
+	},
+	"blood meat": {
+		"name": ["Blood Meat", "", "", "", "", ""],
+		"price": 50,
+		"tooltip": ["A bloody meat\nRecovers 10HP\n<sp:health>", "", "", "", "", ""],
+		"weight": 1
+	},
+	"Ekreta Mask": {
+		"name": ["Ekreta Mask", "", "", "", "", ""],
+		"price": 50,
+		"tooltip": ["A Mask carved from Ekreta, can be worn for 10 defense\n<sp:defense>", "", "", "", "", ""],
+		"weight": 1
+	},
+	"duck": {
+		"name": ["Duck", "", "", "", "", ""],
+		"price": 50,
+		"tooltip": ["duck", "", "", "", "", ""],
+		"weight": 1
+	},
+	"snail": {
+		"name": ["Snail", "", "", "", "", ""],
+		"price": 50,
+		"tooltip": ["Can be used as a shield thanks to its hard shell", "", "", "", "", ""],
+		"weight": 1
+	},
+	"Alice's Letter": {
+		"name": ["Alice's Letter", "", "", "", "", ""],
+		"price": 50,
+		"tooltip": ["A letter given to you by Alice", "", "", "", "", ""],
+		"weight": 1
+	}
+}

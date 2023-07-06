@@ -1,0 +1,194 @@
+{
+    "name": "Name",
+    "difficulty": "Permadeath",
+    "classes": [
+        "Archer",
+        null
+    ],
+    "stats": {
+        "HP": [
+            10,
+            10
+        ],
+        "SP": [
+            10,
+            10
+        ],
+        "AP": [
+            9,
+            null
+        ],
+        "DP": 0,
+        "EP": [
+            [
+                200,
+                200
+            ],
+            [
+                null,
+                null
+            ]
+        ],
+        "M": 100,
+        "XP": [
+            0,
+            3,
+            1
+        ]
+    },
+    "available levels": 0,
+    "inventory": [],
+    "equipment": [
+        "Wooden Bow",
+        "No Shield",
+        "No Backpack",
+        "No Helmet",
+        "No Chest",
+        "No Leggings"
+    ],
+    "killed enemies": [],
+    "quests": {
+        "alice_letter": "confirm"
+    },
+    "map": "DevRoom",
+    "loc": [
+        110.7567209489963,
+        104.00593157558478
+    ],
+    "enemies": {
+        "DevRoom": [
+            [
+                857.8505751399694,
+                156.80325619457395,
+                "Test Enemy",
+                {
+                    "health": [
+                        30,
+                        30
+                    ],
+                    "attack": 1,
+                    "defense": 0,
+                    "speed": 0.5,
+                    "view": [
+                        45,
+                        100
+                    ],
+                    "suspicious view": [
+                        65,
+                        300
+                    ],
+                    "hearing radius": 75,
+                    "XP": 4,
+                    "knockback resistence": 0,
+                    "drops": [
+                        "blood meat",
+                        "blood meat",
+                        "blood meat"
+                    ]
+                }
+            ]
+        ]
+    },
+    "drops": {
+        "DevRoom": [
+            [
+                32,
+                128,
+                "Amateur Staff",
+                "normal"
+            ],
+            [
+                32,
+                224,
+                "Backpack",
+                "normal"
+            ],
+            [
+                32,
+                320,
+                "Crossbow",
+                "normal"
+            ],
+            [
+                32,
+                416,
+                "Leather Armor",
+                "normal"
+            ],
+            [
+                32,
+                544,
+                "Walking Staff",
+                "normal"
+            ],
+            [
+                64,
+                576,
+                "Wooden Shield",
+                "normal"
+            ],
+            [
+                864,
+                96,
+                "Backpack",
+                "normal"
+            ],
+            [
+                864,
+                192,
+                "Heafish",
+                "normal"
+            ],
+            [
+                864,
+                288,
+                "Stafish",
+                "normal"
+            ],
+            [
+                864,
+                384,
+                "Mafish",
+                "normal"
+            ]
+        ]
+    },
+    "dialogues": {
+        "DevRoom": {
+            "npc": [
+                [
+                    96,
+                    64,
+                    "npc:NPC_alice:0"
+                ],
+                [
+                    96,
+                    160,
+                    "npc:NPC_bob:0"
+                ],
+                [
+                    96,
+                    320,
+                    "npc:TestNPC:0"
+                ],
+                [
+                    864,
+                    64,
+                    "npc:Sign:0"
+                ]
+            ],
+            "trg": [],
+            "cut": [
+                [
+                    [
+                        704,
+                        320,
+                        32,
+                        288
+                    ],
+                    "cut:0"
+                ]
+            ]
+        }
+    }
+}

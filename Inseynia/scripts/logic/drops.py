@@ -1,6 +1,8 @@
 import pygame
 from .entity import Entity
 
+from scripts.loadingDL.sprites import sprite
+
 class Drop(Entity):
 	def __init__(self, x: int, y: int, img: pygame.Surface):
 		super().__init__(x, y, img)
@@ -13,7 +15,7 @@ class Spirit(Drop):
 		self.speed = 0
 		self.spirit_taken = False
 
-	def move(self, player: Entity, dt, sprites):
+	def move(self, player: Entity, dt):
 		if player.stats["EP"][player.classes.index("Mage")][0] < player.stats["EP"][player.classes.index("Mage")][1] and not self.spirit_taken:
 			svec = pygame.Vector2(self.rect.center)
 			pvec = pygame.Vector2(player.rect.center)
@@ -26,7 +28,7 @@ class Spirit(Drop):
 
 			if self.rect.colliderect(player.rect):
 				self.spirit_taken = True
-				self.img = sprites["Spirit Taken"].copy()
+				self.img = sprite("Spirit Taken").copy()
 				self.x, self.y = player.rect.centerx-self.width*0.5, player.rect.centery-self.height*0.5
 				self.speed = 0
 		elif player.stats["EP"][player.classes.index("Mage")][0] == player.stats["EP"][player.classes.index("Mage")][1] or self.spirit_taken:
@@ -43,8 +45,8 @@ class Spirit(Drop):
 				return True
 
 class ProjDrop(Drop):
-	def __init__(self, x: int, y: int, img: pygame.Surface, shooter: Entity, angle: int):
+	def __init__(self, x: int, y: int, img: pygame.Surface, name: str, angle: int):
 		img = pygame.transform.rotate(img, angle)
 		super().__init__(x, y, img)
-		self.shooter = shooter
+		self.name = name
 		self.angle = angle

@@ -1,0 +1,67 @@
+{
+	"maps": {
+		"convert": [0, 0, 0]
+	},
+
+	"bgs": {
+		"convert": null
+	},
+	"buttons": {
+		"convert": null
+	},
+	"tiles": {
+		"scale2x": null,
+		"convert": [0, 0, 0]
+	},
+
+	"he.png": {
+		"convert": [0, 0, 0]
+	},
+	"hf.png": {
+		"convert": [0, 0, 0]
+	},
+	"se.png": {
+		"convert": [0, 0, 0]
+	},
+	"sf.png": {
+		"convert": [0, 0, 0]
+	},
+
+	"archer.png": {
+		"convert": [0, 0, 0]
+	},
+	"defense.png": {
+		"convert": [0, 0, 0]
+	},
+	"health.png": {
+		"convert": [0, 0, 0]
+	},
+	"level.png": {
+		"convert": [0, 0, 0]
+	},
+	"mage.png": {
+		"convert": [0, 0, 0]
+	},
+	"mana.png": {
+		"convert": [0, 0, 0]
+	},
+	"money.png": {
+		"convert": [0, 0, 0]
+	},
+	"none.png": {
+		"convert": [0, 0, 0]
+	},
+	"projectiles.png": {
+		"convert": [0, 0, 0]
+	},
+	"stamina.png": {
+		"convert": [0, 0, 0]
+	},
+
+	"Inventory Slot.png": {
+		"convert": [0, 0, 0]
+	},
+	"Texaract.png": {
+		"convert": [0, 0, 0]
+	}
+}

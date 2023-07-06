@@ -1,0 +1,60 @@
+{
+	"Rooms": [
+		"DevRoom",
+		"DevBoss"
+	],
+	"Tiles": {
+		"DevRoom": [
+			["floor1", ["rect", 0, 0, false], null],
+			["wall1", ["rect", 0, 0, true], null],
+			["wallD1", ["rect", 0, 0, true], null],
+			["wallDL1", ["rect", 0, 0, true], null],
+			["wallDR1", ["rect", 0, 0, true], null],
+			["wallL1", ["rect", 0, 0, true], null],
+			["wallR1", ["rect", 0, 0, true], null],
+			["wallU1", ["rect", 0, 0, true], null],
+			["wallUL1", ["rect", 0, 0, true], null],
+			["wall45", ["angle", 0, 0, true, 0], null],
+			["wall135", ["angle", 0, 0, true, 1], null],
+			["wall225", ["angle", 0, 0, true, 2], null],
+			["wall315", ["angle", 0, 0, true, 3], null],
+			["ice", ["rect", 0, 0, false], "ice"]
+		],
+		"DevBoss": [
+			["floor", ["rect", 0, 0, false], null],
+			["edgeH", ["rect", 0, 0, false], null],
+			["edgeV", ["rect", 0, 0, false], null],
+			["edgeBL", ["rect", 0, 0, false], null],
+			["edgeDR", ["rect", 0, 0, false], null],
+			["edgeUL", ["rect", 0, 0, false], null],
+			["edgeUR", ["rect", 0, 0, false], null],
+			["fence", ["rect", 0, 0, false], null],
+			["fenceL", ["rect", 0, 0, false], null],
+			["fenceR", ["rect", 0, 0, false], null]
+		]
+	},
+	"Items": [
+		"Amateur Staff",
+		"Backpack",
+		"Crossbow",
+		"Leather Armor",
+		"Walking Staff",
+		"Wooden Bow",
+		"Wooden Shield",
+		"Backpack",
+		"Heafish",
+		"Stafish",
+		"Mafish",
+		"Enchanted Arrow",
+		"Sword",
+		"Dagger",
+		"blood meat",
+		"Ekreta Mask",
+		"duck",
+		"snail"
+	],
+	"Enemies": [
+		"Test Enemy",
+		"Jlokshi"
+	]
+}

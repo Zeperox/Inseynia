@@ -1,0 +1,96 @@
+[
+    [
+        "Wooden Halfbow",
+        "Wooden Bow",
+        "Steel Halfbow",
+        "Crossbow",
+        "Walking Staff",
+        "Amateur Staff",
+        "Advanced Staff",
+        "Book of Arcs",
+        "Lightning Charge",
+        "Sword",
+        "Dagger"
+    ],
+    {
+        "No Shield": {
+            "ricochet": false,
+            "rico speed": 0,
+            "rico dist": 0,
+            "knockback reduction": 0
+        },
+        "snail": {
+            "ricochet": true,
+            "rico speed": 3,
+            "rico dist": 4,
+            "knockback reduction": 10
+        },
+        "Wooden Shield": {
+            "ricochet": false,
+            "rico speed": 3,
+            "rico dist": 4,
+            "knockback reduction": 10
+        },
+        "Rusty Shield": {
+            "ricochet": false,
+            "rico speed": 0.5,
+            "rico dist": 4,
+            "knockback reduction": 10
+        },
+        "City Guard's Shield": {
+            "ricochet": false,
+            "rico speed": 0.5,
+            "rico dist": 4,
+            "knockback reduction": 15
+        }
+    },
+    {
+        "No Backpack": {
+            "slots": 5,
+            "max weight": null
+        },
+        "Backpack": {
+            "slots": 23,
+            "max weight": 5
+        }
+    },
+    {
+        "No Helmet": {
+            "type": "helm",
+            "defense": 0,
+            "weight": 0,
+            "knockback resistence": 0
+        },
+        "No Chest": {
+            "type": "chest",
+            "defense": 0,
+            "weight": 0,
+            "knockback resistence": 0
+        },
+        "No Leggings": {
+            "type": "legg",
+            "defense": 0,
+            "weight": 0,
+            "knockback resistence": 0
+        },
+        "Ekreta Mask": {
+            "type": "helm",
+            "defense": 10,
+            "weight": 10,
+            "knockback resistence": 10
+        },
+        "Leather Armor": {
+            "type": "chest",
+            "defense": 20,
+            "weight": 40,
+            "knockback resistence": 50
+        }
+    },
+    {
+        "Heafish": "AddHealth 0 5",
+        "blood meat": "AddHealth 5 1",
+        "Stafish": "AddStamina 0 5",
+        "Mafish": "AddMana 0 5",
+        "Enchanted Arrow": "AddQuiver 0 99999"
+    }
+]

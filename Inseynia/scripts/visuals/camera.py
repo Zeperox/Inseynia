@@ -27,13 +27,13 @@ class Camera:
 
 				if self.scroll.x <= game_map.x and game_map.x == 0:
 					self.scroll.x = game_map.x
-				elif self.scroll.x >= game_map.w-screen_size[0] and game_map.x == 0:
-					self.scroll.x = game_map.w-screen_size[0]
+				elif self.scroll.x >= game_map.data["size"][0]-screen_size[0] and game_map.x == 0:
+					self.scroll.x = game_map.data["size"][0]-screen_size[0]
 					
 				if self.scroll.y <= game_map.y and game_map.y == 0:
 					self.scroll.y = game_map.y
-				elif self.scroll.y >= game_map.h-screen_size[1] and game_map.y == 0:
-					self.scroll.y = game_map.h-screen_size[1]
+				elif self.scroll.y >= game_map.data["size"][1]-screen_size[1] and game_map.y == 0:
+					self.scroll.y = game_map.data["size"][1]-screen_size[1]
 			else:
 				if game_map.x == 0: self.true_scroll[0] = self.target.x-((screen_size[0]*0.5)-(self.target.rect.width*0.5))
 				else: self.true_scroll[0] = 0
@@ -43,13 +43,13 @@ class Camera:
 				self.scroll.x, self.scroll.y = self.true_scroll
 				if self.scroll.x <= game_map.x and game_map.x == 0:
 					self.scroll.x = game_map.x
-				elif self.scroll.x >= game_map.w-screen_size[0] and game_map.x == 0:
-					self.scroll.x = game_map.w-screen_size[0]
+				elif self.scroll.x >= game_map.data["size"][0]-screen_size[0] and game_map.x == 0:
+					self.scroll.x = game_map.data["size"][0]-screen_size[0]
 					
 				if self.scroll.y <= game_map.y and game_map.y == 0:
 					self.scroll.y = game_map.y
-				elif self.scroll.y >= game_map.h-screen_size[1] and game_map.y == 0:
-					self.scroll.y = game_map.h-screen_size[1]
+				elif self.scroll.y >= game_map.data["size"][1]-screen_size[1] and game_map.y == 0:
+					self.scroll.y = game_map.data["size"][1]-screen_size[1]
 		elif self.forced_loc and not self.ignore_map:
 			if not self.immediate:
 				if game_map.x == 0: self.true_scroll[0] += (self.forced_loc[0]-self.true_scroll[0]-screen_size[0]*0.5)/20*dt
@@ -62,13 +62,13 @@ class Camera:
 
 				if self.scroll.x <= game_map.x and game_map.x == 0:
 					self.scroll.x = game_map.x
-				elif self.scroll.x >= game_map.w-screen_size[0] and game_map.x == 0:
-					self.scroll.x = game_map.w-screen_size[0]
+				elif self.scroll.x >= game_map.data["size"][0]-screen_size[0] and game_map.x == 0:
+					self.scroll.x = game_map.data["size"][0]-screen_size[0]
 					
 				if self.scroll.y <= game_map.y and game_map.y == 0:
 					self.scroll.y = game_map.y
-				elif self.scroll.y >= game_map.h-screen_size[1] and game_map.y == 0:
-					self.scroll.y = game_map.h-screen_size[1]
+				elif self.scroll.y >= game_map.data["size"][1]-screen_size[1] and game_map.y == 0:
+					self.scroll.y = game_map.data["size"][1]-screen_size[1]
 			else:
 				if game_map.x == 0: self.true_scroll[0] = self.forced_loc[0]-((screen_size[0]*0.5))
 				else: self.true_scroll[0] = 0
@@ -78,13 +78,13 @@ class Camera:
 				self.scroll.x, self.scroll.y = self.true_scroll
 				if self.scroll.x <= game_map.x and game_map.x == 0:
 					self.scroll.x = game_map.x
-				elif self.scroll.x >= game_map.w-screen_size[0] and game_map.x == 0:
-					self.scroll.x = game_map.w-screen_size[0]
+				elif self.scroll.x >= game_map.data["size"][0]-screen_size[0] and game_map.x == 0:
+					self.scroll.x = game_map.data["size"][0]-screen_size[0]
 					
 				if self.scroll.y <= game_map.y and game_map.y == 0:
 					self.scroll.y = game_map.y
-				elif self.scroll.y >= game_map.h-screen_size[1] and game_map.y == 0:
-					self.scroll.y = game_map.h-screen_size[1]
+				elif self.scroll.y >= game_map.data["size"][1]-screen_size[1] and game_map.y == 0:
+					self.scroll.y = game_map.data["size"][1]-screen_size[1]
 		elif not self.forced_loc and self.ignore_map:
 			if not self.immediate:
 				self.true_scroll[0] += (self.target.x-self.true_scroll[0]-(screen_size[0]*0.5-self.target.rect.width*0.5))/20*dt

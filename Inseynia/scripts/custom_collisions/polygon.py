@@ -1,5 +1,4 @@
 import pygame
-from pygame.constants import QUIT
 
 class Polygon:
 	def __init__(self, vertices):
@@ -63,7 +62,7 @@ if __name__ == "__main__":
 		pygame.draw.rect(win, (255,0,0), rect)
 
 		for event in pygame.event.get():
-			if event.type == QUIT: quit()
+			if event.type == pygame.QUIT: quit()
 
 		rect.center = pygame.mouse.get_pos()
 

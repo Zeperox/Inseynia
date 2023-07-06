@@ -1,0 +1,45 @@
+{
+    "FPS": 4294967296,
+    "fullscreen": false,
+    "vsync": 0,
+    "keys": {
+        "up": 119,
+        "down": 115,
+        "left": 97,
+        "right": 100,
+        "dash": 32,
+        "sneak": 1073742049,
+        "sleep": 102,
+        "interact": 114,
+        "inventory": 9,
+        "pause": 27,
+        "primary": 1,
+        "secondary": 3,
+        "pspecial": 113,
+        "sspecial": 101
+    },
+    "cons": {
+        "up": 11,
+        "down": 12,
+        "left": 13,
+        "right": 14,
+        "dash": 0,
+        "sneak": 7,
+        "sleep": 3,
+        "interact": 2,
+        "inventory": 4,
+        "pause": 6,
+        "primary": 16,
+        "secondary": 15,
+        "pspecial": 10,
+        "sspecial": 9
+    },
+    "sticks invert": false,
+    "brightness": 0,
+    "permadeath": false,
+    "volumes": {
+        "music": 0,
+        "SFX": 1
+    },
+    "lang": "english"
+}
