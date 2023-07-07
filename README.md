@@ -149,11 +149,11 @@ Anyway, this is where you can look at the code and help find issues that you pro
 - Added a low HP effect at the screen edge
 - Added language support
     - English
-      - Arabic
-      - Japanese
-      - Russian
-      - Spanish
-      - French
+    - Arabic
+    - Japanese
+    - Russian
+    - Spanish
+    - French
 - Added the ability to mod your own custom main loops (cannot overwrite the main loop of the main game)
 - Added dialogues
 - Added NPCs
