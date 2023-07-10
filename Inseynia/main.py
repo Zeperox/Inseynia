@@ -512,7 +512,7 @@ try:
 			button_mods = Button(25, 200, 200, 35, (0, 0, 0), get_text("button:mods"), settings["lang"], (255, 255, 255), (255, 255, 255), 1, os.path.join("assets", "fontsDL", "font.ttf"))
 			button_quit = Button(25, 250, 200, 35, (0, 0, 0), get_text("button:quit_game"), settings["lang"], (255, 255, 255), (255, 255, 255), 1, os.path.join("assets", "fontsDL", "font.ttf"))
 			
-			text_version = Text(os.path.join("assets", "fontsDL", "font.ttf"), "Pre-Alpha 1", 16, (75, 75, 75))
+			text_version = Text(os.path.join("assets", "fontsDL", "font.ttf"), "Pre-Alpha 0.1", 16, (75, 75, 75))
 			text_cw = Text(os.path.join("assets", "fontsDL", "font.ttf"), "© Texaract", 16, (75, 75, 75))
 
 			buttons = [button_start, button_settings, button_mods, button_quit]
