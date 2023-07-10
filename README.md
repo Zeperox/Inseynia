@@ -10,7 +10,7 @@ Anyway, this is where you can look at the code and help find issues that you pro
 
 # Change Logs
 
-## Pre-Alpha 1
+## Pre-Alpha 0.2
 
 ### Additions/Removals
 
@@ -142,7 +142,7 @@ Anyway, this is where you can look at the code and help find issues that you pro
 - Fixed a bug where the damage number popup animation would break in higher fps 
 - Fixed a bug where the damage number popup in NPCs didn't have an animation
 
-## Pre-Alpha 0
+## Pre-Alpha 0.1
 
 ### Additions/Removals
 
