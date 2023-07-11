@@ -1,7 +1,7 @@
 {
     "FPS": 4294967296,
     "fullscreen": false,
-    "vsync": 0,
+    "vsync": 1,
     "keys": {
         "up": 119,
         "down": 115,
@@ -34,11 +34,11 @@
         "pspecial": 10,
         "sspecial": 9
     },
-    "sticks invert": false,
-    "brightness": 0,
+    "sticks invert": true,
+    "brightness": 0.0,
     "permadeath": false,
     "volumes": {
-        "music": 0,
+        "music": 1,
         "SFX": 1
     },
     "lang": "english"

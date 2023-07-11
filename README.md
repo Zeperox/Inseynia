@@ -10,6 +10,23 @@ Anyway, this is where you can look at the code and help find issues that you pro
 
 # Change Logs
 
+## Pre-Alpha 0.2.1
+
+### Additions/Removals
+- Added `Primary Special Attack` and `Secondary Special Attack` control buttons
+
+### Changes/Improvements
+- Changed how menus are handled
+- Changed the save data shown when selecting a save from HP, Stamina, and class stats to showing the player level and classes
+- The game's name will no longer change languages
+
+### Bug Fixes
+- Fixed a couple of bugs relating to navigating through the controls menu in the settings
+- Fixed a couple of button highlighting issues in the controls menu in the settings
+- Fixed a bug where if you opened your inventory after your backpack breaks the game might crash
+- Fixed a bug where using keyboard navigation in the music room to change the music would crash the game
+- (POTENTIALLY) Fixed a bug where the game would weirdly auto-save (there is literally no line that tells it to auto-save) and restart itself, causing the map to reset but the player data stay the same
+
 ## Pre-Alpha 0.2
 
 ### Additions/Removals

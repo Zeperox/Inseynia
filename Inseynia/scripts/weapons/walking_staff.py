@@ -14,7 +14,7 @@ class Boomerang(Projectile):
 			self.sloc = pygame.Vector2(self.x, self.y)
 			self.eloc = pygame.Vector2(self.shooter.x, self.shooter.y)
 		
-		if True in self.collisions.values() or self.damage(entities, False):
+		if True in self.collisions.values() or self.damage(game_map, entities, False):
 			self.return_proj = True
 		if self.rect.colliderect(self.shooter) and self.return_proj:
 			if self in game_map.full_projs:

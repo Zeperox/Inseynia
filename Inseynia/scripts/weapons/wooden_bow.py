@@ -31,9 +31,9 @@ class Arc(Projectile):
 
 		return self.end_del(game_map, tile_collide=False), True
 
-	def damage(self, entities, actually_dmg=True):
+	def damage(self, game_map, entities, actually_dmg=True):
 		if not self.damaged:
-			status, entity = super().damage(entities, actually_dmg)
+			status, entity = super().damage(game_map, entities, actually_dmg)
 			if status:
 				self.damaged = True
 			return status, entity
